@@ -1,6 +1,7 @@
 package com.muriloCruz.ItGames.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,7 +34,7 @@ public class Usuario {
     private String senha;
 
     @Size(max = 200, min = 3, message = "O nome deve conter entre 3 e 200 caracteres")
-    @NotBlank(message = "O e-mail não pode ser nulo")
+    @Email(message = "O e-mail está com o formato inválido")
     @Column(name = "email")
     private String email;
 

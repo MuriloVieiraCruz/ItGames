@@ -1,5 +1,6 @@
 package com.muriloCruz.ItGames.entity;
 
+import com.muriloCruz.ItGames.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +35,11 @@ public class Jogo {
     @Column(name = "data_lanc")
     private Date dataLanc;
 
+    @Enumerated(value = EnumType.STRING)
+    @NotNull(message = "O status do jogo é obrigatório")
+    @Column(name = "status")
+    private Status status;
+
     @Size(max = 25, message = "O gênero deve conter no máximo 25 caracteres")
     @NotBlank(message = "O gênero não pode ser nulo")
     @Column(name = "genero")
@@ -43,8 +49,9 @@ public class Jogo {
     @Column(name = "imagem_url")
     private String imagemUrl;
 
+
     @Size(max = 150, min = 3, message = "A empresa deve conter entre 3 e 150 caracteres")
-    @NotBlank(message = "A empresa não pode ser nulo")
-    @Column(name = "empresa")
-    private String empresa;
+    @NotNull(message = "A empresa não pode ser nulo")
+    @JoinColumn(name = "id_empresa")
+    private Empresa empresa;
 }
