@@ -1,16 +1,21 @@
 package com.muriloCruz.ItGames.entity;
 
-import jakarta.persistence.*;
+import java.util.Date;
+
+import org.hibernate.validator.constraints.br.CPF;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.br.CPF;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 @Entity(name = "Usuario")

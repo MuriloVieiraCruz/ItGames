@@ -1,5 +1,7 @@
 package com.muriloCruz.ItGames.entity;
 
+import com.muriloCruz.ItGames.entity.enums.Status;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,4 +24,9 @@ public class Empresa {
     @NotNull(message = "O nome é obrigatório")
     @Column(name = "nome")
     private String nome;
+    
+    @Enumerated(value = EnumType.STRING)
+    @NotNull(message = "O status da empresa é obrigatório")
+    @Column(name = "status")
+    private Status status;
 }

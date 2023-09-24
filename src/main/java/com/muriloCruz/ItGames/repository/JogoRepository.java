@@ -45,5 +45,5 @@ public interface JogoRepository extends JpaRepository<Jogo, Integer> {
             "UPDATE Jogo j " +
                 "SET j.status = :status " +
                 "WHERE j.id = :id")
-    public Jogo alterarStatusPor(Integer id, Status status);
+    public void alterarStatusPor(Integer id, Status status);
 }

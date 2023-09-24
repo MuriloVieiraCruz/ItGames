@@ -48,5 +48,5 @@ public interface ServicoRepository extends JpaRepository<Servico, Integer> {
             "UPDATE Service s " +
                     "UPDATE s.status = :status " +
                     "WHERE s.id = :id")
-    public Servico atualizarPor(Integer id, Status status);
+    public void atualizarStatusPor(Integer id, Status status);
 }
