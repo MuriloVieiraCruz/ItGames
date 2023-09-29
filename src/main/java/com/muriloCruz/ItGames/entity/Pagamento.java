@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.muriloCruz.ItGames.entity.enums.TipoPagamento;
+
 @Data
 @Entity(name = "Pagamento")
 @Table(name = "pagamento")
@@ -35,5 +37,5 @@ public class Pagamento {
 
     @Size(max = 20, message = "O nome deve conter entre 3 e 100 caracteres")
     @Column(name = "tipo")
-    private String tipo;
+    private TipoPagamento tipo;
 }

@@ -1,6 +1,7 @@
 package com.muriloCruz.ItGames.entity;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -25,14 +26,14 @@ public class Usuario {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Size(max = 250, min = 3, message = "O nome deve conter entre 3 e 250 caracteres")
     @NotBlank(message = "O nome não pode ser nulo")
-    @Column(name = "nome")
-    private String nome;
+    @EqualsAndHashCode.Include
+    @Column(name = "login")
+    private String login;
 
     @NotBlank(message = "A senha não pode ser nula")
     @Column(name = "senha")

@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,7 +27,6 @@ public class Postagem {
     @EqualsAndHashCode.Include
     private Integer id;
 
-    @Size(max = 450, message = "A url da imagem deve conterno máximo 100 caracteres")
     @Column(name = "imagem_url")
     private String imagemUrl;
 
@@ -40,6 +38,4 @@ public class Postagem {
     @NotNull(message = "O servico da postagem é obrigatório")
     @JoinColumn(name = "id_servico")
     private Servico servico;
-
-
 }
