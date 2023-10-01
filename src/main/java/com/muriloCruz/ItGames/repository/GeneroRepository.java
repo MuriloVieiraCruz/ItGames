@@ -9,12 +9,12 @@ import com.muriloCruz.ItGames.entity.Genero;
 import ch.qos.logback.core.status.Status;
 
 @Repository
-public interface GeneroRepository extends JpaRepository<GeneroRepository, Integer> {
+public interface GeneroRepository extends JpaRepository<Genero, Integer> {
 	
 	@Query(value = 
 			"SELECT g "
 			+ "FROM Genero g "
-			+ "WHERE g.id = :id")
+			+ "WHERE g.nome = :nome")
 	public Genero buscarPor(String nome);
 	
 	@Query(value = 

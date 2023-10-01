@@ -16,9 +16,9 @@ import lombok.EqualsAndHashCode;
 public class Genero {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @Column(name = "id")
     private Integer id;
 
     @Size(max = 100, min = 3, message = "O nome deve conter entre 3 e 100 caracteres")

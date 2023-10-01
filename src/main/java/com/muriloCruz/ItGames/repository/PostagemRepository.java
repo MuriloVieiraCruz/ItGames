@@ -1,9 +1,9 @@
 package com.muriloCruz.ItGames.repository;
 
-import java.awt.print.Pageable;
 import java.util.Date;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,12 +26,12 @@ public interface PostagemRepository extends JpaRepository<Postagem, Integer> {
     		+ "FROM Postagem p "
     		+ "JOIN FETCH p.servico "
     		+ "WHERE (:servico IS NULL OR p.servico = :servico) "
-    		+ "AND (:data IS NULL OR p.data = :data) "
+    		+ "AND (:data IS NULL OR p.dataPostagem = :dataPostagem) "
     		+ "ORDER BY p.servico",
     		countQuery = "SELECT p "
     	    		+ "FROM Postagem p "
     	    		+ "WHERE (:servico IS NULL OR p.servico = :servico) "
-    	    		+ "AND (:data IS NULL OR p.data = :data)")
+    	    		+ "AND (:dataPostagem IS NULL OR p.dataPostagem = :dataPostagem)")
     public Page<Postagem> listarPor(Servico servico, Date dataPostagem, Pageable paginacao);
     
     @Query(value = 

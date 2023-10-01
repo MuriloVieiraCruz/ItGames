@@ -18,9 +18,9 @@ public interface ServicoRepository extends JpaRepository<Servico, Integer> {
 
     @Query(value =
             "SELECT s " +
+            		"FROM Servico s " +
                     "JOIN FETCH s.usuario " +
                     "JOIN FETCH s.jogo " +
-                    "FROM Servico s " +
                     "WHERE s.id = :id")
     public Servico buscarPor(Integer id);
 
@@ -45,8 +45,8 @@ public interface ServicoRepository extends JpaRepository<Servico, Integer> {
     @Transactional
     @Modifying
     @Query(value =
-            "UPDATE Service s " +
-                    "UPDATE s.status = :status " +
+            "UPDATE Servico s " +
+                    "SET s.status = :status " +
                     "WHERE s.id = :id")
     public void atualizarStatusPor(Integer id, Status status);
 }

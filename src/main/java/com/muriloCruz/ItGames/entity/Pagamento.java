@@ -1,19 +1,28 @@
 package com.muriloCruz.ItGames.entity;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import com.muriloCruz.ItGames.entity.enums.TipoPagamento;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
-import com.muriloCruz.ItGames.entity.enums.TipoPagamento;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity(name = "Pagamento")
 @Table(name = "pagamento")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -33,8 +42,9 @@ public class Pagamento {
 
     @NotNull(message = "A data de pagamento não pode ser nulo")
     @Column(name = "data_pag")
-    private Date dataPag;
+    private Timestamp dataPag;
 
+    @Enumerated(EnumType.STRING)
     @Size(max = 20, message = "O nome deve conter entre 3 e 100 caracteres")
     @Column(name = "tipo")
     private TipoPagamento tipo;

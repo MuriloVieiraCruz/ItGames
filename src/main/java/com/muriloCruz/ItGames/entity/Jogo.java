@@ -1,6 +1,6 @@
 package com.muriloCruz.ItGames.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.muriloCruz.ItGames.entity.enums.Status;
@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -40,12 +41,12 @@ public class Jogo {
     private String nome;
 
     @NotBlank(message = "O nome não pode ser nulo")
-    @Column(name = "nome")
+    @Column(name = "descricao")
     private String descricao;
 
     @NotNull(message = "A data de lançamento não pode ser nulo")
     @Column(name = "data_lanc")
-    private Date dataLanc;
+    private Timestamp dataLanc;
 
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "O status do jogo é obrigatório")
@@ -59,8 +60,9 @@ public class Jogo {
     @Column(name = "imagem_url")
     private String imagemUrl;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @Size(max = 150, min = 3, message = "A empresa deve conter entre 3 e 150 caracteres")
     @NotNull(message = "A empresa não pode ser nulo")
-    @JoinColumn(name = "id_empresa")
+    @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 }

@@ -44,16 +44,16 @@ public class Servico {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "O jogo do serviço é obrigatório")
-    @JoinColumn(name = "id_jogo")
+    @JoinColumn(name = "jogo_id")
     private Jogo jogo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "O pagamento do serviço é obrigatório")
-    @JoinColumn(name = "id_pagamento")
+    @JoinColumn(name = "pagamento_id")
     private Pagamento pagamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "O usuario do serviço é obrigatório")
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 }

@@ -1,6 +1,6 @@
 package com.muriloCruz.ItGames.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,8 +16,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@Entity(name = "Servico")
-@Table(name = "servico")
+@Entity(name = "Postagem")
+@Table(name = "postagem")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Postagem {
 
@@ -32,10 +32,10 @@ public class Postagem {
 
     @NotNull(message = "A data de postagem não pode ser nulo")
     @Column(name = "data_post")
-    private Date dataPostagem;
+    private Timestamp dataPostagem;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "O servico da postagem é obrigatório")
-    @JoinColumn(name = "id_servico")
+    @JoinColumn(name = "servico_id")
     private Servico servico;
 }

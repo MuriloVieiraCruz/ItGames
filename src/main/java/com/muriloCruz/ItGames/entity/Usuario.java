@@ -1,16 +1,22 @@
 package com.muriloCruz.ItGames.entity;
 
-import java.util.Date;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.muriloCruz.ItGames.entity.enums.Status;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,9 +31,10 @@ import lombok.EqualsAndHashCode;
 public class Usuario {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")  
+    private Integer id;
 
     @Size(max = 250, min = 3, message = "O nome deve conter entre 3 e 250 caracteres")
     @NotBlank(message = "O nome não pode ser nulo")
@@ -41,21 +48,29 @@ public class Usuario {
 
     @Size(max = 200, min = 3, message = "O nome deve conter entre 3 e 200 caracteres")
     @Email(message = "O e-mail está com o formato inválido")
+    @NotBlank(message = "O e-mail não pode ser nula")
     @Column(name = "email")
     private String email;
 
     @CPF(message = "O cpf está incorreto")
     @Column(name = "cpf")
     private String cpf;
+    
+    @Enumerated(value = EnumType.STRING)
+    @NotNull(message = "O status do usuário é obrigatório")
+    @Column(name = "status")
+    private Status status;
 
     @NotNull(message = "A data de nascimanto não pode ser nulo")
     @Column(name = "data_nasc")
-    private Date dataNasc;
+    private Timestamp dataNasc;
 
     @NotNull(message = "A data de registro não pode ser nulo")
     @Column(name = "data_registro")
-    private Date dataRegistro;
+    private Timestamp dataRegistro;
 
+    @DecimalMin(value = "0.0", inclusive = true, message = "O preco deve ser posistivo")
+    @Digits(integer = 2, fraction = 2, message = "A avaliação deve possuir o formato 'NN.NN'")
     @Column(name = "avaliacao")
-    private Double avaliacao;
+    private BigDecimal avaliacao;
 }
