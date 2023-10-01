@@ -1,5 +1,6 @@
 package com.muriloCruz.ItGames.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.composite.GeneroDoJogoId;
 import com.muriloCruz.ItGames.entity.enums.TipoAssociacao;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -49,4 +51,11 @@ public class GeneroDoJogo {
 	@JoinColumn(name = "id_genero")
 	private Genero genero;
 	
+    @JsonIgnore
+    @Transient
+    public boolean isPersistido() {
+    	return getId() != null 
+    			&& getId().getIdDoGenero() > 0
+    			&& getId().getIdDoJogo() > 0;
+    }	
 }

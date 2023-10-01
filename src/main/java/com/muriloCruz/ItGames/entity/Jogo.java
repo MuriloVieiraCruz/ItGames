@@ -3,6 +3,7 @@ package com.muriloCruz.ItGames.entity;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.persistence.Column;
@@ -17,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -65,4 +67,20 @@ public class Jogo {
     @NotNull(message = "A empresa não pode ser nulo")
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
+    
+    public Jogo() {
+    	this.status = Status.A; 
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isPersistido() {
+    	return getId() != null && getId() > 0;
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isAtivo() {
+    	return getStatus() == Status.A;
+    }
 }

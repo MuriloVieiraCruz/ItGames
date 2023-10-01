@@ -1,5 +1,6 @@
 package com.muriloCruz.ItGames.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.persistence.*;
@@ -30,4 +31,20 @@ public class Genero {
     @NotNull(message = "O status da empresa é obrigatório")
     @Column(name = "status")
     private Status status;
+    
+    public Genero() {
+    	this.status = Status.A; 
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isPersistido() {
+    	return getId() != null && getId() > 0;
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isAtivo() {
+    	return getStatus() == Status.A;
+    }
 }

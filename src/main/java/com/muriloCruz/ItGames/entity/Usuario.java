@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.persistence.Column;
@@ -15,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
@@ -73,4 +75,20 @@ public class Usuario {
     @Digits(integer = 2, fraction = 2, message = "A avaliação deve possuir o formato 'NN.NN'")
     @Column(name = "avaliacao")
     private BigDecimal avaliacao;
+    
+    public Usuario() {
+    	this.status = Status.A; 
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isPersistido() {
+    	return getId() != null && getId() > 0;
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isAtivo() {
+    	return getStatus() == Status.A;
+    }
 }

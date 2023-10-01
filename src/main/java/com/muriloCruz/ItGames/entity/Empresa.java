@@ -1,5 +1,6 @@
 package com.muriloCruz.ItGames.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.persistence.Column;
@@ -10,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -36,4 +38,20 @@ public class Empresa {
     @NotNull(message = "O status da empresa é obrigatório")
     @Column(name = "status")
     private Status status;
+    
+    public Empresa() {
+    	this.status = Status.A; 
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isPersistido() {
+    	return getId() != null && getId() > 0;
+    }
+    
+    @JsonIgnore
+    @Transient
+    public boolean isAtivo() {
+    	return getStatus() == Status.A;
+    }
 }
