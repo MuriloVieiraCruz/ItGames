@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -55,7 +56,7 @@ public class Jogo {
     @Column(name = "status")
     private Status status;
 
-    @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GeneroDoJogo> generos;
 
     @NotBlank(message = "A url da imagem é obrigatória")

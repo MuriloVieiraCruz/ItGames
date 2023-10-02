@@ -1,5 +1,7 @@
 package com.muriloCruz.ItGames.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,6 +18,17 @@ public interface GeneroRepository extends JpaRepository<Genero, Integer> {
 			+ "FROM Genero g "
 			+ "WHERE g.nome = :nome")
 	public Genero buscarPor(String nome);
+	
+	@Query(value = 
+			"SELECT g "
+			+ "FROM Genero g "
+			+ "WHERE g.nome = :nome "
+			+ "AND g.status = 'A'",
+			countQuery = "SELECT g "
+					+ "FROM Genero g "
+					+ "WHERE g.nome = :nome "
+					+ "AND g.status = 'A'")
+	public Page<Genero> listarPor(String nome, Pageable paginacao);
 	
 	@Query(value = 
 			"UPDATE Genero g "

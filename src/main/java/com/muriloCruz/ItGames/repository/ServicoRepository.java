@@ -17,36 +17,38 @@ import java.math.BigDecimal;
 public interface ServicoRepository extends JpaRepository<Servico, Integer> {
 
     @Query(value =
-            "SELECT s " +
-            		"FROM Servico s " +
-                    "JOIN FETCH s.usuario " +
-                    "JOIN FETCH s.jogo " +
-                    "WHERE s.id = :id")
+            "SELECT s "
+            + "FROM Servico s "
+            + "JOIN FETCH s.usuario "
+            + "JOIN FETCH s.jogo "
+            + "WHERE s.id = :id") 
     public Servico buscarPor(Integer id);
 
     @Query(value =
-            "SELECT s " +
-                    "FROM Servico s " +
-                    "WHERE s.jogo = :jogo")
+            "SELECT s "
+            + "FROM Servico s "
+            + "WHERE s.jogo = :jogo")
     public Servico buscarPor(Jogo jogo);
-
+    
     @Query(value =
-            "SELECT s " +
-                    "FROM Servico s " +
-                    "JOIN FETCH s.jogo " +
-                    "WHERE s.preco = :preco " +
-                    "AND s.jogo = :jogo ",
-                    countQuery = "SELECT s " +
-                            "FROM Servico s " +
-                            "WHERE s.preco = :preco " +
-                            "AND s.jogo = :jogo ")
+            "SELECT s "
+            + "FROM Servico s "
+            + "JOIN FETCH s.jogo "
+            + "WHERE (:preco IS NULL OR s.preco = :preco) "
+            + "AND (:jogo IS NULL OR s.jogo = :jogo ) "
+            + "AND s.status = 'A' "
+            + "ORDER BY s.preco",
+            countQuery = "SELECT Count(s) "
+                    + "FROM Servico s "
+                    + "WHERE (:preco IS NULL OR s.preco = :preco) "
+                    + "AND (:jogo IS NULL OR s.jogo = :jogo ) ")
     public Page<Servico> listarPor(BigDecimal preco, Jogo jogo, Pageable paginacao);
 
     @Transactional
     @Modifying
     @Query(value =
-            "UPDATE Servico s " +
-                    "SET s.status = :status " +
-                    "WHERE s.id = :id")
+            "UPDATE Servico s "
+            + "SET s.status = :status "
+            + "WHERE s.id = :id")
     public void atualizarStatusPor(Integer id, Status status);
 }

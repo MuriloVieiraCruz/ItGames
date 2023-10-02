@@ -1,5 +1,7 @@
 package com.muriloCruz.ItGames.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,6 +16,17 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Integer> {
 			+ "FROM Empresa e "
 			+ "WHERE e.nome = :nome")
 	public Empresa buscarPor(String nome);
+	
+	@Query(value = 
+			"SELECT e "
+			+ "FROM Empresa e "
+			+ "WHERE e.nome = :nome "
+			+ "AND e.status = 'A'",
+			countQuery = "SELECT e "
+					+ "FROM Empresa e "
+					+ "WHERE e.nome = :nome "
+					+ "AND e.status = 'A'")
+	public Page<Empresa> listarPor(String nome, Pageable paginacao);
 	
 	@Query(value = 
 			"UPDATE Empresa e "
