@@ -1,4 +1,4 @@
 .properties
 bin/
-*/resources/*
+src/main/resources
 .settings/
