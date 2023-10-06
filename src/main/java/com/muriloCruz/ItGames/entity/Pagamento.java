@@ -1,8 +1,9 @@
 package com.muriloCruz.ItGames.entity;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.muriloCruz.ItGames.entity.enums.TipoPagamento;
 
 import jakarta.persistence.Column;
@@ -40,9 +41,10 @@ public class Pagamento {
     @Column(name = "valor")
     private BigDecimal valor;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @NotNull(message = "A data de pagamento não pode ser nulo")
     @Column(name = "data_pag")
-    private Timestamp dataPag;
+    private Instant dataPag;
 
     @Enumerated(EnumType.STRING)
     @Size(max = 20, message = "O nome deve conter entre 3 e 100 caracteres")

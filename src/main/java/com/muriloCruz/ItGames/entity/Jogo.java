@@ -1,8 +1,9 @@
 package com.muriloCruz.ItGames.entity;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
@@ -47,15 +48,16 @@ public class Jogo {
     @Column(name = "descricao")
     private String descricao;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @NotNull(message = "A data de lançamento não pode ser nulo")
     @Column(name = "data_lanc")
-    private Timestamp dataLanc;
+    private Instant dataLanc;
 
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "O status do jogo é obrigatório")
     @Column(name = "status")
     private Status status;
-
+    
     @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GeneroDoJogo> generos;
 
