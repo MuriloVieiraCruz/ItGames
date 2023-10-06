@@ -1,6 +1,6 @@
 package com.muriloCruz.ItGames.dto;
 
-import java.security.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class JogoRequestDto {
 	private String descricao;
 	
 	@NotNull(message = "A data de lançamento é obrigatório")
-	private Timestamp dataLanc;
+	private Instant dataLanc;
 	
 	@NotBlank(message = "A URL da imagem é obrigatória")
 	private String imagemUrl;

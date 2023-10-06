@@ -1,8 +1,10 @@
 package com.muriloCruz.ItGames.dto;
 
-import java.security.Timestamp;
+import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.muriloCruz.ItGames.entity.Empresa;
+import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,8 +26,12 @@ public class JogoSalvoDto {
 	@NotBlank(message = "O nome não pode ser nulo")
 	private String descricao;
 	
+	@NotNull(message = "O status é obrigatório")
+	private Status status;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	@NotNull(message = "A data de lançamento é obrigatório")
-	private Timestamp dataLanc;
+	private Instant dataLanc;
 	
 	@NotBlank(message = "A URL da imagem é obrigatória")
 	private String imagemUrl;

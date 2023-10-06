@@ -57,9 +57,6 @@ public class Jogo {
     @NotNull(message = "O status do jogo é obrigatório")
     @Column(name = "status")
     private Status status;
-    
-    @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<GeneroDoJogo> generos;
 
     @NotBlank(message = "A url da imagem é obrigatória")
     @Column(name = "imagem_url")
@@ -70,6 +67,9 @@ public class Jogo {
     @NotNull(message = "A empresa não pode ser nulo")
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
+    
+    @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<GeneroDoJogo> generos;
     
     public Jogo() {
     	this.status = Status.A; 

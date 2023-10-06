@@ -16,6 +16,12 @@ public interface GeneroRepository extends JpaRepository<Genero, Integer> {
 	@Query(value = 
 			"SELECT g "
 			+ "FROM Genero g "
+			+ "WHERE g.id = :id")
+	public Genero buscarPor(Integer id);
+	
+	@Query(value = 
+			"SELECT g "
+			+ "FROM Genero g "
 			+ "WHERE g.nome = :nome")
 	public Genero buscarPor(String nome);
 	
