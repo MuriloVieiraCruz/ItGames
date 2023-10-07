@@ -18,6 +18,7 @@ import com.muriloCruz.ItGames.entity.Jogo;
 import com.muriloCruz.ItGames.entity.composite.GeneroDoJogoId;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.EmpresaRepository;
+import com.muriloCruz.ItGames.repository.GeneroDoJogoRepository;
 import com.muriloCruz.ItGames.repository.GeneroRepository;
 import com.muriloCruz.ItGames.repository.JogoRepository;
 import com.muriloCruz.ItGames.service.JogoService;
@@ -33,6 +34,9 @@ public class JogoServiceImpl implements JogoService{
 	
 	@Autowired
 	private GeneroRepository generoRepository;
+	
+	@Autowired
+	private GeneroDoJogoRepository generoDoJogoRepository;
 
 	@Override
 	public Jogo salvar(JogoRequestDto jogoRequestDto) {
@@ -60,7 +64,7 @@ public class JogoServiceImpl implements JogoService{
 	}
 
 	@Override
-	public Jogo alterar(JogoSalvoDto jogoSalvoDto) {
+	public Jogo atualizar(JogoSalvoDto jogoSalvoDto) {
 		Empresa empresaEncontrada = empresaRepository
 				.findById(jogoSalvoDto.getEmpresa().getId()).get();
 		Jogo jogoEncontrado = jogoRepository.findById(jogoSalvoDto.getId()).get();
@@ -100,6 +104,17 @@ public class JogoServiceImpl implements JogoService{
 		this.jogoRepository.alterarStatusPor(id, status);
 	}
 	
+	@Override
+	public Jogo excluirPor(Integer id) {
+		Jogo jogoEncontrado = jogoRepository.findById(id).get();
+		Preconditions.checkNotNull(jogoEncontrado, 
+				"Não foi encontrado nunhum jogo vinculado ao id informado");
+		int qtdeDeGenerosVinculados = generoDoJogoRepository.contarPor(id);
+		Preconditions.checkArgument(!(qtdeDeGenerosVinculados >= 1),
+				"Existem gêneros vinculados ao jogo informado");
+		return jogoEncontrado;
+	}	
+	
 	private Empresa getEmpresa(JogoRequestDto jogoRequestDto) {
 		Empresa empresaEncontrada = empresaRepository
 				.findById(jogoRequestDto.getEmpresa().getId()).get();
@@ -130,5 +145,5 @@ public class JogoServiceImpl implements JogoService{
 			Preconditions.checkArgument(quantidadeDuplicados >= 1,
 					"Existem gêneros duplicados na lista");
 		}
-	}	
+	}
 }

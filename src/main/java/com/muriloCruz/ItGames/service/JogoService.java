@@ -24,7 +24,7 @@ public interface JogoService {
 			@NotNull(message = "O jogo é obrigatório")
 			JogoRequestDto jogoRequestDto);
 	
-	public Jogo alterar(
+	public Jogo atualizar(
 			@Valid
 			@NotNull(message = "O jogo é obrigatório")
 			JogoSalvoDto jogoSalvoDto);
@@ -45,4 +45,9 @@ public interface JogoService {
 			Integer id,
 			@NotNull(message = "O status é obrigatório")
 			Status status);
+	
+	public Jogo excluirPor(
+			@Positive(message = "O id precisa ser maior que 0")
+			@NotNull(message = "O id é obrigatório")
+			Integer id);
 }
