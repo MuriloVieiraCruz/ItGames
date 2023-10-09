@@ -69,7 +69,7 @@ public class GeneroDoJogoServiceImpl implements GeneroDoJogoService{
 	}
 	
 	private Genero getGeneroPor(Integer idDoGenero) {
-		Genero generoEncontrado = generoRepository.buscarPor(idDoGenero);
+		Genero generoEncontrado = generoRepository.findById(idDoGenero).get();
 		Preconditions.checkNotNull(generoEncontrado, 
 				"Não foi encontrado gênero vinculado aos parâmetros passados");
 		Preconditions.checkArgument(generoEncontrado.isAtivo(),

@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.muriloCruz.ItGames.entity.Genero;
+import com.muriloCruz.ItGames.entity.enums.Status;
 
-import ch.qos.logback.core.status.Status;
 
 @Repository
 public interface GeneroRepository extends JpaRepository<Genero, Integer> {
@@ -16,13 +16,7 @@ public interface GeneroRepository extends JpaRepository<Genero, Integer> {
 	@Query(value = 
 			"SELECT g "
 			+ "FROM Genero g "
-			+ "WHERE g.id = :id")
-	public Genero buscarPor(Integer id);
-	
-	@Query(value = 
-			"SELECT g "
-			+ "FROM Genero g "
-			+ "WHERE g.nome = :nome")
+			+ "WHERE Upper(g.nome) = Upper(:nome)")
 	public Genero buscarPor(String nome);
 	
 	@Query(value = 

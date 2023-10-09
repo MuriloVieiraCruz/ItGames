@@ -4,38 +4,33 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 
-import com.muriloCruz.ItGames.dto.JogoRequestDto;
-import com.muriloCruz.ItGames.dto.JogoSalvoDto;
-import com.muriloCruz.ItGames.entity.Genero;
-import com.muriloCruz.ItGames.entity.Jogo;
+import com.muriloCruz.ItGames.entity.Empresa;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 @Validated
-public interface JogoService {
+public interface EmpresaService {
 
-	public Jogo salvar(
+	public Empresa salvar(
 			@Valid
-			@NotNull(message = "O jogo é obrigatório")
-			JogoRequestDto jogoRequestDto);
+			@NotNull(message = "A empresa é obrigatória")
+			Empresa empresa);
 	
-	public Jogo atualizar(
-			@Valid
-			@NotNull(message = "O jogo é obrigatório")
-			JogoSalvoDto jogoSalvoDto);
-	
-	public Page<Jogo> listarPor(
-			String nome, 
-			Genero genero, 
-			Pageable paginacao);
-	
-	public Jogo buscarPor(
-			@Positive(message = "O ID precisa ser maior que 0")
+	public Empresa buscarPor(
+			@Positive(message = "O ID deve ser maior que 0")
 			@NotNull(message = "O ID é obrigatório")
 			Integer id);
+	
+	public Page<Empresa> listarPor(
+			@Size(min = 3, max = 100, message = "O nome deve conter entre 3 e 100 caracteres")
+			@NotBlank(message = "O nome é obrigatório")
+			String nome, 
+			Pageable paginacao);
 	
 	public void atualizarStatusPor(
 			@Positive(message = "O ID precisa ser maior que 0")
@@ -44,7 +39,7 @@ public interface JogoService {
 			@NotNull(message = "O status é obrigatório")
 			Status status);
 	
-	public Jogo excluirPor(
+	public Empresa excluirPor(
 			@Positive(message = "O ID precisa ser maior que 0")
 			@NotNull(message = "O ID é obrigatório")
 			Integer id);

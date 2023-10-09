@@ -90,17 +90,22 @@ public class JogoServiceImpl implements JogoService{
 	}
 
 	@Override
-	public Jogo buscarPor(String nome) {
-		Preconditions.checkNotNull(nome, 
-				"O nome é obrigatório");
-		return this.jogoRepository.buscarPor(nome);
+	public Jogo buscarPor(Integer id) {
+		Jogo jogoEncontrado = jogoRepository.buscarPor(id);
+		Preconditions.checkNotNull(jogoEncontrado, 
+				"Não foi encontrado nenhum jogo vinculado ao id informado");
+		Preconditions.checkArgument(jogoEncontrado.isPersistido() , 
+				"O jogo está inativo");
+		return jogoEncontrado;
 	}
 
 	@Override
 	public void atualizarStatusPor(Integer id, Status status) {
-		Jogo jogo = this.jogoRepository.findById(id).get();
-		Preconditions.checkNotNull(jogo, 
+		Jogo jogoEncontrado = this.jogoRepository.findById(id).get();
+		Preconditions.checkNotNull(jogoEncontrado, 
 				"Não foi encontrado nenhum jogo vinculado ao id informado");
+		Preconditions.checkArgument(jogoEncontrado.getStatus() != status , 
+				"O status informado já está atribuido");
 		this.jogoRepository.alterarStatusPor(id, status);
 	}
 	
@@ -126,7 +131,7 @@ public class JogoServiceImpl implements JogoService{
 	}
 	
 	private Genero getGeneroPor(Integer idDoGenero) {
-		Genero generoEncontrado = generoRepository.buscarPor(idDoGenero);
+		Genero generoEncontrado = generoRepository.findById(idDoGenero).get();
 		Preconditions.checkNotNull(generoEncontrado, 
 				"Não foi encontrado gênero vinculado aos parâmetros passados");
 		Preconditions.checkArgument(generoEncontrado.isAtivo(),

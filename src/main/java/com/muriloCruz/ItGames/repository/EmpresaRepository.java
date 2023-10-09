@@ -6,15 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.muriloCruz.ItGames.entity.Empresa;
-
-import ch.qos.logback.core.status.Status;
+import com.muriloCruz.ItGames.entity.enums.Status;
 
 public interface EmpresaRepository extends JpaRepository<Empresa, Integer> {
 
 	@Query(value = 
 			"SELECT e "
 			+ "FROM Empresa e "
-			+ "WHERE e.nome = :nome")
+			+ "WHERE Upper(e.nome) = Upper(:nome)")
 	public Empresa buscarPor(String nome);
 	
 	@Query(value = 

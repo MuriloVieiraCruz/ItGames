@@ -1,10 +1,11 @@
 package com.muriloCruz.ItGames.entity;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
@@ -54,6 +55,7 @@ public class Usuario {
     @Column(name = "email")
     private String email;
 
+    @NotBlank(message = "O cpf é obrigatório")
     @CPF(message = "O cpf está incorreto")
     @Column(name = "cpf")
     private String cpf;
@@ -63,13 +65,15 @@ public class Usuario {
     @Column(name = "status")
     private Status status;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @NotNull(message = "A data de nascimanto não pode ser nulo")
     @Column(name = "data_nasc")
-    private Timestamp dataNasc;
+    private Instant dataNasc;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @NotNull(message = "A data de registro não pode ser nulo")
     @Column(name = "data_registro")
-    private Timestamp dataRegistro;
+    private Instant dataRegistro;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "O preco deve ser posistivo")
     @Digits(integer = 2, fraction = 2, message = "A avaliação deve possuir o formato 'NN.NN'")
@@ -78,6 +82,8 @@ public class Usuario {
     
     public Usuario() {
     	this.status = Status.A; 
+    	this.avaliacao = null;
+    	this.dataRegistro = Instant.now();
     }
     
     @JsonIgnore
