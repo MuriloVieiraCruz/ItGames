@@ -49,17 +49,18 @@ public class Servico {
     private Jogo jogo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull(message = "O pagamento do serviço é obrigatório")
-    @JoinColumn(name = "pagamento_id")
-    private Pagamento pagamento;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "O usuario do serviço é obrigatório")
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
     
+    @OneToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "A postagem é obrigatória")
+    @JoinColumn(name = "postagem_id")
+    private Postagem postagem;
+    
     public Servico() {
     	this.status = Status.A; 
+    	this.disponibilidade = Disponibilidade.ABERTO;
     }
     
     @JsonIgnore

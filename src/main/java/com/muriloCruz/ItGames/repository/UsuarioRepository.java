@@ -10,7 +10,7 @@ import com.muriloCruz.ItGames.entity.Usuario;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, String>{
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	
 	@Query(value = 
 			"SELECT u "

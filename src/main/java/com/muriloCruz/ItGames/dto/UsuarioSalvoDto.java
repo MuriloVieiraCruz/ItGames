@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UsuarioSalvoRequestDto {
+public class UsuarioSalvoDto {
 	
 	@Positive(message = "O ID deve ")
 	@NotNull(message = "O ID é obrigatório")
