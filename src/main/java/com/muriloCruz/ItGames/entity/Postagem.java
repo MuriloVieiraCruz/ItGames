@@ -41,4 +41,8 @@ public class Postagem {
     @NotNull(message = "O servico da postagem é obrigatório")
     private Servico servico;
     
+    public Postagem() {
+    	this.dataPostagem = Instant.now();
+    }
+    
 }

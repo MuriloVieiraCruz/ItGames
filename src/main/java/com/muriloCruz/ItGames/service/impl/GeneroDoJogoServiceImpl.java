@@ -80,9 +80,9 @@ public class GeneroDoJogoServiceImpl implements GeneroDoJogoService{
 	private Jogo getJogoPor(Integer idDoJogo) {
 		Jogo jogoEncontrado = jogoRepository.buscarPor(idDoJogo);
 		Preconditions.checkNotNull(jogoEncontrado, 
-				"Não foi encontrado gênero vinculado aos parâmetros passados");
+				"Não foi encontrado jogo vinculado aos parâmetros passados");
 		Preconditions.checkArgument(jogoEncontrado.isAtivo(),
-				"O gênero informado está inativo");
+				"O jogo informado está inativo");
 		return jogoEncontrado;
 	}
 

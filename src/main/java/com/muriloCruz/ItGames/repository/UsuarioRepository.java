@@ -19,11 +19,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	public Usuario buscarPor(String login);
 	
 	@Query(value = 
-			"SELECT e "
+			"SELECT u "
 			+ "FROM Usuario u "
 			+ "WHERE Upper(u.login) = Upper(:login) "
 			+ "AND u.status = 'A'",
-			countQuery = "SELECT e "
+			countQuery = "SELECT u "
 					+ "FROM Usuario u "
 					+ "WHERE Upper(u.login) = Upper(:login) "
 					+ "AND u.status = 'A'")

@@ -54,7 +54,6 @@ public class Servico {
     private Usuario usuario;
     
     @OneToOne(fetch = FetchType.LAZY)
-    @NotNull(message = "A postagem é obrigatória")
     @JoinColumn(name = "postagem_id")
     private Postagem postagem;
     

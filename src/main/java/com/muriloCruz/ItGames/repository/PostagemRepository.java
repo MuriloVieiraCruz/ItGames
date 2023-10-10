@@ -1,6 +1,6 @@
 package com.muriloCruz.ItGames.repository;
 
-import java.security.Timestamp;
+import java.time.Instant;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +34,7 @@ public interface PostagemRepository extends JpaRepository<Postagem, Integer> {
     	    		+ "FROM Postagem p "
     	    		+ "WHERE (:servico IS NULL OR p.servico = :servico) "
     	    		+ "AND (:dataPostagem IS NULL OR p.dataPostagem = :dataPostagem)")
-    public Page<Postagem> listarPor(Servico servico, Timestamp dataPostagem, Pageable paginacao);
+    public Page<Postagem> listarPor(Servico servico, Instant dataPostagem, Pageable paginacao);
     
     @Query(value = 
     		"UPDATE Postagem p "
