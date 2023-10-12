@@ -42,6 +42,7 @@ public class PostagemServiceImpl implements PostagemService{
 		Postagem postagem = new Postagem();
 		postagem.setImagemUrl(postagemRequestDto.getImagemUrl());
 		postagem.setServico(servico);
+		servico.setPostagem(postagem);
 		Postagem postagemSalva = this.postagemRepository.saveAndFlush(postagem);	
 		return postagemSalva;
 	}

@@ -26,7 +26,7 @@ public class EmpresaServiceImpl implements EmpresaService{
 						"Já existe uma empresa cadastrada com este nome");
 			}
 		}
-		Empresa empresaSalva = empresaRepository.save(empresa);
+		Empresa empresaSalva = empresaRepository.saveAndFlush(empresa);
 		return empresaSalva;
 	}
 

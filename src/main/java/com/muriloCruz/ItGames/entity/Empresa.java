@@ -29,7 +29,7 @@ public class Empresa {
     @Column(name = "id")
     private Integer id;
     
-    @Size(max = 200, min = 3, message = "O nome deve conter no máximo 200 car")
+    @Size(max = 100, min = 3, message = "O nome deve conter entre 3 e 200 caracteres")
     @NotNull(message = "O nome é obrigatório")
     @Column(name = "nome")
     private String nome;

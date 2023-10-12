@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class GeneroDoJogoId {
 
-	@Column(name = "id_genero")
+	@Column(name = "genero_id")
 	private Integer idDoGenero;
 	
-	@Column(name = "id_jogo")
+	@Column(name = "jogo_id")
 	private Integer idDoJogo;
 }

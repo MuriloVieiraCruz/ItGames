@@ -19,9 +19,6 @@ public interface JogoRepository extends JpaRepository<Jogo, Integer> {
     @Query(value =
             "SELECT j "
             + "FROM Jogo j "
-            + "JOIN FETCH j.generos gj "
-            + "JOIN FETCH gj.genero g "
-            + "JOIN FETCH j.empresa e "
             + "WHERE j.id = :id")
     public Jogo buscarPor(Integer id);
     

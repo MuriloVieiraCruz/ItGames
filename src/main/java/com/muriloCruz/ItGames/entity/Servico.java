@@ -34,7 +34,7 @@ public class Servico {
     private BigDecimal preco;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "A disponibilidade não pode ser nula")
+    @NotNull(message = "A disponibilidade não pode ser nula")
     @Column(name = "disponibilidade")
     private Disponibilidade disponibilidade;
 

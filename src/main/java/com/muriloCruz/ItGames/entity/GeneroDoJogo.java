@@ -3,18 +3,7 @@ package com.muriloCruz.ItGames.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.composite.GeneroDoJogoId;
 import com.muriloCruz.ItGames.entity.enums.TipoAssociacao;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -41,14 +30,14 @@ public class GeneroDoJogo {
 	@MapsId("idDoJogo")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull(message = "O jogo é obrigatório")
-	@JoinColumn(name = "id_jogo")
+	@JoinColumn(name = "jogo_id")
 	private Jogo jogo;
 	
 	@ToString.Exclude
 	@MapsId("idDoGenero")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull(message = "O genero é obrigatório")
-	@JoinColumn(name = "id_genero")
+	@JoinColumn(name = "genero_id")
 	private Genero genero;
 	
     @JsonIgnore
