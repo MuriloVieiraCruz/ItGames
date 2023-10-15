@@ -14,10 +14,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
+@AllArgsConstructor
 @Entity(name = "Enterprise")
 @Table(name = "enterprises")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -31,6 +33,7 @@ public class Enterprise {
     
     @Size(max = 100, min = 3, message = "The name must contain between 3 and 200 characters")
     @NotNull(message = "The name is required")
+    @EqualsAndHashCode.Include
     @Column(name = "name")
     private String name;
     

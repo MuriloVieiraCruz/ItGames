@@ -1,15 +1,16 @@
 package com.muriloCruz.ItGames.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.EnterpriseRepository;
 import com.muriloCruz.ItGames.service.EnterpriseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class EnterpriseServiceImpl implements EnterpriseService {
@@ -21,35 +22,41 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	public Enterprise insert(Enterprise enterprise) {
 		Enterprise enterpriseFound = enterpriseRepository.searchBy(enterprise.getName());
 		if (enterpriseFound != null) {
-			if (enterprise.isPersisted()) {
-				Preconditions.checkArgument(enterpriseFound.equals(enterprise),
+			if (!enterprise.isPersisted() && enterpriseFound.isActive() && enterpriseFound.isPersisted()) {
+				Preconditions.checkArgument(enterpriseFound.getId().equals(enterprise.getId()),
 						"There is already a enterprise registered with this name");
 			}
 		}
-		Enterprise enterpriseSaved = enterpriseRepository.saveAndFlush(enterprise);
+
+		Enterprise enterpriseSaved = enterpriseRepository.save(enterprise);
 		return enterpriseSaved;
 	}
 
 	@Override
 	public Enterprise searchBy(Integer id) {
-		Enterprise enterpriseFound = enterpriseRepository.findById(id).get();
-		Preconditions.checkNotNull(enterpriseFound,
+		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
+
+		Preconditions.checkArgument(optionalEnterprise.isPresent(),
 				"No enterprise was found linked to the parameters entered");
+		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.isActive(),
 				"The enterprise informed is inactive");
+
 		return enterpriseFound;
 	}
 
 	@Override
 	public Page<Enterprise> listBy(String name, Pageable pagination) {
-		return this.enterpriseRepository.listBy(name + "%", pagination);
+		return this.enterpriseRepository.listBy("%" + name + "%", pagination);
 	}
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Enterprise enterpriseFound = this.enterpriseRepository.findById(id).get();
-		Preconditions.checkNotNull(enterpriseFound,
+		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
+
+		Preconditions.checkArgument(optionalEnterprise.isPresent(),
 				"No enterprise was found linked to the parameters entered");
+		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.getStatus() != status ,
 				"The status entered is already assigned");
 		this.enterpriseRepository.updateStatusBy(id, status);
