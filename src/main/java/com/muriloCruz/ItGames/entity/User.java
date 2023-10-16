@@ -3,6 +3,8 @@ package com.muriloCruz.ItGames.entity;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,6 +30,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
+@AllArgsConstructor
 @Entity(name = "User")
 @Table(name = "users")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

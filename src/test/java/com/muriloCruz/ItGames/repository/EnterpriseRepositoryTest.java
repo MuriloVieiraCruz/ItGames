@@ -39,7 +39,7 @@ class EnterpriseRepositoryTest {
 
         @Test
         @DisplayName("Should get Enterprise successfully from DB")
-        void searchByEnterpriseByNameCase1() {
+        void searchEnterpriseByNameCase1() {
 
             Enterprise enterprise = repository.searchBy("MuriloEnterprise");
             assertThat(enterprise).isNotNull();
@@ -47,7 +47,7 @@ class EnterpriseRepositoryTest {
 
         @Test
         @DisplayName("Should not get Enterprise from DB when enterprise not exists")
-        void searchByEnterpriseByNameCase2() {
+        void searchEnterpriseByNameCase2() {
 
             Enterprise enterprise = repository.searchBy("Murilo");
             assertThat(enterprise).isNull();
@@ -59,7 +59,7 @@ class EnterpriseRepositoryTest {
 
         @Test
         @DisplayName("Should get Enterprise list successfully from DB")
-        void listByEnterpriseByNameCase1() {
+        void listEnterpriseByNameCase1() {
 
             Page<Enterprise> page = repository.listBy("muri",PageRequest.of(0, 15));
             assertThat(page).isNotNull();
@@ -69,7 +69,7 @@ class EnterpriseRepositoryTest {
 
         @Test
         @DisplayName("Should not get Enterprise list from DB when enterprise not exist")
-        void listByEnterpriseByNameCase2() {
+        void listEnterpriseByNameCase2() {
 
             Page<Enterprise> page = repository.listBy("rrrr",PageRequest.of(0, 15));
             assertThat(page.getContent()).isEmpty();
@@ -82,7 +82,7 @@ class EnterpriseRepositoryTest {
 
         @Test
         @DisplayName("Should update Enterprise from DB")
-        void updateByEnterpriseByNameCase1() {
+        void updateEnterpriseByNameCase1() {
 
             repository.updateStatusBy(1,  Status.I);
             Enterprise updatedEnterprise = repository.findById(1).orElse(null);
@@ -93,7 +93,7 @@ class EnterpriseRepositoryTest {
 
         @Test
         @DisplayName("Should not update Enterprise from DB when enterprise not found")
-        void updateByEnterpriseByNameCase2() {
+        void updateEnterpriseByNameCase2() {
 
             repository.updateStatusBy(5,  Status.I);
             Enterprise updatedEnterprise = repository.findById(5).orElse(null);
