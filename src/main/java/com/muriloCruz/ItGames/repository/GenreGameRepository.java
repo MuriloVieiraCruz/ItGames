@@ -15,7 +15,12 @@ public interface GenreGameRepository extends JpaRepository<GenreGame, GenreGameI
 	@Query(value = "SELECT Count(gj) "
 			+ "FROM GenreGame gj "
 			+ "WHERE gj.game.id = :gameId")
-	public int countBy(Integer gameId);
+	public int countByGame(int gameId);
+
+	@Query(value = "SELECT Count(gj) "
+			+ "FROM GenreGame gj "
+			+ "WHERE gj.genre.id = :genreId")
+	public int countByGenre(int genreId);
 	
 	@Query(value = "SELECT gj "
 			+ "FROM GenreGame gj "

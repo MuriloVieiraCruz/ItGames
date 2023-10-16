@@ -6,12 +6,11 @@ import com.muriloCruz.ItGames.entity.enums.TypeAssociation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "GenreGame")
 @Table(name = "genres_games")
@@ -23,7 +22,7 @@ public class GenreGame {
 	private GenreGameId id;
 	
 	@Enumerated(EnumType.STRING)
-	@NotBlank(message = "The association type is required")
+	@NotNull(message = "The association type is required")
 	@Column(name = "association_type")
 	private TypeAssociation typeAssociation;
 	

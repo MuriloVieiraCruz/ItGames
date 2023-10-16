@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
 class EnterpriseRepositoryTest {
 
     @Autowired

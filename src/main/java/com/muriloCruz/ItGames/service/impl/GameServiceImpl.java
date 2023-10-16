@@ -114,7 +114,7 @@ public class GameServiceImpl implements GameService {
 		Game gameFound = gameRepository.findById(id).get();
 		Preconditions.checkNotNull(gameFound,
 				"No game linked to the given id was found");
-		int qtyOfBoundGenerations = genreGameRepository.countBy(id);
+		int qtyOfBoundGenerations = genreGameRepository.countByGame(id);
 		Preconditions.checkArgument(!(qtyOfBoundGenerations >= 1),
 				"There are genres linked to informed play");
 		return gameFound;

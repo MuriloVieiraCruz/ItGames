@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
 class GameRepositoryTest {
 
     @Autowired
@@ -30,7 +29,6 @@ class GameRepositoryTest {
 
     @Autowired
     EntityManager entityManager;
-
 
     @BeforeEach
     public void setUp() {
@@ -158,7 +156,7 @@ class GameRepositoryTest {
         }
 
         @Test
-        @DisplayName("Should return zero from DB when game is not linked to the enterprise ID not found")
+        @DisplayName("Should return zero from DB when game is not linked to any enterprise ID")
         void countGamesLinkedToTheCase2() {
 
             int quantity = gameRepository.countGamesLinkedToThe(3);
