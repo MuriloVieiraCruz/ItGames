@@ -21,7 +21,7 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 	@Query(value = 
 			"SELECT e "
 			+ "FROM Enterprise e "
-			+ "WHERE e.name LIKE :name "
+			+ "WHERE e.name LIKE %:name% "
 			+ "AND e.status = 'A'",
 			countQuery = "SELECT e "
 					+ "FROM Enterprise e "

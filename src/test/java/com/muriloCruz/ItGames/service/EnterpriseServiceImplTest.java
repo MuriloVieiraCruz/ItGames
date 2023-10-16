@@ -12,10 +12,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 
 
 import java.util.Arrays;
@@ -28,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+@DataJpaTest
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class EnterpriseServiceImplTest {
 
@@ -197,6 +201,15 @@ public class EnterpriseServiceImplTest {
                 verify(repository).findById(enterprise.getId());
                 verify(repository, never()).updateStatusBy(any(), any());
                 verifyNoMoreInteractions(repository);
+            }
+        }
+
+        @Nested
+        class ExcludeByEnterpriseId {
+
+            @Test
+            void mustExcludeByEnterpriseIdSuccessfully () {
+
             }
         }
     }
