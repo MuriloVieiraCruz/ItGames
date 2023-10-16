@@ -24,10 +24,12 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
+@AllArgsConstructor
 @Entity(name = "Game")
 @Table(name = "games")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -63,8 +65,7 @@ public class Game {
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Size(max = 150, min = 3, message = "The company must contain between 3 and 150 characters")
-    @NotNull(message = "The company cannot be null")
+    @NotNull(message = "The enterprise cannot be null")
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 

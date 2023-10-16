@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.EnterpriseRepository;
+import com.muriloCruz.ItGames.repository.GameRepository;
 import com.muriloCruz.ItGames.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	
 	@Autowired
 	private EnterpriseRepository enterpriseRepository;
+
+	@Autowired
+	private GameRepository gameRepository;
 
 	@Override
 	public Enterprise insert(Enterprise enterprise) {
@@ -47,7 +51,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
 	@Override
 	public Page<Enterprise> listBy(String name, Pageable pagination) {
-		return this.enterpriseRepository.listBy("%" + name + "%", pagination);
+		return this.enterpriseRepository.listBy(name, pagination);
 	}
 
 	@Override
@@ -69,6 +73,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 				"No enterprise was found linked to the parameters entered");
 		Preconditions.checkArgument(enterpriseFound.isActive(),
 				"The enterprise informed is inactive");
+		int numberLinkedGames = gameRepository.countGamesLinkedToThe(id);
+		Preconditions.checkArgument(numberLinkedGames >= 1,
+				"This enterprise is linked to '" + numberLinkedGames + "' games");
 		this.enterpriseRepository.deleteById(enterpriseFound.getId());
 		return enterpriseFound;
 	}

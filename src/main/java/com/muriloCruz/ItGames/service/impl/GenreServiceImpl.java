@@ -41,8 +41,8 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	@Override
-	public Page<Genre> listBy(String name, Pageable paginacao) {
-		return this.genreRepository.listBy(name + "%", paginacao);
+	public Page<Genre> listBy(String name, Pageable pagination) {
+		return this.genreRepository.listBy(name, pagination);
 	}
 
 	@Override

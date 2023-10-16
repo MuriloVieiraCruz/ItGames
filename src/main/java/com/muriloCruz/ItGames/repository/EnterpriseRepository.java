@@ -21,11 +21,11 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 	@Query(value = 
 			"SELECT e "
 			+ "FROM Enterprise e "
-			+ "WHERE e.name LIKE %:name% "
-			+ "AND e.status = 'A'",
+			+ "WHERE Upper(e.name) LIKE Upper(%:name%) "
+			+ "AND e.status = 'A' ",
 			countQuery = "SELECT e "
 					+ "FROM Enterprise e "
-					+ "WHERE e.name LIKE :name "
+					+ "WHERE Upper(e.name) LIKE Upper(%:name%) "
 					+ "AND e.status = 'A'")
 	public Page<Enterprise> listBy(String name, Pageable pagination);
 

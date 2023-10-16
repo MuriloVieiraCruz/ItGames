@@ -19,6 +19,7 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
     @Query(value =
             "SELECT g "
             + "FROM Game g "
+            +"JOIN FETCH g.enterprise "
             + "WHERE g.id = :id")
     public Game searchBy(Integer id);
     
@@ -33,7 +34,7 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             + "FROM Game g "
             + "JOIN FETCH g.genres gg "
             + "JOIN FETCH gg.genre ge "
-            + "WHERE UPPER(g.name) LIKE UPPER(:name) "
+            + "WHERE UPPER(g.name) LIKE UPPER(%:name%) "
             + "AND (:genre IS NULL OR g = :genre) "
             + "AND g.status = 'A'",
             countQuery = "SELECT g "
@@ -52,4 +53,10 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             + "SET g.status = :status "
             + "WHERE g.id = :id")
     public void updateStatusBy(Integer id, Status status);
+
+    @Query(value =
+            "SELECT Count(g) "
+            + "FROM Game g "
+            + "WHERE g.enterprise.id = :enterpriseId")
+    public int countGamesLinkedToThe(int enterpriseId);
 }
