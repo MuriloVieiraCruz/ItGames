@@ -1,9 +1,10 @@
 package com.muriloCruz.ItGames.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.muriloCruz.ItGames.entity.Game;
-import com.muriloCruz.ItGames.repository.GenreRepository;
+import com.muriloCruz.ItGames.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,6 @@ import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.GenreGame;
 import com.muriloCruz.ItGames.entity.composite.GenreGameId;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.repository.EnterpriseRepository;
-import com.muriloCruz.ItGames.repository.GenreGameRepository;
-import com.muriloCruz.ItGames.repository.GameRepository;
 import com.muriloCruz.ItGames.service.GameService;
 
 @Service
@@ -31,6 +29,9 @@ public class GameServiceImpl implements GameService {
 	
 	@Autowired
 	private EnterpriseRepository enterpriseRepository;
+
+	@Autowired
+	private ServiceRepository serviceRepository;
 	
 	@Autowired
 	private GenreRepository genreRepository;
@@ -40,13 +41,13 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public Game insert(GameRequestDto gameRequestDto) {
-		Enterprise enterpriseValida = getEnterpriseBy(gameRequestDto);
+		Enterprise validEnterprise = getEnterpriseBy(gameRequestDto);
 		Game game = new Game();
 		game.setName(gameRequestDto.getName());
 		game.setDescription(gameRequestDto.getDescription());
 		game.setReleaseDate(gameRequestDto.getReleaseDate());
 		game.setImageUrl(gameRequestDto.getImageUrl());
-		game.setEnterprise(enterpriseValida);
+		game.setEnterprise(validEnterprise);
 		validateDuplication(gameRequestDto.getGenres());
 		Game gameSaved = gameRepository.save(game);
 		for (GenreGameRequestDto genreDto: gameRequestDto.getGenres()) {
@@ -117,23 +118,28 @@ public class GameServiceImpl implements GameService {
 		int qtyOfBoundGenerations = genreGameRepository.countByGame(id);
 		Preconditions.checkArgument(!(qtyOfBoundGenerations >= 1),
 				"There are genres linked to informed play");
+		int numberLinkedServices = serviceRepository.countBy(id);
+		Preconditions.checkArgument(!(numberLinkedServices >= 1),
+				"There are services linked to informed play");
 		return gameFound;
 	}	
 	
 	private Enterprise getEnterpriseBy(GameRequestDto gameRequestDto) {
-		Enterprise enterpriseFound = enterpriseRepository
-				.findById(gameRequestDto.getEnterprise().getId()).get();
-		Preconditions.checkNotNull(enterpriseFound,
-				"Não foi encontrado empresa vinculada aos parâmetros passados");
+		Optional<Enterprise> optionalEnterprise = enterpriseRepository
+				.findById(gameRequestDto.getEnterprise().getId());
+		Preconditions.checkNotNull(optionalEnterprise.isPresent(),
+				"No enterprise found linked to the parameters");
+		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.isActive(),
-				"A empresa informada está inativa");
+				"The entered enterprise is inactive");
 		return enterpriseFound;
 	}
 	
 	private Genre getGenreBy(Integer idDoGenero) {
-		Genre genreFound = genreRepository.findById(idDoGenero).get();
-		Preconditions.checkNotNull(genreFound,
+		Optional<Genre> optionalGenre = genreRepository.findById(idDoGenero);
+		Preconditions.checkNotNull(optionalGenre.isPresent(),
 				"No genre was found linked to the given parameters");
+		Genre genreFound = optionalGenre.get();
 		Preconditions.checkArgument(genreFound.isActive(),
 				"The entered genre is inactive");
 		return genreFound;

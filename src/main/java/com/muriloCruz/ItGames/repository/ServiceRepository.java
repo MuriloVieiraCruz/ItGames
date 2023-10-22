@@ -19,8 +19,8 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
     @Query(value =
             "SELECT s "
             + "FROM Service s "
-            + "JOIN FETCH s.user "
-            + "JOIN FETCH s.game "
+            + "JOIN FETCH s.user u "
+            + "JOIN FETCH s.game g "
             + "WHERE s.id = :id") 
     public Service searchBy(Integer id);
 
@@ -51,4 +51,9 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
             + "SET s.status = :status "
             + "WHERE s.id = :id")
     public void updateStatusBy(Integer id, Status status);
+
+    @Query(value = "SELECT Count(s) "
+            + "FROM Service s "
+            + "WHERE s.game.id = :gameId")
+    public int countBy(int gameId);
 }

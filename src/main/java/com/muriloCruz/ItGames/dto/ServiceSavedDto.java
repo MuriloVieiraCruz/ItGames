@@ -2,7 +2,6 @@ package com.muriloCruz.ItGames.dto;
 
 import java.math.BigDecimal;
 
-import com.muriloCruz.ItGames.entity.Post;
 import com.muriloCruz.ItGames.entity.enums.Availability;
 
 import jakarta.validation.constraints.DecimalMin;
@@ -32,7 +31,4 @@ public class ServiceSavedDto {
 	@Positive(message = "Game ID must be greater than 0")
 	@NotNull(message = "Game ID is required")
 	private Integer gameId;
-
-	@NotNull(message = "Posting is required")
-	private Post post;
 }

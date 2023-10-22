@@ -4,9 +4,11 @@ import com.muriloCruz.ItGames.entity.enums.TypeAssociation;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class GenreGameRequestDto {
 
 	@NotNull(message = "The gender id is required")

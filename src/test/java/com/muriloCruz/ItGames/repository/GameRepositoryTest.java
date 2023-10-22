@@ -45,7 +45,7 @@ class GameRepositoryTest {
 
         @Test
         @DisplayName("Should get Game by ID successfully from DB")
-        void searchByGameNameCase1() {
+        void searchByGameIdCase1() {
 
             Game game = gameRepository.searchBy(1);
             assertThat(game).isNotNull();
@@ -54,7 +54,7 @@ class GameRepositoryTest {
 
         @Test
         @DisplayName("Should not get Game from DB when game not exists")
-        void searchByGameNameCase2() {
+        void searchByGameIdCase2() {
 
             Game game = gameRepository.searchBy(2);
             assertThat(game).isNull();
@@ -87,7 +87,7 @@ class GameRepositoryTest {
 
         @Test
         @DisplayName("Should get Game list successfully from DB")
-        void listByGameByNameCase1() {
+        void listGameByNameCase1() {
 
             Page<Game> page = gameRepository.listBy("rilu",null, PageRequest.of(0, 15));
             assertThat(page).isNotNull();
@@ -97,7 +97,7 @@ class GameRepositoryTest {
 
         @Test
         @DisplayName("Should not get Game list from DB when game not exist")
-        void listByGameByNameCase2() {
+        void listGameByNameCase2() {
 
             Page<Game> page = gameRepository.listBy("rrrr", null,PageRequest.of(0, 15));
             assertThat(page.getContent()).isEmpty();
@@ -108,7 +108,7 @@ class GameRepositoryTest {
 
         @Test
         @DisplayName("Should not get Game list from DB when all parameters are null")
-        void listByGameByNameCase3() {
+        void listGameByNameCase3() {
 
             Page<Game> page = gameRepository.listBy(null, null,PageRequest.of(0, 15));
             assertThat(page.getContent()).isEmpty();

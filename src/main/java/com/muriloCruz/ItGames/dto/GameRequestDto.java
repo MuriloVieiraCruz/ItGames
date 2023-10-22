@@ -9,9 +9,12 @@ import com.muriloCruz.ItGames.entity.Enterprise;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 public class GameRequestDto {
 
 	@Size(max = 100, min = 3, message = "Name must contain between 3 and 100 characters")

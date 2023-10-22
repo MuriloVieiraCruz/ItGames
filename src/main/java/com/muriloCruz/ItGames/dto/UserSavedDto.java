@@ -2,6 +2,8 @@ package com.muriloCruz.ItGames.dto;
 
 import java.time.Instant;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,6 +16,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserSavedDto {
 
 	@Positive(message = "The ID must ")
@@ -21,16 +25,16 @@ public class UserSavedDto {
 	private Integer id;
 
 	@Size(max = 250, min = 3, message = "The login must contain between 3 and 250 characters")
+	@Email(message = "The login is in an invalid format")
 	@NotBlank(message = "Login is required")
 	private String login;
 
 	@NotBlank(message = "Password is required")
 	private String password;
 
-	@Size(max = 200, min = 3, message = "Name must contain between 3 and 200 characters")
-	@Email(message = "The e-mail is in an invalid format")
-	@NotBlank(message = "Email cannot be null")
-	private String email;
+	@Size(max = 150, min = 3, message = "Name must contain between 3 and 150 characters")
+	@NotBlank(message = "Name cannot be null")
+	private String name;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	@NotBlank(message = "The cpf is required")

@@ -1,17 +1,21 @@
 package com.muriloCruz.ItGames.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Availability;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 @Data
+@AllArgsConstructor
 @Entity(name = "Service")
 @Table(name = "services")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -52,10 +56,15 @@ public class Service {
     @NotNull(message = "The user of the service is required")
     @JoinColumn(name = "user_id")
     private User user;
-    
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @NotNull(message = "The post date cannot be null")
+    @Column(name = "post_date")
+    private Instant postDate;
+
+    @NotBlank(message = "Image url is required")
+    @Column(name = "image_url")
+    private String imageUrl;
     
     public Service() {
     	this.status = Status.A; 

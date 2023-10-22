@@ -1,5 +1,7 @@
 package com.muriloCruz.ItGames.service.impl;
 
+import com.muriloCruz.ItGames.entity.Enterprise;
+import com.muriloCruz.ItGames.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,21 +15,30 @@ import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.UserRepository;
 import com.muriloCruz.ItGames.service.UserService;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ServiceRepository serviceRepository;
+
 	@Override
 	public User insert(UserRequestDto userRequestDto) {
+		User userFound = userRepository.searchBy(userRequestDto.getLogin());
+		if (userFound != null) {
+				throw new IllegalArgumentException("There is already a user registered with this login");
+		}
 		User user = new User();
 		user.setLogin(userRequestDto.getLogin());
 		user.setPassword(userRequestDto.getPassword());
-		user.setEmail(userRequestDto.getEmail());
+		user.setName(userRequestDto.getName());
 		user.setCpf(userRequestDto.getCpf());
 		user.setBirthDate(userRequestDto.getBirthDate());
-		User userSalvo = userRepository.saveAndFlush(user);
+		User userSalvo = userRepository.save(user);
 		return userSalvo;
 	}
 
@@ -40,7 +51,7 @@ public class UserServiceImpl implements UserService {
 				"The user is inactive");
 		userFound.setLogin(userSavedDto.getLogin());
 		userFound.setPassword(userSavedDto.getPassword());
-		userFound.setEmail(userSavedDto.getEmail());
+		userFound.setName(userSavedDto.getName());
 		userFound.setCpf(userSavedDto.getCpf());
 		userFound.setBirthDate(userSavedDto.getBirthDate());
 		User userUpdated = userRepository.saveAndFlush(userFound);
@@ -54,9 +65,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User searchBy(Integer id) {
-		User userFound = userRepository.findById(id).get();
-		Preconditions.checkNotNull(userFound,
+		Optional<User> optionalUser = userRepository.findById(id);
+		Preconditions.checkArgument(optionalUser.isPresent(),
 				"User linked to the parameters was not found");
+		User userFound = optionalUser.get();
 		Preconditions.checkArgument(userFound.isActive(),
 				"The user is inactive");
 		return userFound;
@@ -64,19 +76,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		User userFound = userRepository.findById(id).get();
-		Preconditions.checkNotNull(userFound,
+		Optional<User> optionalUser = userRepository.findById(id);
+		Preconditions.checkArgument(optionalUser.isPresent(),
 				"User linked to the parameters was not found");
-		Preconditions.checkArgument(userFound.isActive(),
-				"The user is inactive");
+		User userFound = optionalUser.get();
+		Preconditions.checkArgument(userFound.getStatus() != status ,
+				"The status entered is already assigned");
 		this.userRepository.updateStatusBy(id, status);
 	}
 
 	@Override
 	public User excludeBy(Integer id) {
-		User userFound = userRepository.findById(id).get();
-		Preconditions.checkNotNull(userFound,
+		Optional<User> optionalUser = userRepository.findById(id);
+		Preconditions.checkArgument(optionalUser.isPresent(),
 				"User linked to the parameters was not found");
+		User userFound = optionalUser.get();
 		Preconditions.checkArgument(userFound.isActive(),
 				"The user is inactive");
 		this.userRepository.deleteById(userFound.getId());

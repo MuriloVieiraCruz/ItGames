@@ -1,6 +1,7 @@
 package com.muriloCruz.ItGames.entity;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -71,8 +72,9 @@ public class Game {
 
     @OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GenreGame> genres;
-    
+
     public Game() {
+        this.genres = new ArrayList<>();
     	this.status = Status.A; 
     }
     

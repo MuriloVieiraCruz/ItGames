@@ -2,7 +2,10 @@ package com.muriloCruz.ItGames.entity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
@@ -11,15 +14,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
@@ -43,6 +37,7 @@ public class User {
     private Integer id;
 
     @Size(max = 250, min = 3, message = "The name must contain between 3 and 250 characters")
+    @Email(message = "The e-mail is in an invalid format")
     @NotBlank(message = "Name cannot be null")
     @EqualsAndHashCode.Include
     @Column(name = "login")
@@ -52,11 +47,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Size(max = 200, min = 3, message = "The name must contain between 3 and 200 characters")
-    @Email(message = "The e-mail is in an invalid format")
-    @NotBlank(message = "Email cannot be null")
-    @Column(name = "email")
-    private String email;
+    @Size(max = 150, min = 3, message = "The name must contain between 3 and 150 characters")
+    @NotBlank(message = "Name cannot be null")
+    @Column(name = "name")
+    private String name;
 
     @NotBlank(message = "The cpf is mandatory")
     @CPF(message = "The cpf is incorrect")
@@ -83,7 +77,11 @@ public class User {
     @Column(name = "rating")
     private BigDecimal rating;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Service> services;
+
     public User() {
+        this.services = new ArrayList<>();
         this.status = Status.A;
         this.rating = null;
         this.registrationDate = Instant.now();

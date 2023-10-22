@@ -26,7 +26,7 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
     @Query(value =
             "SELECT g "
             + "FROM Game g "
-            + "WHERE g.name = :name")
+            + "WHERE Upper(g.name) = Upper(:name)")
     public Game searchBy(String name);
 
     @Query(value =

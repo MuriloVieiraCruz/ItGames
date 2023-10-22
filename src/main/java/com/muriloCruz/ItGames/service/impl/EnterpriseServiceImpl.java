@@ -26,9 +26,11 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	public Enterprise insert(Enterprise enterprise) {
 		Enterprise enterpriseFound = enterpriseRepository.searchBy(enterprise.getName());
 		if (enterpriseFound != null) {
-			if (!enterprise.isPersisted() && enterpriseFound.isActive() && enterpriseFound.isPersisted()) {
-				Preconditions.checkArgument(enterpriseFound.getId().equals(enterprise.getId()),
+			if (enterprise.isPersisted()) {
+				Preconditions.checkArgument(enterpriseFound.equals(enterprise),
 						"There is already a enterprise registered with this name");
+			} else {
+				throw new IllegalArgumentException("There is already a enterprise registered with this name");
 			}
 		}
 
@@ -68,13 +70,15 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
 	@Override
 	public Enterprise excludeBy(Integer id) {
-		Enterprise enterpriseFound = enterpriseRepository.findById(id).get();
-		Preconditions.checkNotNull(enterpriseFound,
+		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
+
+		Preconditions.checkArgument(optionalEnterprise.isPresent(),
 				"No enterprise was found linked to the parameters entered");
+		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.isActive(),
 				"The enterprise informed is inactive");
 		int numberLinkedGames = gameRepository.countGamesLinkedToThe(id);
-		Preconditions.checkArgument(numberLinkedGames >= 1,
+		Preconditions.checkArgument(!(numberLinkedGames >= 1),
 				"This enterprise is linked to '" + numberLinkedGames + "' games");
 		this.enterpriseRepository.deleteById(enterpriseFound.getId());
 		return enterpriseFound;

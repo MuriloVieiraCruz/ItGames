@@ -32,7 +32,7 @@ class UserRepositoryTest {
     @BeforeEach
     public void setUp() {
         User user = new User(null, "Murilo", "123", "lil@gmail.com",
-                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null);
+                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null);
         entityManager.persist(user);
     }
 

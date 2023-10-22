@@ -11,6 +11,8 @@ import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.GenreService;
 
+import java.util.Optional;
+
 @Service
 public class GenreServiceImpl implements GenreService {
 	
@@ -24,6 +26,8 @@ public class GenreServiceImpl implements GenreService {
 			if (genre.isPersisted()) {
 				Preconditions.checkArgument(genreFound.equals(genre),
 						"There is already a registered genre with this name");
+			} else {
+				throw new IllegalArgumentException("There is already a registered genre with this name");
 			}
 		}
 		Genre genreSaved = genreRepository.save(genre);
@@ -32,9 +36,10 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public Genre searchBy(Integer id) {
-		Genre genreFound = genreRepository.findById(id).get();
-		Preconditions.checkNotNull(genreFound,
+		Optional<Genre> optionalGenre = genreRepository.findById(id);
+		Preconditions.checkArgument(optionalGenre.isPresent(),
 				"No genre was found linked to the parameters entered");
+		Genre genreFound = optionalGenre.get();
 		Preconditions.checkArgument(genreFound.isActive(),
 				"The genre informed is inactive");
 		return genreFound;
@@ -47,11 +52,12 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Genre genreFound = genreRepository.findById(id).get();
-		Preconditions.checkNotNull(genreFound,
+		Optional<Genre> optionalGenre = genreRepository.findById(id);
+		Preconditions.checkArgument(optionalGenre.isPresent(),
 				"No genre was found linked to the parameters entered");
-		Preconditions.checkArgument(genreFound.isActive(),
-				"The genre informed is inactive");
+		Genre genreFound = optionalGenre.get();
+		Preconditions.checkArgument(genreFound.getStatus() != status ,
+				"The status entered is already assigned");
 		this.genreRepository.updateStatusBy(id, status);
 	}
 
