@@ -28,7 +28,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 		if (enterpriseFound != null) {
 			if (enterprise.isPersisted()) {
 				Preconditions.checkArgument(enterpriseFound.equals(enterprise),
-						"There is already a enterprise registered with this name");
+						"There is already have a enterprise registered with this name");
 			} else {
 				throw new IllegalArgumentException("There is already a enterprise registered with this name");
 			}
@@ -36,6 +36,18 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
 		Enterprise enterpriseSaved = enterpriseRepository.save(enterprise);
 		return enterpriseSaved;
+	}
+
+	@Override
+	public void updateStatusBy(Integer id, Status status) {
+		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
+
+		Preconditions.checkArgument(optionalEnterprise.isPresent(),
+				"No enterprise was found linked to the parameters entered");
+		Enterprise enterpriseFound = optionalEnterprise.get();
+		Preconditions.checkArgument(enterpriseFound.getStatus() != status ,
+				"The status entered is already assigned");
+		this.enterpriseRepository.updateStatusBy(id, status);
 	}
 
 	@Override
@@ -54,18 +66,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	@Override
 	public Page<Enterprise> listBy(String name, Pageable pagination) {
 		return this.enterpriseRepository.listBy(name, pagination);
-	}
-
-	@Override
-	public void updateStatusBy(Integer id, Status status) {
-		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
-
-		Preconditions.checkArgument(optionalEnterprise.isPresent(),
-				"No enterprise was found linked to the parameters entered");
-		Enterprise enterpriseFound = optionalEnterprise.get();
-		Preconditions.checkArgument(enterpriseFound.getStatus() != status ,
-				"The status entered is already assigned");
-		this.enterpriseRepository.updateStatusBy(id, status);
 	}
 
 	@Override
