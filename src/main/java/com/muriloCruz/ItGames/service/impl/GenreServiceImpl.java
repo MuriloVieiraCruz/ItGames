@@ -1,5 +1,6 @@
 package com.muriloCruz.ItGames.service.impl;
 
+import com.muriloCruz.ItGames.repository.GenreGameRepository;
 import com.muriloCruz.ItGames.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ public class GenreServiceImpl implements GenreService {
 	
 	@Autowired
 	private GenreRepository genreRepository;
+
+	@Autowired
+	private GenreGameRepository genreGameRepository;
 
 	@Override
 	public Genre insert(Genre genre) {
@@ -63,11 +67,15 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public Genre excludeBy(Integer id) {
-		Genre genreFound = genreRepository.findById(id).get();
-		Preconditions.checkNotNull(genreFound,
+		Optional<Genre> optionalGenre = genreRepository.findById(id);
+		Preconditions.checkArgument(optionalGenre.isPresent(),
 				"No genre was found linked to the parameters entered");
+		Genre genreFound = optionalGenre.get();
 		Preconditions.checkArgument(genreFound.isActive(),
 				"The genre informed is inactive");
+		int numberLinkedGenres = genreGameRepository.countByGenre(id);
+		Preconditions.checkArgument(!(numberLinkedGenres >= 1),
+				"This genre is linked to '" + numberLinkedGenres + "' games");
 		this.genreRepository.deleteById(genreFound.getId());
 		return genreFound;
 	}

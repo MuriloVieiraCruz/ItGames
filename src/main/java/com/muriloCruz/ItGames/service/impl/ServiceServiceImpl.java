@@ -1,8 +1,12 @@
 package com.muriloCruz.ItGames.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
+import com.muriloCruz.ItGames.dto.ServiceRequestDto;
 import com.muriloCruz.ItGames.entity.Service;
+import com.muriloCruz.ItGames.entity.User;
+import com.muriloCruz.ItGames.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +27,24 @@ public class ServiceServiceImpl implements ServiceService {
 	
 	@Autowired
 	private GameRepository gameRepository;
-	
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public Service insert(ServiceRequestDto serviceRequestDto) {
+		User userFound = getUserBy(serviceRequestDto.getUserLogin());
+		Game gameFound = getGameBy(serviceRequestDto.getGameId());
+		Service service = new Service();
+		service.setDescription(serviceRequestDto.getDescription());
+		service.setPrice(serviceRequestDto.getPrice());
+		service.setImageUrl(serviceRequestDto.getImageUrl());
+		service.setUser(userFound);
+		service.setGame(gameFound);
+		Service serviceSave = serviceRepository.save(service);
+		return serviceSave;
+	}
+
 	@Override
 	public Service update(ServiceSavedDto serviceSavedDto) {
 		Service serviceFound = serviceRepository.searchBy(serviceSavedDto.getId());
@@ -51,17 +72,18 @@ public class ServiceServiceImpl implements ServiceService {
 	public Service searchBy(Integer id) {
 		Service serviceFound = serviceRepository.searchBy(id);
 		Preconditions.checkNotNull(serviceFound,
-				"Service linked to the parameters was not found");
+				"No service was found linked to the parameters entered");
 		Preconditions.checkArgument(serviceFound.isActive(),
-				"The user is inactive");
+				"The service is inactive");
 		return serviceFound;
 	}
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Service serviceFound = this.serviceRepository.findById(id).get();
-		Preconditions.checkNotNull(serviceFound,
+		Optional<Service> optionalService = this.serviceRepository.findById(id);
+		Preconditions.checkArgument(optionalService.isPresent(),
 				"No service was found linked to the id entered");
+		Service serviceFound = optionalService.get();
 		Preconditions.checkArgument(serviceFound.getStatus() != status ,
 				"The entered status is already assigned");
 		this.serviceRepository.updateStatusBy(id, status);
@@ -72,10 +94,10 @@ public class ServiceServiceImpl implements ServiceService {
 	public Service excludeBy(Integer id) {
 		Service serviceFound = serviceRepository.searchBy(id);
 		Preconditions.checkNotNull(serviceFound,
-				"User linked to the parameters was not found");
+				"Service linked to the parameters was not found");
 		Preconditions.checkArgument(serviceFound.isActive(),
-				"The user is inactive");
-		this.serviceRepository.delete(serviceFound);
+				"The service is inactive");
+		this.serviceRepository.deleteById(serviceFound.getId());
 		return serviceFound;
 	}
 
@@ -86,6 +108,15 @@ public class ServiceServiceImpl implements ServiceService {
 		Preconditions.checkArgument(gameFound.isActive(),
 				"The entered game is inactive");
 		return gameFound;
+	}
+
+	private User getUserBy(String userLogin) {
+		User userFound = userRepository.searchBy(userLogin);
+		Preconditions.checkNotNull(userFound,
+				"No user was found linked to the parameters passed");
+		Preconditions.checkArgument(userFound.isActive(),
+				"The entered user is inactive");
+		return userFound;
 	}
 
 }

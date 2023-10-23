@@ -225,7 +225,7 @@ class UserServiceImplTest {
         }
 
         @Test
-        @DisplayName("Should update User from DB")
+        @DisplayName("Should not update User from DB when status is already assigned")
         void updateStatusUserCase3() {
             userTest.setStatus(Status.I);
             when(repository.findById(userTest.getId())).thenReturn(Optional.ofNullable(userTest));

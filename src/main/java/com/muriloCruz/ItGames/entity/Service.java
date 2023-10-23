@@ -69,6 +69,7 @@ public class Service {
     public Service() {
     	this.status = Status.A; 
     	this.availability = Availability.OPEN;
+        this.postDate = Instant.now();
     }
     
     @JsonIgnore

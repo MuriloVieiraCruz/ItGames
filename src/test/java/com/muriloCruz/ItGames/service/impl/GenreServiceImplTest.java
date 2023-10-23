@@ -5,6 +5,7 @@ import com.muriloCruz.ItGames.dto.UserSavedDto;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Status;
+import com.muriloCruz.ItGames.repository.GenreGameRepository;
 import com.muriloCruz.ItGames.repository.GenreRepository;
 import com.muriloCruz.ItGames.repository.ServiceRepository;
 import com.muriloCruz.ItGames.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +44,9 @@ class GenreServiceImplTest {
 
     @Mock
     GenreRepository repository;
+
+    @Mock
+    GenreGameRepository genreGameRepository;
 
     Genre genreTest;
     Genre genreTest2;
@@ -241,42 +246,78 @@ class GenreServiceImplTest {
     }
 
     @Nested
-    class ExcludeUser {
+    class ExcludeGenre {
 
-//        @Test
-//        @DisplayName("Should exclude User from DB")
-//        void excludeUserByIdCase1 () {
-//            User userTest1 = new User(1, "lil@gmail.com", "500000", "Murilo",
-//                    "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>());
-//
-//            when(repository.findById(userTest1.getId())).thenReturn(Optional.ofNullable(userTest1));
-//            User deletedUser = service.excludeBy(userTest1.getId());
-//
-//            assertNotNull(deletedUser);
-//            assertEquals(userTest1.getId(), deletedUser.getId());
-//
-//            verify(repository, times(1)).findById(userTest1.getId());
-//            verify(repository, times(1)).deleteById(userTest1.getId());
-//            verifyNoMoreInteractions(repository);
-//
-//        }
-//
-//        @Test
-//        @DisplayName("Should not exclude User from DB when user do not exist")
-//        void excludeUserByIdCase2 () {
-//            when(repository.findById(1256)).thenReturn(Optional.ofNullable(null));
-//
-//            IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-//                service.excludeBy(1256);
-//            });
-//
-//            assertThat(e, notNullValue());
-//            assertThat(e.getMessage(), is("User linked to the parameters was not found"));
-//
-//            verify(repository, times(1)).findById(1256);
-//            //verify(gameRepository.countGamesLinkedToThe(any()), never());
-//            verify(repository, never()).deleteById(any());
-//            verifyNoMoreInteractions(repository);
-//        }
+        @Test
+        @DisplayName("Should exclude User from DB")
+        void excludeGenreByIdCase1 () {
+
+            when(repository.findById(genreTest.getId())).thenReturn(Optional.ofNullable(genreTest));
+            Genre deletedGenre = service.excludeBy(genreTest.getId());
+
+            assertNotNull(deletedGenre);
+            assertEquals(genreTest, deletedGenre);
+
+            verify(repository, times(1)).findById(genreTest.getId());
+            verify(repository, times(1)).deleteById(genreTest.getId());
+            verifyNoMoreInteractions(repository);
+
+        }
+
+        @Test
+        @DisplayName("Should not exclude Genre from DB when genre do not exist")
+        void excludeGenreByIdCase2 () {
+            when(repository.findById(genreTest.getId())).thenReturn(Optional.ofNullable(null));
+
+            IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+                service.excludeBy(genreTest.getId());
+            });
+
+            assertThat(e, notNullValue());
+            assertThat(e.getMessage(), is("No genre was found linked to the parameters entered"));
+
+            verify(repository, times(1)).findById(genreTest.getId());
+            //verify(genreGameRepository.countByGenre(genreTest.getId()), never());
+            verify(repository, never()).deleteById(any());
+            verifyNoMoreInteractions(repository);
+        }
+
+        @Test
+        @DisplayName("Should not exclude Genre from DB when genre is inactive")
+        void excludeGenreByIdCase3 () {
+            genreTest.setStatus(Status.I);
+            when(repository.findById(genreTest.getId())).thenReturn(Optional.ofNullable(genreTest));
+
+            IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+                service.excludeBy(genreTest.getId());
+            });
+
+            assertThat(e, notNullValue());
+            assertThat(e.getMessage(), is("The genre informed is inactive"));
+
+            verify(repository, times(1)).findById(genreTest.getId());
+            //verify(gameRepository.countGamesLinkedToThe(any()), never());
+            verify(repository, never()).deleteById(any());
+            verifyNoMoreInteractions(repository);
+        }
+
+        @Test
+        @DisplayName("Should not exclude Enterprise from DB when enterprise is linked to another game")
+        void excludeGenreByIdCase4 () {
+            when(repository.findById(genreTest.getId())).thenReturn(Optional.ofNullable(genreTest));
+            when(genreGameRepository.countByGenre(genreTest.getId())).thenReturn(1);
+
+            IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+                service.excludeBy(genreTest.getId());
+            });
+
+            assertThat(e, notNullValue());
+            assertThat(e.getMessage(), is("This genre is linked to '1' games"));
+
+            verify(repository, times(1)).findById(genreTest.getId());
+            //verify(gameRepository.countGamesLinkedToThe(any()), never());
+            verify(repository, never()).deleteById(any());
+            verifyNoMoreInteractions(repository);
+        }
     }
 }

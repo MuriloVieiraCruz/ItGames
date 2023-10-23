@@ -199,7 +199,7 @@ public class EnterpriseServiceImplTest {
         }
 
         @Test
-        @DisplayName("Should update Enterprise from DB")
+        @DisplayName("Should not update Enterprise from DB when status when status is already assigned")
         void updateStatusEnterpriseCase3() {
             Enterprise enterprise = new Enterprise(3, "", Status.I);
             when(repository.findById(enterprise.getId())).thenReturn(Optional.ofNullable(enterprise));

@@ -2,13 +2,14 @@ package com.muriloCruz.ItGames.dto;
 
 import java.math.BigDecimal;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ServiceRequestDto {
 
 	@NotNull(message = "The description cannot be null")
@@ -19,10 +20,15 @@ public class ServiceRequestDto {
 	@NotNull(message = "Price cannot be null")
 	private BigDecimal price;
 
-	@NotNull(message = "User is required")
-	private Integer userId;
+	@Size(max = 250, min = 3, message = "The name must contain between 3 and 250 characters")
+	@Email(message = "The e-mail is in an invalid format")
+	@NotBlank(message = "User is required")
+	private String userLogin;
 
 	@Positive(message = "Game ID must be greater than 0")
 	@NotNull(message = "Game ID is required")
 	private Integer gameId;
+
+	@NotBlank(message = "Image URL is required")
+	private String imageUrl;
 }

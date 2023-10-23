@@ -2,6 +2,7 @@ package com.muriloCruz.ItGames.service;
 
 import java.math.BigDecimal;
 
+import com.muriloCruz.ItGames.dto.ServiceRequestDto;
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.Service;
 import org.springframework.data.domain.Page;
@@ -18,9 +19,14 @@ import jakarta.validation.constraints.Positive;
 @Validated
 public interface ServiceService {
 
+	public Service insert(
+			@Valid
+			@NotNull(message = "The service is required")
+			ServiceRequestDto serviceRequestDto);
+
 	public Service update(
 			@Valid
-			@NotNull(message = "The game is required")
+			@NotNull(message = "The service is required")
 			ServiceSavedDto serviceSavedDto);
 
 	public Page<Service> listBy(
