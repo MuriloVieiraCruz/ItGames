@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 
 import com.muriloCruz.ItGames.dto.GameRequestDto;
-import com.muriloCruz.ItGames.dto.GameSalvedDto;
+import com.muriloCruz.ItGames.dto.GameSavedDto;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
@@ -25,11 +25,11 @@ public interface GameService {
 	public Game update(
 			@Valid
 			@NotNull(message = "The game is required")
-			GameSalvedDto gameSalvedDto);
+			GameSavedDto gameSavedDto);
 	
 	public Page<Game> listBy(
 			String name,
-			Genre genre,
+			Integer genreId,
 			Pageable pagination);
 	
 	public Game searchBy(

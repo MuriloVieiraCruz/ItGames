@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.dto.GenreGameRequestDto;
 import com.muriloCruz.ItGames.dto.GameRequestDto;
-import com.muriloCruz.ItGames.dto.GameSalvedDto;
+import com.muriloCruz.ItGames.dto.GameSavedDto;
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.GenreGame;
@@ -65,29 +65,30 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public Game update(GameSalvedDto gameSalvedDto) {
+	public Game update(GameSavedDto gameSavedDto) {
 		Enterprise enterpriseFound = enterpriseRepository
-				.findById(gameSalvedDto.getEnterprise().getId()).get();
-		Game gameFound = gameRepository.findById(gameSalvedDto.getId()).get();
+				.findById(gameSavedDto.getEnterprise().getId()).get();
+		Game gameFound = gameRepository.findById(gameSavedDto.getId()).get();
 		Preconditions.checkNotNull(gameFound,
 				"No games were found linked to the parameters entered");
 		Preconditions.checkArgument(gameFound.isActive(),
 				"The reported game is inactive");
-		gameFound.setName(gameSalvedDto.getName());
-		gameFound.setDescription(gameSalvedDto.getDescription());
-		gameFound.setReleaseDate(gameSalvedDto.getReleaseDate());
-		gameFound.setStatus(gameSalvedDto.getStatus());
-		gameFound.setImageUrl(gameSalvedDto.getImageUrl());
+		gameFound.setName(gameSavedDto.getName());
+		gameFound.setDescription(gameSavedDto.getDescription());
+		gameFound.setReleaseDate(gameSavedDto.getReleaseDate());
+		gameFound.setStatus(gameSavedDto.getStatus());
+		gameFound.setImageUrl(gameSavedDto.getImageUrl());
 		gameFound.setEnterprise(enterpriseFound);
 		Game gameSaved = gameRepository.saveAndFlush(gameFound);
 		return gameSaved;
 	}
 
 	@Override
-	public Page<Game> listBy(String name, Genre genre, Pageable pagination) {
-		Preconditions.checkArgument(name != null || genre != null,
+	public Page<Game> listBy(String name, Integer genreId, Pageable pagination) {
+		Preconditions.checkArgument(name != null || genreId != null,
 				"You must provide at least one name or gender for the list");
-		return this.gameRepository.listBy(name, genre, pagination);
+		Genre genreFound = getGenreBy(genreId);
+		return this.gameRepository.listBy(name, genreFound, pagination);
 	}
 
 	@Override

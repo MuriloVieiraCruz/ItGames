@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class GameSalvedDto {
+public class GameSavedDto {
 
 	@Positive(message = "The ID must be positive")
 	@NotNull(message = "The ID is required")

@@ -75,7 +75,8 @@ public class GenreServiceImpl implements GenreService {
 				"The genre informed is inactive");
 		int numberLinkedGenres = genreGameRepository.countByGenre(id);
 		Preconditions.checkArgument(!(numberLinkedGenres >= 1),
-				"This genre is linked to '" + numberLinkedGenres + "' games");
+				"" +
+						"");
 		this.genreRepository.deleteById(genreFound.getId());
 		return genreFound;
 	}
