@@ -34,6 +34,7 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
             "SELECT s "
             + "FROM Service s "
             + "JOIN FETCH s.game "
+            + "JOIN FETCH s.user u "
             + "WHERE (:price IS NULL OR s.price = :price) "
             + "AND (:game IS NULL OR s.game = :game ) "
             + "AND s.status = 'A' "

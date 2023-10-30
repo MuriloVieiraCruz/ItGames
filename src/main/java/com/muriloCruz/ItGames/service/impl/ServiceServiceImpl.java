@@ -62,10 +62,11 @@ public class ServiceServiceImpl implements ServiceService {
 	}
 
 	@Override
-	public Page<Service> listBy(BigDecimal price, Game game, Pageable pagination) {
-		Preconditions.checkArgument(price != null || game != null,
+	public Page<Service> listBy(BigDecimal price, Integer gameId, Pageable pagination) {
+		Game gameFound = getGameBy(gameId);
+		Preconditions.checkArgument(price != null || gameFound != null,
 				"You must provide at least one price or one game for listing");
-		return serviceRepository.listBy(price, game, pagination);
+		return serviceRepository.listBy(price, gameFound, pagination);
 	}
 
 	@Override

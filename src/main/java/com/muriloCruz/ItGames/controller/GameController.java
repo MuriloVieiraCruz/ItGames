@@ -28,6 +28,9 @@ public class GameController {
     @Qualifier("gameServiceImpl")
     private GameService service;
 
+    @Autowired
+    private MapConverter mapConverter;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> insert(@RequestBody GameRequestDto gameRequestDto) {
@@ -84,14 +87,14 @@ public class GameController {
     @DeleteMapping("/id/{id}")
     public ResponseEntity<?> excludeBy(@PathVariable("id") Integer id) {
         Game gameExclude = service.excludeBy(id);
-        return ResponseEntity.ok(convert(gameExclude));
+        return ResponseEntity.ok(mapConverter.toJsonMap(gameExclude));
     }
 
     private Map<String, Object> convert(Game game) {
         Map<String, Object> gameMap = new HashMap<String, Object>();
         gameMap.put("id", game.getId());
         gameMap.put("name", game.getName());
-        gameMap.put("status", game.getStatus());
+        gameMap.put("imageUrl", game.getImageUrl());
         gameMap.put("releaseDate", game.getReleaseDate());
 
         Map<String, Object> enterpriseMap = new HashMap<String, Object>();

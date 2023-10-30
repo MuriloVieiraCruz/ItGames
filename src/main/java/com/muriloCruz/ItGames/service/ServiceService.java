@@ -31,7 +31,7 @@ public interface ServiceService {
 
 	public Page<Service> listBy(
 			BigDecimal price,
-			Game game,
+			Integer gameId,
 			Pageable page);
 
 	public Service searchBy(
