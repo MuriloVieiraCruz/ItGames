@@ -22,7 +22,7 @@ import java.util.*;
 public class ServiceController {
 
     @Autowired
-    @Qualifier("serviceServiceImpl")
+    @Qualifier("postServiceProxy")
     private PostService service;
 
     @Autowired

@@ -4,10 +4,7 @@ import com.muriloCruz.ItGames.entity.*;
 import com.muriloCruz.ItGames.entity.composite.GenreGameId;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.entity.enums.TypeAssociation;
-import com.muriloCruz.ItGames.repository.EnterpriseRepository;
-import com.muriloCruz.ItGames.repository.GameRepository;
 import com.muriloCruz.ItGames.repository.GenreGameRepository;
-import com.muriloCruz.ItGames.repository.GenreRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -31,7 +27,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
-class GenreGamePostImplTest {
+class GenreGameServiceImplTest {
 
     @InjectMocks
     GenreGameServiceImpl service;

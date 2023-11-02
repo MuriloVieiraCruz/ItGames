@@ -24,7 +24,7 @@ public class GenreController {
     private MapConverter converter;
 
     @Autowired
-    @Qualifier("genreServiceImpl")
+    @Qualifier("genreServiceProxy")
     private GenreService service;
 
     @PostMapping

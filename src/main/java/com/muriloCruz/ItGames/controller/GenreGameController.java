@@ -19,7 +19,7 @@ import java.net.URI;
 public class GenreGameController {
 
     @Autowired
-    @Qualifier("genreGameServiceImpl")
+    @Qualifier("genreGameServiceProxy")
     private GenreGameService service;
 
     @Autowired

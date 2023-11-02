@@ -23,7 +23,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    @Qualifier("userServiceImpl")
+    @Qualifier("userServiceProxy")
     private UserService service;
 
     @Autowired

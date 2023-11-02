@@ -25,7 +25,7 @@ import java.util.*;
 public class GameController {
 
     @Autowired
-    @Qualifier("gameServiceImpl")
+    @Qualifier("gameServiceProxy")
     private GameService service;
 
     @Autowired

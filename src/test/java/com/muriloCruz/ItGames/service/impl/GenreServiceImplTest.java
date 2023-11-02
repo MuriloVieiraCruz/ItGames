@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
-class GenrePostImplTest {
+class GenreServiceImplTest {
 
     @InjectMocks
     GenreServiceImpl service;
