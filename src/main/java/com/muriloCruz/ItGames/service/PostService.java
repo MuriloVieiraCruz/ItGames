@@ -2,14 +2,13 @@ package com.muriloCruz.ItGames.service;
 
 import java.math.BigDecimal;
 
-import com.muriloCruz.ItGames.dto.ServiceRequestDto;
-import com.muriloCruz.ItGames.entity.Game;
-import com.muriloCruz.ItGames.entity.Service;
+import com.muriloCruz.ItGames.dto.PostRequestDto;
+import com.muriloCruz.ItGames.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 
-import com.muriloCruz.ItGames.dto.ServiceSavedDto;
+import com.muriloCruz.ItGames.dto.PostSavedDto;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.validation.Valid;
@@ -17,24 +16,24 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 @Validated
-public interface ServiceService {
+public interface PostService {
 
-	public Service insert(
+	public Post insert(
 			@Valid
 			@NotNull(message = "The service is required")
-			ServiceRequestDto serviceRequestDto);
+			PostRequestDto postRequestDto);
 
-	public Service update(
+	public Post update(
 			@Valid
 			@NotNull(message = "The service is required")
-			ServiceSavedDto serviceSavedDto);
+			PostSavedDto postSavedDto);
 
-	public Page<Service> listBy(
+	public Page<Post> listBy(
 			BigDecimal price,
 			Integer gameId,
 			Pageable page);
 
-	public Service searchBy(
+	public Post searchBy(
 			@Positive(message = "The ID must be greater than 0")
 			@NotNull(message = "The ID is required")
 			Integer id);
@@ -46,7 +45,7 @@ public interface ServiceService {
 			@NotNull(message = "The status is required")
 			Status status);
 
-	public Service excludeBy(
+	public Post excludeBy(
 			@Positive(message = "The ID must be greater than 0")
 			@NotNull(message = "The ID is required")
 			Integer id);

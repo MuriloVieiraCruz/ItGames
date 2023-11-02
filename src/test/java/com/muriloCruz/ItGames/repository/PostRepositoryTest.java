@@ -18,14 +18,13 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
-class ServiceRepositoryTest {
+class PostRepositoryTest {
 
     @Autowired
-    ServiceRepository serviceRepository;
+    PostRepository postRepository;
 
     @Autowired
     GameRepository gameRepository;
@@ -41,34 +40,34 @@ class ServiceRepositoryTest {
                         Status.A, "url", enterpriseTest, null);
         User userTest = new User(1, "Murilo", "123", "lil@gmail.com",
                 "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null);
-        Service serviceTest = new Service(1, "description", BigDecimal.TEN, Availability.OPEN,
+        Post postTest = new Post(1, "description", BigDecimal.TEN, Availability.OPEN,
                 Status.A, gameTest, userTest, Instant.now(), "image");
-        Service serviceTest2 = new Service(1, "description", BigDecimal.ONE, Availability.OPEN,
+        Post postTest2 = new Post(1, "description", BigDecimal.ONE, Availability.OPEN,
                 Status.A, gameTest, userTest, Instant.now(), "image");
         this.entityManager.merge(userTest);
         this.entityManager.merge(enterpriseTest);
         this.entityManager.merge(gameTest);
-        this.entityManager.merge(serviceTest);
+        this.entityManager.merge(postTest);
     }
 
     @Nested
     class SearchById {
 
         @Test
-        @DisplayName("Should get Service by ID successfully from DB")
+        @DisplayName("Should get Post by ID successfully from DB")
         void searchByServiceIdCase1() {
 
-            Service service = serviceRepository.searchBy(1);
-            assertThat(service).isNotNull();
-            assertThat(service.getId()).isEqualTo(1);
+            Post post = postRepository.searchBy(1);
+            assertThat(post).isNotNull();
+            assertThat(post.getId()).isEqualTo(1);
         }
 
         @Test
-        @DisplayName("Should not get Service from DB when service not exists")
+        @DisplayName("Should not get Post from DB when service not exists")
         void searchByServiceIdCase2() {
 
-            Service service = serviceRepository.searchBy(2);
-            assertThat(service).isNull();
+            Post post = postRepository.searchBy(2);
+            assertThat(post).isNull();
         }
     }
 
@@ -80,9 +79,9 @@ class ServiceRepositoryTest {
         void searchByGameCase1() {
 
             Game game = gameRepository.searchBy("MurilusGame");
-            Service service = serviceRepository.searchBy(game);
-            assertThat(service).isNotNull();
-            assertThat(service.getId()).isEqualTo(1);
+            Post post = postRepository.searchBy(game);
+            assertThat(post).isNotNull();
+            assertThat(post.getId()).isEqualTo(1);
         }
 
         @Test
@@ -90,8 +89,8 @@ class ServiceRepositoryTest {
         void searchByGameCase2() {
 
             Game game = gameRepository.searchBy("tec");
-            Service service = serviceRepository.searchBy(game);
-            assertThat(service).isNull();
+            Post post = postRepository.searchBy(game);
+            assertThat(post).isNull();
         }
     }
 
@@ -99,21 +98,21 @@ class ServiceRepositoryTest {
     class ListBy {
 
         @Test
-        @DisplayName("Should get Service list successfully from DB")
+        @DisplayName("Should get Post list successfully from DB")
         void listServiceByPriceCase1() {
 
-            Page<Service> page = serviceRepository.listBy(BigDecimal.TEN,null, PageRequest.of(0, 15));
+            Page<Post> page = postRepository.listBy(BigDecimal.TEN,null, PageRequest.of(0, 15));
             assertThat(page).isNotNull();
             assertThat(page.getTotalPages()).isEqualTo(0);
             assertThat(page.getNumber()).isEqualTo(0);
         }
 
         @Test
-        @DisplayName("Should get Service list from DB when game not exist")
+        @DisplayName("Should get Post list from DB when game not exist")
         void listByGameByGameCase2() {
             Game game = gameRepository.findById(1).get();
 
-            Page<Service> page = serviceRepository.listBy(null, game, PageRequest.of(0, 15));
+            Page<Post> page = postRepository.listBy(null, game, PageRequest.of(0, 15));
             assertThat(page).isNotNull();
             assertThat(page.getTotalPages()).isEqualTo(0);
             assertThat(page.getNumber()).isEqualTo(0);
@@ -124,7 +123,7 @@ class ServiceRepositoryTest {
         void listByGameByNameCase3() {
             Game game = gameRepository.findById(999).get();
 
-            Page<Service> page = serviceRepository.listBy(null, game, PageRequest.of(0, 15));
+            Page<Post> page = postRepository.listBy(null, game, PageRequest.of(0, 15));
             assertThat(page.getContent()).isEmpty();
             assertThat(page.getTotalElements()).isZero();
             assertThat(page.getTotalPages()).isEqualTo(0);
@@ -132,7 +131,7 @@ class ServiceRepositoryTest {
         }
 
         @Test
-        @DisplayName("Should not get Service list from DB when all parameters are null")
+        @DisplayName("Should not get Post list from DB when all parameters are null")
         void listByServiceCase4() {
 
             Page<Game> page = gameRepository.listBy(null, null,PageRequest.of(0, 15));
@@ -150,20 +149,20 @@ class ServiceRepositoryTest {
         @DisplayName("Should update Game from DB")
         void updateServiceByIdCase1() {
 
-            serviceRepository.updateStatusBy(1,  Status.I);
-            Service updatedService = serviceRepository.findById(1).orElse(null);
+            postRepository.updateStatusBy(1,  Status.I);
+            Post updatedPost = postRepository.findById(1).orElse(null);
 
-            assertThat(updatedService).isNotNull();
-            assertThat(updatedService.getStatus()).isEqualByComparingTo(Status.I);
+            assertThat(updatedPost).isNotNull();
+            assertThat(updatedPost.getStatus()).isEqualByComparingTo(Status.I);
         }
 
         @Test
-        @DisplayName("Should not update Service from DB when service not found")
+        @DisplayName("Should not update Post from DB when service not found")
         void updateServiceByIdCase2() {
-            serviceRepository.updateStatusBy(5,  Status.I);
-            Service updatedService = serviceRepository.findById(5).orElse(null);
+            postRepository.updateStatusBy(5,  Status.I);
+            Post updatedPost = postRepository.findById(5).orElse(null);
 
-            assertThat(updatedService).isNull();
+            assertThat(updatedPost).isNull();
         }
     }
 
@@ -174,7 +173,7 @@ class ServiceRepositoryTest {
         @DisplayName("Should count Games linked to the enterprise ID from DB")
         void countGamesLinkedToTheCase1() {
 
-            int quantity = serviceRepository.countBy(1);
+            int quantity = postRepository.countBy(1);
             assertThat(quantity).isNotZero();
             assertThat(quantity).isNotNull();
             assertThat(quantity).isEqualTo(1);
@@ -184,7 +183,7 @@ class ServiceRepositoryTest {
         @DisplayName("Should return zero from DB when service is not linked to any game ID")
         void countGamesLinkedToTheCase2() {
 
-            int quantity = serviceRepository.countBy(3);
+            int quantity = postRepository.countBy(3);
             assertThat(quantity).isZero();
             assertThat(quantity).isNotNull();
         }

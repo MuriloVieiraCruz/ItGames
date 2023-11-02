@@ -16,10 +16,10 @@ import java.time.Instant;
 
 @Data
 @AllArgsConstructor
-@Entity(name = "Service")
+@Entity(name = "Post")
 @Table(name = "services")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Service {
+public class Post {
 
     @Id
     @Column(name = "id")
@@ -66,7 +66,7 @@ public class Service {
     @Column(name = "image_url")
     private String imageUrl;
     
-    public Service() {
+    public Post() {
     	this.status = Status.A; 
     	this.availability = Availability.OPEN;
         this.postDate = Instant.now();

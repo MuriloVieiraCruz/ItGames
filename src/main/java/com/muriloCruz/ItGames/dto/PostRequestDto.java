@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceRequestDto {
+public class PostRequestDto {
 
 	@NotNull(message = "The description cannot be null")
 	private String description;

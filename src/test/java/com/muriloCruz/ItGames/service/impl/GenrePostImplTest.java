@@ -1,14 +1,9 @@
 package com.muriloCruz.ItGames.service.impl;
 
-import com.muriloCruz.ItGames.dto.UserRequestDto;
-import com.muriloCruz.ItGames.dto.UserSavedDto;
 import com.muriloCruz.ItGames.entity.Genre;
-import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.GenreGameRepository;
 import com.muriloCruz.ItGames.repository.GenreRepository;
-import com.muriloCruz.ItGames.repository.ServiceRepository;
-import com.muriloCruz.ItGames.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,13 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
-class GenreServiceImplTest {
+class GenrePostImplTest {
 
     @InjectMocks
     GenreServiceImpl service;

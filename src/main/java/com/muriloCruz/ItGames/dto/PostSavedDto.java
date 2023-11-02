@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceSavedDto {
+public class PostSavedDto {
 
 	@Positive(message = "The ID must be positive")
 	@NotNull(message = "The ID is required")

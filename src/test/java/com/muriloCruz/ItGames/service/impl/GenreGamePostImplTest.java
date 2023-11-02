@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
-class GenreGameServiceImplTest {
+class GenreGamePostImplTest {
 
     @InjectMocks
     GenreGameServiceImpl service;
@@ -118,7 +118,7 @@ class GenreGameServiceImplTest {
         }
 
         @Test
-        @DisplayName("Should not insert Service from DB when game not found in the bank")
+        @DisplayName("Should not insert Post from DB when game not found in the bank")
         void insertGenreGameCase4() {
             when(genreService.searchBy(genreTest.getId())).thenReturn(genreTest);
             when(gameService.searchBy(gameTest.getId())).thenReturn(null);

@@ -1,16 +1,15 @@
 package com.muriloCruz.ItGames.service.impl;
 
-import com.muriloCruz.ItGames.dto.ServiceRequestDto;
-import com.muriloCruz.ItGames.dto.ServiceSavedDto;
+import com.muriloCruz.ItGames.dto.PostRequestDto;
+import com.muriloCruz.ItGames.dto.PostSavedDto;
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.Game;
-import com.muriloCruz.ItGames.entity.Service;
+import com.muriloCruz.ItGames.entity.Post;
 import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Availability;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.repository.EnterpriseRepository;
 import com.muriloCruz.ItGames.repository.GameRepository;
-import com.muriloCruz.ItGames.repository.ServiceRepository;
+import com.muriloCruz.ItGames.repository.PostRepository;
 import com.muriloCruz.ItGames.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,13 +38,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ServiceServiceImplTest {
+class ServicePostImplTest {
 
     @InjectMocks
-    ServiceServiceImpl service;
+    PostServiceImpl service;
 
     @Mock
-    ServiceRepository repository;
+    PostRepository repository;
 
     @Mock
     UserRepository userRepository;
@@ -62,37 +61,37 @@ class ServiceServiceImplTest {
             (1, "MurilusGame", "description", Instant.now(),
                     Status.A, "url", enterpriseTest, Arrays.asList());
 
-    Service serviceTest;
-    ServiceRequestDto serviceRequest;
-    ServiceSavedDto serviceSaved;
+    Post postTest;
+    PostRequestDto serviceRequest;
+    PostSavedDto serviceSaved;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        serviceTest = new Service(null,"description", BigDecimal.TEN, Availability.OPEN, Status.A, gameTest , userTest, Instant.now(), "RETRETEEGEDG");
-        serviceRequest = new ServiceRequestDto("description", BigDecimal.TEN, userTest.getLogin(), gameTest.getId(), "rgrgr");
-        serviceSaved = new ServiceSavedDto(1, "description", BigDecimal.TEN, Availability.OPEN, gameTest.getId());
+        postTest = new Post(null,"description", BigDecimal.TEN, Availability.OPEN, Status.A, gameTest , userTest, Instant.now(), "RETRETEEGEDG");
+        serviceRequest = new PostRequestDto("description", BigDecimal.TEN, userTest.getLogin(), gameTest.getId(), "rgrgr");
+        serviceSaved = new PostSavedDto(1, "description", BigDecimal.TEN, Availability.OPEN, gameTest.getId());
     }
 
     @Nested
     class InsertEnterprise {
 
         @Test
-        @DisplayName("Should insert Service from DB")
+        @DisplayName("Should insert Post from DB")
         void insertServiceCase1() {
             when(userRepository.searchBy(userTest.getLogin())).thenReturn(userTest);
             when(gameRepository.searchBy(gameTest.getId())).thenReturn(gameTest);
-            when(repository.save(serviceTest)).thenReturn(serviceTest);
+            when(repository.save(postTest)).thenReturn(postTest);
 
-            Service serviceSave = service.insert(serviceRequest);
+            Post postSave = service.insert(serviceRequest);
 
-            assertEquals(serviceSave, serviceTest);
-            verify(repository).save(serviceTest);
+            assertEquals(postSave, postTest);
+            verify(repository).save(postTest);
             verifyNoMoreInteractions(repository);
         }
 
         @Test
-        @DisplayName("Should not insert Service from DB when user not found in the bank")
+        @DisplayName("Should not insert Post from DB when user not found in the bank")
         void insertServiceCase2() {
             when(userRepository.searchBy(userTest.getLogin())).thenReturn(null);
 
@@ -110,7 +109,7 @@ class ServiceServiceImplTest {
         }
 
         @Test
-        @DisplayName("Should not insert Service from DB when user is inactive in the bank")
+        @DisplayName("Should not insert Post from DB when user is inactive in the bank")
         void insertServiceCase3() {
             userTest.setStatus(Status.I);
             when(userRepository.searchBy(userTest.getLogin())).thenReturn(userTest);
@@ -129,7 +128,7 @@ class ServiceServiceImplTest {
         }
 
         @Test
-        @DisplayName("Should not insert Service from DB when game not found in the bank")
+        @DisplayName("Should not insert Post from DB when game not found in the bank")
         void insertServiceCase4() {
             when(userRepository.searchBy(userTest.getLogin())).thenReturn(userTest);
             when(gameRepository.searchBy(gameTest.getId())).thenReturn(null);
@@ -147,7 +146,7 @@ class ServiceServiceImplTest {
             verifyNoMoreInteractions(repository);
         }
         @Test
-        @DisplayName("Should not insert Service from DB when game is inactive in the bank")
+        @DisplayName("Should not insert Post from DB when game is inactive in the bank")
         void insertServiceCase5() {
             gameTest.setStatus(Status.I);
             when(userRepository.searchBy(userTest.getLogin())).thenReturn(userTest);
@@ -169,79 +168,79 @@ class ServiceServiceImplTest {
     }
 
     @Nested
-    class SearchService {
+    class SearchPost {
 
         @Test
-        @DisplayName("Should search Service from DB")
+        @DisplayName("Should search Post from DB")
         void searchServiceCase1() {
-            serviceTest.setId(1);
-            when(repository.searchBy(serviceTest.getId())).thenReturn(serviceTest);
+            postTest.setId(1);
+            when(repository.searchBy(postTest.getId())).thenReturn(postTest);
 
-            Service serviceSave = service.searchBy(serviceTest.getId());
+            Post postSave = service.searchBy(postTest.getId());
 
-            assertEquals(serviceTest, serviceSave);
-            verify(repository, times(1)).searchBy(serviceTest.getId());
+            assertEquals(postTest, postSave);
+            verify(repository, times(1)).searchBy(postTest.getId());
             verifyNoMoreInteractions(repository);
         }
 
         @Test
         @DisplayName("Should got error when service found not exists")
         void searchServiceCase2() {
-            when(repository.searchBy(serviceTest.getId())).thenReturn(null);
+            when(repository.searchBy(postTest.getId())).thenReturn(null);
 
             NullPointerException e = assertThrows(NullPointerException.class, () -> {
-                service.searchBy(serviceTest.getId());
+                service.searchBy(postTest.getId());
             });
 
             assertThat(e, notNullValue());
             assertThat(e.getMessage(), is("No service was found linked to the parameters entered"));
 
-            verify(repository).searchBy(serviceTest.getId());
+            verify(repository).searchBy(postTest.getId());
             verifyNoMoreInteractions(repository);
         }
 
         @Test
         @DisplayName("Should got error when service found is inactive")
         void searchServiceCase3() {
-            serviceTest.setStatus(Status.I);
-            when(repository.searchBy(serviceTest.getId())).thenReturn(serviceTest);
+            postTest.setStatus(Status.I);
+            when(repository.searchBy(postTest.getId())).thenReturn(postTest);
 
             IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-                service.searchBy(serviceTest.getId());
+                service.searchBy(postTest.getId());
             });
 
             assertThat(e, notNullValue());
             assertThat(e.getMessage(), is("The service is inactive"));
 
-            verify(repository).searchBy(serviceTest.getId());
+            verify(repository).searchBy(postTest.getId());
             verifyNoMoreInteractions(repository);
         }
     }
 
     @Nested
-    class ListService {
+    class ListPost {
 
         @Test
-        @DisplayName("Should list Service from DB")
+        @DisplayName("Should list Post from DB")
         void listServiceCase1() {
-            serviceTest.setId(1);
-            Service serviceTest2 = new Service(2,"description",
+            postTest.setId(1);
+            Post postTest2 = new Post(2,"description",
                     BigDecimal.TEN, Availability.OPEN, Status.A, gameTest
                     , userTest, Instant.now(), "RETRETEEGEDG");
 
-            List<Service> serviceList = Arrays.asList(serviceTest, serviceTest2);
-            Page<Service> servicePage = new PageImpl<>(serviceList,
-                    PageRequest.of(0, serviceList.size()),  serviceList.size());
+            List<Post> postList = Arrays.asList(postTest, postTest2);
+            Page<Post> servicePage = new PageImpl<>(postList,
+                    PageRequest.of(0, postList.size()),  postList.size());
 
             when(repository.listBy(
                     BigDecimal.TEN, gameTest, PageRequest.of(0, 15))).thenReturn(servicePage);
-            Page<Service> servicesFound = service.listBy(
+            Page<Post> servicesFound = service.listBy(
                     BigDecimal.TEN, gameTest.getId(), PageRequest.of(0, 15));
 
             assertThat(servicesFound, notNullValue());
             assertThat(servicesFound.getContent(), not(empty()));
             assertThat(servicesFound.getContent().size(), is(2));
-            assertThat(servicesFound.getTotalElements(), is((long)serviceList.size()));
+            assertThat(servicesFound.getTotalElements(), is((long) postList.size()));
 
             assertThat(servicesFound.getContent().get(0).getId(), is(1));
             assertThat(servicesFound.getContent().get(0).getGame(), is(gameTest));
@@ -256,107 +255,107 @@ class ServiceServiceImplTest {
     class UpdateStatusEnterprise {
 
         @Test
-        @DisplayName("Should update Service from DB")
+        @DisplayName("Should update Post from DB")
         void updateStatusServiceCase1() {
-            serviceTest.setId(1);
-            when(repository.findById(serviceTest.getId())).thenReturn(Optional.of(serviceTest));
-            doNothing().when(repository).updateStatusBy(serviceTest.getId(), Status.I);
+            postTest.setId(1);
+            when(repository.findById(postTest.getId())).thenReturn(Optional.of(postTest));
+            doNothing().when(repository).updateStatusBy(postTest.getId(), Status.I);
 
-            service.updateStatusBy(serviceTest.getId(), Status.I);
+            service.updateStatusBy(postTest.getId(), Status.I);
 
-            verify(repository).findById(serviceTest.getId());
-            verify(repository).updateStatusBy(serviceTest.getId(), Status.I);
+            verify(repository).findById(postTest.getId());
+            verify(repository).updateStatusBy(postTest.getId(), Status.I);
             verifyNoMoreInteractions(repository);
         }
 
         @Test
-        @DisplayName("Should not update Service from DB when service found not exists")
+        @DisplayName("Should not update Post from DB when service found not exists")
         void updateStatusServiceCase2() {
-            serviceTest.setId(1);
-            when(repository.findById(serviceTest.getId())).thenReturn(Optional.ofNullable(null));
+            postTest.setId(1);
+            when(repository.findById(postTest.getId())).thenReturn(Optional.ofNullable(null));
 
             IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-                service.updateStatusBy(serviceTest.getId(), Status.I);
+                service.updateStatusBy(postTest.getId(), Status.I);
             });
 
             assertThat(e, notNullValue());
             assertThat(e.getMessage(), is("No service was found linked to the id entered"));
 
-            verify(repository).findById(serviceTest.getId());
+            verify(repository).findById(postTest.getId());
             verify(repository, never()).updateStatusBy(any(), any());
             verifyNoMoreInteractions(repository);
         }
 
         @Test
-        @DisplayName("Should not update Service from DB when status when status is already assigned")
+        @DisplayName("Should not update Post from DB when status when status is already assigned")
         void updateStatusServiceCase3() {
-            serviceTest.setId(1);
-            when(repository.findById(serviceTest.getId())).thenReturn(Optional.ofNullable(serviceTest));
+            postTest.setId(1);
+            when(repository.findById(postTest.getId())).thenReturn(Optional.ofNullable(postTest));
 
             IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-                service.updateStatusBy(serviceTest.getId(), Status.A);
+                service.updateStatusBy(postTest.getId(), Status.A);
             });
 
             assertThat(e, notNullValue());
             assertThat(e.getMessage(), is("The entered status is already assigned"));
 
-            verify(repository, times(1)).findById(serviceTest.getId());
+            verify(repository, times(1)).findById(postTest.getId());
             verify(repository, never()).updateStatusBy(any(), any());
             verifyNoMoreInteractions(repository);
         }
     }
 
     @Nested
-    class ExcludeService {
+    class ExcludePost {
 
         @Test
-        @DisplayName("Should exclude Service from DB")
+        @DisplayName("Should exclude Post from DB")
         void excludeServiceByIdCase1 () {
-            serviceTest.setId(1);
-            when(repository.searchBy(serviceTest.getId())).thenReturn(serviceTest);
+            postTest.setId(1);
+            when(repository.searchBy(postTest.getId())).thenReturn(postTest);
 
-            Service deletedService = service.excludeBy(serviceTest.getId());
+            Post deletedPost = service.excludeBy(postTest.getId());
 
-            assertNotNull(deletedService);
-            assertEquals(serviceTest.getId(), deletedService.getId());
+            assertNotNull(deletedPost);
+            assertEquals(postTest.getId(), deletedPost.getId());
 
-            verify(repository, times(1)).searchBy(serviceTest.getId());
-            verify(repository, times(1)).deleteById(serviceTest.getId());
+            verify(repository, times(1)).searchBy(postTest.getId());
+            verify(repository, times(1)).deleteById(postTest.getId());
             verifyNoMoreInteractions(repository);
 
         }
 
         @Test
-        @DisplayName("Should not exclude Service from DB when service do not exist")
+        @DisplayName("Should not exclude Post from DB when service do not exist")
         void excludeServiceByIdCase2 () {
-            when(repository.searchBy(serviceTest.getId())).thenReturn(null);
+            when(repository.searchBy(postTest.getId())).thenReturn(null);
 
             NullPointerException e = assertThrows(NullPointerException.class, () -> {
-                service.excludeBy(serviceTest.getId());
+                service.excludeBy(postTest.getId());
             });
 
             assertThat(e, notNullValue());
-            assertThat(e.getMessage(), is("Service linked to the parameters was not found"));
+            assertThat(e.getMessage(), is("Post linked to the parameters was not found"));
 
-            verify(repository, times(1)).searchBy(serviceTest.getId());
+            verify(repository, times(1)).searchBy(postTest.getId());
             verify(repository, never()).deleteById(any());
             verifyNoMoreInteractions(repository);
         }
 
         @Test
-        @DisplayName("Should not exclude Service from DB when service is inactive")
+        @DisplayName("Should not exclude Post from DB when service is inactive")
         void excludeServiceByIdCase3 () {
-            serviceTest.setStatus(Status.I);
-            when(repository.searchBy(serviceTest.getId())).thenReturn(serviceTest);
+            postTest.setStatus(Status.I);
+            when(repository.searchBy(postTest.getId())).thenReturn(postTest);
 
             IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-                service.excludeBy(serviceTest.getId());
+                service.excludeBy(postTest.getId());
             });
 
             assertThat(e, notNullValue());
             assertThat(e.getMessage(), is("The service is inactive"));
 
-            verify(repository, times(1)).searchBy(serviceTest.getId());
+            verify(repository, times(1)).searchBy(postTest.getId());
             verify(repository, never()).deleteById(any());
             verifyNoMoreInteractions(repository);
         }

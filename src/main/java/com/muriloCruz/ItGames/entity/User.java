@@ -7,7 +7,6 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -78,10 +77,10 @@ public class User {
     private BigDecimal rating;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Service> services;
+    private List<Post> posts;
 
     public User() {
-        this.services = new ArrayList<>();
+        this.posts = new ArrayList<>();
         this.status = Status.A;
         this.rating = null;
         this.registrationDate = Instant.now();

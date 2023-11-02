@@ -2,17 +2,10 @@ package com.muriloCruz.ItGames.service.impl;
 
 import com.muriloCruz.ItGames.dto.UserRequestDto;
 import com.muriloCruz.ItGames.dto.UserSavedDto;
-import com.muriloCruz.ItGames.entity.Enterprise;
-import com.muriloCruz.ItGames.entity.Game;
-import com.muriloCruz.ItGames.entity.Service;
 import com.muriloCruz.ItGames.entity.User;
-import com.muriloCruz.ItGames.entity.enums.Availability;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.repository.EnterpriseRepository;
-import com.muriloCruz.ItGames.repository.GameRepository;
-import com.muriloCruz.ItGames.repository.ServiceRepository;
+import com.muriloCruz.ItGames.repository.PostRepository;
 import com.muriloCruz.ItGames.repository.UserRepository;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,15 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest {
+class UserPostImplTest {
 
     @InjectMocks
     UserServiceImpl service;
@@ -53,7 +43,7 @@ class UserServiceImplTest {
     UserRepository repository;
 
     @Mock
-    ServiceRepository serviceRepository;
+    PostRepository postRepository;
 
     User userTest;
     UserSavedDto userTest2;

@@ -31,7 +31,7 @@ public class GameServiceImpl implements GameService {
 	private EnterpriseRepository enterpriseRepository;
 
 	@Autowired
-	private ServiceRepository serviceRepository;
+	private PostRepository postRepository;
 	
 	@Autowired
 	private GenreRepository genreRepository;
@@ -113,7 +113,7 @@ public class GameServiceImpl implements GameService {
 		int qtyOfBoundGenerations = genreGameRepository.countByGame(id);
 		Preconditions.checkArgument(!(qtyOfBoundGenerations >= 1),
 				"There are genres linked to informed play");
-		int numberLinkedServices = serviceRepository.countBy(id);
+		int numberLinkedServices = postRepository.countBy(id);
 		Preconditions.checkArgument(!(numberLinkedServices >= 1),
 				"There are services linked to informed play");
 		return gameFound;

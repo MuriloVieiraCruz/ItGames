@@ -1,7 +1,6 @@
 package com.muriloCruz.ItGames.service.impl;
 
-import com.muriloCruz.ItGames.entity.Enterprise;
-import com.muriloCruz.ItGames.repository.ServiceRepository;
+import com.muriloCruz.ItGames.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private ServiceRepository serviceRepository;
+	private PostRepository postRepository;
 
 	@Override
 	public User insert(UserRequestDto userRequestDto) {
