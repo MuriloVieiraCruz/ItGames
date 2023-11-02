@@ -26,12 +26,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	public Enterprise insert(Enterprise enterprise) {
 		Enterprise enterpriseFound = enterpriseRepository.searchBy(enterprise.getName());
 		if (enterpriseFound != null) {
-			if (enterprise.isPersisted()) {
-				Preconditions.checkArgument(enterpriseFound.equals(enterprise),
+				Preconditions.checkArgument(enterprise.isPersisted() && enterpriseFound.equals(enterprise),
 						"There is already have a enterprise registered with this name");
-			} else {
-				throw new IllegalArgumentException("There is already a enterprise registered with this name");
-			}
 		}
 
 		Enterprise enterpriseSaved = enterpriseRepository.save(enterprise);
@@ -43,7 +39,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
 
 		Preconditions.checkArgument(optionalEnterprise.isPresent(),
-				"No enterprise was found linked to the parameters entered");
+				"No enterprise was found to be linked to the reported parameters");
 		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.getStatus() != status ,
 				"The status entered is already assigned");
@@ -55,7 +51,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
 
 		Preconditions.checkArgument(optionalEnterprise.isPresent(),
-				"No enterprise was found linked to the parameters entered");
+				"No enterprise was found to be linked to the reported parameters");
 		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.isActive(),
 				"The enterprise informed is inactive");
@@ -70,13 +66,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
 	@Override
 	public Enterprise excludeBy(Integer id) {
-		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
-
-		Preconditions.checkArgument(optionalEnterprise.isPresent(),
-				"No enterprise was found linked to the parameters entered");
-		Enterprise enterpriseFound = optionalEnterprise.get();
-		Preconditions.checkArgument(enterpriseFound.isActive(),
-				"The enterprise informed is inactive");
+		Enterprise enterpriseFound = searchBy(id);
 		int numberLinkedGames = gameRepository.countGamesLinkedToThe(id);
 		Preconditions.checkArgument(!(numberLinkedGames >= 1),
 				"This enterprise is linked to '" + numberLinkedGames + "' games");

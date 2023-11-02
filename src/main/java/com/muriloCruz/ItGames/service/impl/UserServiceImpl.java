@@ -29,9 +29,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User insert(UserRequestDto userRequestDto) {
 		User userFound = userRepository.searchBy(userRequestDto.getLogin());
-		if (userFound != null) {
-				throw new IllegalArgumentException("There is already a user registered with this login");
-		}
+		Preconditions.checkNotNull(userFound,
+				"There is already a user registered with this login");
 		User user = new User();
 		user.setLogin(userRequestDto.getLogin());
 		user.setPassword(userRequestDto.getPassword());
@@ -44,11 +43,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User update(UserSavedDto userSavedDto) {
-		User userFound = userRepository.findById(userSavedDto.getId()).get();
-		Preconditions.checkNotNull(userFound,
-				"User linked to the parameters was not found");
-		Preconditions.checkArgument(userFound.isActive(),
-				"The user is inactive");
+		User userFound = searchBy(userSavedDto.getId());
 		userFound.setLogin(userSavedDto.getLogin());
 		userFound.setPassword(userSavedDto.getPassword());
 		userFound.setName(userSavedDto.getName());
@@ -67,10 +62,10 @@ public class UserServiceImpl implements UserService {
 	public User searchBy(Integer id) {
 		Optional<User> optionalUser = userRepository.findById(id);
 		Preconditions.checkArgument(optionalUser.isPresent(),
-				"User linked to the parameters was not found");
+				"No user was found to be linked to the reported parameters");
 		User userFound = optionalUser.get();
 		Preconditions.checkArgument(userFound.isActive(),
-				"The user is inactive");
+				"The user informed is inactive");
 		return userFound;
 	}
 
@@ -78,7 +73,7 @@ public class UserServiceImpl implements UserService {
 	public void updateStatusBy(Integer id, Status status) {
 		Optional<User> optionalUser = userRepository.findById(id);
 		Preconditions.checkArgument(optionalUser.isPresent(),
-				"User linked to the parameters was not found");
+				"No user was found to be linked to the reported parameters");
 		User userFound = optionalUser.get();
 		Preconditions.checkArgument(userFound.getStatus() != status ,
 				"The status entered is already assigned");
@@ -87,12 +82,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User excludeBy(Integer id) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		Preconditions.checkArgument(optionalUser.isPresent(),
-				"User linked to the parameters was not found");
-		User userFound = optionalUser.get();
-		Preconditions.checkArgument(userFound.isActive(),
-				"The user is inactive");
+		User userFound = searchBy(id);
 		this.userRepository.deleteById(userFound.getId());
 		return userFound;
 	}

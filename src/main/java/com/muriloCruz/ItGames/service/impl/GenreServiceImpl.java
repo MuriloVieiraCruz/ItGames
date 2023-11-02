@@ -27,12 +27,8 @@ public class GenreServiceImpl implements GenreService {
 	public Genre insert(Genre genre) {
 		Genre genreFound = genreRepository.searchBy(genre.getName());
 		if (genreFound != null) {
-			if (genre.isPersisted()) {
-				Preconditions.checkArgument(genreFound.equals(genre),
+				Preconditions.checkArgument(genre.isPersisted() && genreFound.equals(genre),
 						"There is already a registered genre with this name");
-			} else {
-				throw new IllegalArgumentException("There is already a registered genre with this name");
-			}
 		}
 		Genre genreSaved = genreRepository.save(genre);
 		return genreSaved;
@@ -58,7 +54,7 @@ public class GenreServiceImpl implements GenreService {
 	public void updateStatusBy(Integer id, Status status) {
 		Optional<Genre> optionalGenre = genreRepository.findById(id);
 		Preconditions.checkArgument(optionalGenre.isPresent(),
-				"No genre was found linked to the parameters entered");
+				"No gender was found to be linked to the reported parameters");
 		Genre genreFound = optionalGenre.get();
 		Preconditions.checkArgument(genreFound.getStatus() != status ,
 				"The status entered is already assigned");
@@ -67,16 +63,10 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public Genre excludeBy(Integer id) {
-		Optional<Genre> optionalGenre = genreRepository.findById(id);
-		Preconditions.checkArgument(optionalGenre.isPresent(),
-				"No genre was found linked to the parameters entered");
-		Genre genreFound = optionalGenre.get();
-		Preconditions.checkArgument(genreFound.isActive(),
-				"The genre informed is inactive");
+		Genre genreFound = searchBy(id);
 		int numberLinkedGenres = genreGameRepository.countByGenre(id);
 		Preconditions.checkArgument(!(numberLinkedGenres >= 1),
-				"" +
-						"");
+				"This genre is linked to '" + numberLinkedGenres + "' games");
 		this.genreRepository.deleteById(genreFound.getId());
 		return genreFound;
 	}

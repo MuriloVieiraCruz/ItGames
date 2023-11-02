@@ -47,12 +47,8 @@ public class ServiceServiceImpl implements ServiceService {
 
 	@Override
 	public Service update(ServiceSavedDto serviceSavedDto) {
-		Service serviceFound = serviceRepository.searchBy(serviceSavedDto.getId());
+		Service serviceFound = searchBy(serviceSavedDto.getId());
 		Game game = getGameBy(serviceSavedDto.getGameId());
-		Preconditions.checkNotNull(serviceFound,
-				"User linked to the parameters was not found");
-		Preconditions.checkArgument(serviceFound.isActive(),
-				"The user is inactive");
 		serviceFound.setDescription(serviceSavedDto.getDescription());
 		serviceFound.setAvailability(serviceSavedDto.getAvailability());
 		serviceFound.setPrice(serviceSavedDto.getPrice());
@@ -73,7 +69,7 @@ public class ServiceServiceImpl implements ServiceService {
 	public Service searchBy(Integer id) {
 		Service serviceFound = serviceRepository.searchBy(id);
 		Preconditions.checkNotNull(serviceFound,
-				"No service was found linked to the parameters entered");
+				"No service was found to be linked to the reported parameters");
 		Preconditions.checkArgument(serviceFound.isActive(),
 				"The service is inactive");
 		return serviceFound;
@@ -93,11 +89,7 @@ public class ServiceServiceImpl implements ServiceService {
 
 	@Override
 	public Service excludeBy(Integer id) {
-		Service serviceFound = serviceRepository.searchBy(id);
-		Preconditions.checkNotNull(serviceFound,
-				"Service linked to the parameters was not found");
-		Preconditions.checkArgument(serviceFound.isActive(),
-				"The service is inactive");
+		Service serviceFound = searchBy(id);
 		this.serviceRepository.deleteById(serviceFound.getId());
 		return serviceFound;
 	}
@@ -105,7 +97,7 @@ public class ServiceServiceImpl implements ServiceService {
 	private Game getGameBy(Integer gameId) {
 		Game gameFound = gameRepository.searchBy(gameId);
 		Preconditions.checkNotNull(gameFound,
-				"No game was found linked to the parameters passed");
+				"No game was found to be linked to the reported parameters");
 		Preconditions.checkArgument(gameFound.isActive(),
 				"The entered game is inactive");
 		return gameFound;
@@ -114,7 +106,7 @@ public class ServiceServiceImpl implements ServiceService {
 	private User getUserBy(String userLogin) {
 		User userFound = userRepository.searchBy(userLogin);
 		Preconditions.checkNotNull(userFound,
-				"No user was found linked to the parameters passed");
+				"No user was found to be linked to the reported parameters");
 		Preconditions.checkArgument(userFound.isActive(),
 				"The entered user is inactive");
 		return userFound;

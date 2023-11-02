@@ -24,7 +24,7 @@ public class EnterpriseController {
     private MapConverter converter;
 
     @Autowired
-    @Qualifier("enterpriseService")
+    @Qualifier("enterpriseServiceImpl")
     private EnterpriseService service;
 
     @PostMapping

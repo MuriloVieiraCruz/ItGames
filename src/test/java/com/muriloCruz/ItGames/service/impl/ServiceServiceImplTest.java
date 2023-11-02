@@ -236,7 +236,7 @@ class ServiceServiceImplTest {
             when(repository.listBy(
                     BigDecimal.TEN, gameTest, PageRequest.of(0, 15))).thenReturn(servicePage);
             Page<Service> servicesFound = service.listBy(
-                    BigDecimal.TEN, gameTest, PageRequest.of(0, 15));
+                    BigDecimal.TEN, gameTest.getId(), PageRequest.of(0, 15));
 
             assertThat(servicesFound, notNullValue());
             assertThat(servicesFound.getContent(), not(empty()));

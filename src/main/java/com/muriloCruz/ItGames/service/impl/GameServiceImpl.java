@@ -68,11 +68,7 @@ public class GameServiceImpl implements GameService {
 	public Game update(GameSavedDto gameSavedDto) {
 		Enterprise enterpriseFound = enterpriseRepository
 				.findById(gameSavedDto.getEnterprise().getId()).get();
-		Game gameFound = gameRepository.findById(gameSavedDto.getId()).get();
-		Preconditions.checkNotNull(gameFound,
-				"No games were found linked to the parameters entered");
-		Preconditions.checkArgument(gameFound.isActive(),
-				"The reported game is inactive");
+		Game gameFound = searchBy(gameSavedDto.getId());
 		gameFound.setName(gameSavedDto.getName());
 		gameFound.setDescription(gameSavedDto.getDescription());
 		gameFound.setReleaseDate(gameSavedDto.getReleaseDate());
@@ -95,7 +91,7 @@ public class GameServiceImpl implements GameService {
 	public Game searchBy(Integer id) {
 		Game gameFound = gameRepository.searchBy(id);
 		Preconditions.checkNotNull(gameFound,
-				"No game linked to the given id was found");
+				"No game was found to be linked to the reported parameters");
 		Preconditions.checkArgument(gameFound.isPersisted() ,
 				"The game is inactive");
 		return gameFound;
@@ -105,7 +101,7 @@ public class GameServiceImpl implements GameService {
 	public void updateStatusBy(Integer id, Status status) {
 		Game gameFound = this.gameRepository.findById(id).get();
 		Preconditions.checkNotNull(gameFound,
-				"No game linked to the given id was found");
+				"No game was found to be linked to the reported parameters");
 		Preconditions.checkArgument(gameFound.getStatus() != status ,
 				"The status entered is already assigned");
 		this.gameRepository.updateStatusBy(id, status);
@@ -113,9 +109,7 @@ public class GameServiceImpl implements GameService {
 	
 	@Override
 	public Game excludeBy(Integer id) {
-		Game gameFound = gameRepository.findById(id).get();
-		Preconditions.checkNotNull(gameFound,
-				"No game linked to the given id was found");
+		Game gameFound = searchBy(id);
 		int qtyOfBoundGenerations = genreGameRepository.countByGame(id);
 		Preconditions.checkArgument(!(qtyOfBoundGenerations >= 1),
 				"There are genres linked to informed play");
@@ -129,20 +123,20 @@ public class GameServiceImpl implements GameService {
 		Optional<Enterprise> optionalEnterprise = enterpriseRepository
 				.findById(gameRequestDto.getEnterprise().getId());
 		Preconditions.checkNotNull(optionalEnterprise.isPresent(),
-				"No enterprise found linked to the parameters");
+				"No enterprise was found to be linked to the reported parameters");
 		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.isActive(),
-				"The entered enterprise is inactive");
+				"The enterprise is inactive");
 		return enterpriseFound;
 	}
 	
 	private Genre getGenreBy(Integer idDoGenero) {
 		Optional<Genre> optionalGenre = genreRepository.findById(idDoGenero);
 		Preconditions.checkNotNull(optionalGenre.isPresent(),
-				"No genre was found linked to the given parameters");
+				"No genre was found to be linked to the reported parameters");
 		Genre genreFound = optionalGenre.get();
 		Preconditions.checkArgument(genreFound.isActive(),
-				"The entered genre is inactive");
+				"The genre is inactive");
 		return genreFound;
 	}
 	
