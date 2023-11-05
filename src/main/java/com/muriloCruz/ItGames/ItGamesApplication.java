@@ -21,7 +21,7 @@ public class ItGamesApplication {
 	public CommandLineRunner commandLineRunner() {
 		return args -> {
 			
-			System.out.println("Subiu");
+			System.out.println("The system started");
 		};
 	}
 
