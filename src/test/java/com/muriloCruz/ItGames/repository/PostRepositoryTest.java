@@ -2,6 +2,7 @@ package com.muriloCruz.ItGames.repository;
 
 import com.muriloCruz.ItGames.entity.*;
 import com.muriloCruz.ItGames.entity.enums.Availability;
+import com.muriloCruz.ItGames.entity.enums.Role;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,7 @@ class PostRepositoryTest {
                 (1, "MurilusGame", "description", Instant.now(),
                         Status.A, "url", enterpriseTest, null);
         User userTest = new User(1, "Murilo", "123", "lil@gmail.com",
-                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null);
+                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null, Role.USER);
         Post postTest = new Post(1, "description", BigDecimal.TEN, Availability.OPEN,
                 Status.A, gameTest, userTest, Instant.now(), "image");
         Post postTest2 = new Post(1, "description", BigDecimal.ONE, Availability.OPEN,

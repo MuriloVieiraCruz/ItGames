@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceProxy implements UserService{
 
     @Autowired
-    @Qualifier("userServiceProxy")
+    @Qualifier("userServiceImpl")
     private UserService service;
 
     @Override

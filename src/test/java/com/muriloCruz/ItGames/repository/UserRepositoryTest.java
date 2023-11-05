@@ -2,6 +2,7 @@ package com.muriloCruz.ItGames.repository;
 
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.User;
+import com.muriloCruz.ItGames.entity.enums.Role;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,7 @@ class UserRepositoryTest {
     @BeforeEach
     public void setUp() {
         User user = new User(null, "Murilo", "123", "lil@gmail.com",
-                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null);
+                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null, Role.USER);
         entityManager.persist(user);
     }
 

@@ -3,6 +3,7 @@ package com.muriloCruz.ItGames.service.impl;
 import com.muriloCruz.ItGames.dto.UserRequestDto;
 import com.muriloCruz.ItGames.dto.UserSavedDto;
 import com.muriloCruz.ItGames.entity.User;
+import com.muriloCruz.ItGames.entity.enums.Role;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.PostRepository;
 import com.muriloCruz.ItGames.repository.UserRepository;
@@ -52,7 +53,7 @@ class UserServiceImplTest {
     @BeforeEach
     public void setUp() {
         userTest = new User(1, "lil@gmail.com", "123", "Murilo",
-                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>());
+                "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>(), Role.USER);
         userTest2 = new UserSavedDto(1, "lil@gmail.com", "123", "Murilo Test",
                 "780.476.330-15", Instant.now());
     }
@@ -67,7 +68,7 @@ class UserServiceImplTest {
                     "780.476.330-15", Instant.now());
 
             userTest = new User(null, "lil@gmail.com", "123", "Murilo",
-                    "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>());
+                    "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>(), Role.USER);
 
             when(repository.save(userTest)).thenReturn(userTest);
 
@@ -156,7 +157,7 @@ class UserServiceImplTest {
         @DisplayName("Should list User from DB")
         void listUserCase1() {
             User userTest4 = new User(2, "loiola@gmail.com", "123", "Murilo",
-                    "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>());
+                    "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>(), Role.USER);
 
             List<User> userList = Arrays.asList(userTest, userTest4);
             Page<User> userPage = new PageImpl<>(userList, PageRequest.of(0, userList.size()),  userList.size());
@@ -240,7 +241,7 @@ class UserServiceImplTest {
         @DisplayName("Should exclude User from DB")
         void excludeUserByIdCase1 () {
             User userTest1 = new User(1, "lil@gmail.com", "500000", "Murilo",
-                    "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>());
+                    "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, new ArrayList<>(), Role.USER);
 
             when(repository.findById(userTest1.getId())).thenReturn(Optional.ofNullable(userTest1));
             User deletedUser = service.excludeBy(userTest1.getId());

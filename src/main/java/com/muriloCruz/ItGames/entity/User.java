@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.muriloCruz.ItGames.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
@@ -78,6 +79,11 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
+
+    @Enumerated(value = EnumType.STRING)
+    @NotNull(message = "The role is required")
+    @Column(name = "role")
+    private Role role;
 
     public User() {
         this.posts = new ArrayList<>();

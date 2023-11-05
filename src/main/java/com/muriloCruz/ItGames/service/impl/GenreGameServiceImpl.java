@@ -6,6 +6,7 @@ import com.muriloCruz.ItGames.repository.GenreRepository;
 import com.muriloCruz.ItGames.service.GameService;
 import com.muriloCruz.ItGames.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
@@ -22,9 +23,11 @@ import java.util.Optional;
 public class GenreGameServiceImpl implements GenreGameService {
 	
 	@Autowired
+	@Qualifier("genreServiceImpl")
 	private GenreService genreService;
 	
 	@Autowired
+	@Qualifier("gameServiceImpl")
 	private GameService gameService;
 	
 	@Autowired

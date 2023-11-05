@@ -7,6 +7,7 @@ import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.Post;
 import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Availability;
+import com.muriloCruz.ItGames.entity.enums.Role;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.GameRepository;
 import com.muriloCruz.ItGames.repository.PostRepository;
@@ -53,7 +54,7 @@ class PostServiceImplTest {
     GameRepository gameRepository;
 
     User userTest = new User(1, "lil@gmail.com", "123", "Murilo",
-            "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null);
+            "780.476.330-15", Status.A, Instant.now(), Instant.now(), null, null, Role.USER);
 
     Enterprise enterpriseTest = new Enterprise(1, "MuriloEnterprise", Status.A);
 
