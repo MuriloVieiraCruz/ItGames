@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -52,6 +53,18 @@ public class JwtTokenManager {
     public Date extractValidity(String generatedToken) {
         Claims details = extractDetailsFrom(generatedToken);
         return details.getExpiration();
+    }
+
+    public boolean isExpired(String generatedToken) {
+        Date valid = extractValidity(generatedToken);
+        return valid.before(new Date());
+    }
+
+    public boolean isValid(String generatedToken, UserDetails credencial) {
+        String login = extractLoginFrom(generatedToken);
+        boolean isLoginValid = login.equals(credencial.getUsername());
+        boolean isValid = !isExpired(generatedToken);
+        return isLoginValid && isValid;
     }
 
 }
