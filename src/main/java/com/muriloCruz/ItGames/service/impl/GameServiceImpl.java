@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.repository.*;
+import com.muriloCruz.ItGames.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class GameServiceImpl implements GameService {
 	private GameRepository gameRepository;
 	
 	@Autowired
-	private EnterpriseRepository enterpriseRepository;
+	private EnterpriseService enterpriseService;
 
 	@Autowired
 	private PostRepository postRepository;
@@ -66,8 +67,7 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public Game update(GameSavedDto gameSavedDto) {
-		Enterprise enterpriseFound = enterpriseRepository
-				.findById(gameSavedDto.getEnterprise().getId()).get();
+		Enterprise enterpriseFound = enterpriseService.searchBy(gameSavedDto.getEnterprise().getId());
 		Game gameFound = searchBy(gameSavedDto.getId());
 		gameFound.setName(gameSavedDto.getName());
 		gameFound.setDescription(gameSavedDto.getDescription());
@@ -99,7 +99,7 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Game gameFound = this.gameRepository.findById(id).get();
+		Game gameFound = this.searchBy(id);
 		Preconditions.checkNotNull(gameFound,
 				"No game was found to be linked to the reported parameters");
 		Preconditions.checkArgument(gameFound.getStatus() != status ,
@@ -120,11 +120,10 @@ public class GameServiceImpl implements GameService {
 	}	
 	
 	private Enterprise getEnterpriseBy(GameRequestDto gameRequestDto) {
-		Optional<Enterprise> optionalEnterprise = enterpriseRepository
-				.findById(gameRequestDto.getEnterprise().getId());
-		Preconditions.checkNotNull(optionalEnterprise.isPresent(),
+		Enterprise enterpriseFound = enterpriseService
+				.searchBy(gameRequestDto.getEnterprise().getId());
+		Preconditions.checkNotNull(enterpriseFound,
 				"No enterprise was found to be linked to the reported parameters");
-		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.isActive(),
 				"The enterprise is inactive");
 		return enterpriseFound;
@@ -141,15 +140,15 @@ public class GameServiceImpl implements GameService {
 	}
 	
 	private void validateDuplication(List<GenreGameRequestDto> generoDoJogoDtoList) {
-		for(GenreGameRequestDto genreGame: generoDoJogoDtoList) {
-			int amountDuplicated = 0;
-			for(GenreGameRequestDto otherGenreGameDto: generoDoJogoDtoList) {
-				if (genreGame.getGenreId().equals(otherGenreGameDto.getGenreId())) {
-					amountDuplicated++;
-				}
-			}
-			Preconditions.checkArgument(amountDuplicated >= 1,
-					"There are duplicate genres in the list");
-		}
+
+		generoDoJogoDtoList.stream()
+				.forEach(genreGame -> {
+					long amountDuplicated = generoDoJogoDtoList.stream()
+							.filter(otherGenreGame -> genreGame.getGenreId().equals(otherGenreGame.getGenreId()))
+							.count();
+
+					Preconditions.checkArgument(amountDuplicated >= 1,
+							"There are duplicate genres in the list");
+				});
 	}
 }

@@ -45,9 +45,4 @@ public interface UserService {
 			Integer id,
 			@NotNull(message = "The status is required")
 			Status status);
-
-	public User excludeBy(
-			@Positive(message = "The ID must be greater than 0")
-			@NotNull(message = "The ID is required")
-			Integer id);
 }

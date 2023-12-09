@@ -70,20 +70,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		Preconditions.checkArgument(optionalUser.isPresent(),
+		User userFound = this.searchBy(id);
+		Preconditions.checkNotNull(userFound,
 				"No user was found to be linked to the reported parameters");
-		User userFound = optionalUser.get();
 		Preconditions.checkArgument(userFound.getStatus() != status ,
 				"The status entered is already assigned");
 		this.userRepository.updateStatusBy(id, status);
 	}
-
-	@Override
-	public User excludeBy(Integer id) {
-		User userFound = searchBy(id);
-		this.userRepository.deleteById(userFound.getId());
-		return userFound;
-	}
-
 }

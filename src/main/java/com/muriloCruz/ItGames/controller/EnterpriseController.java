@@ -33,7 +33,7 @@ public class EnterpriseController {
         Preconditions.checkArgument(!enterprise.isPersisted(),
                 "The enterprise cannot have id in the insert");
         Enterprise enterpriseSave = service.insert(enterprise);
-        return ResponseEntity.created(URI.create("/enterprise/id" + enterpriseSave.getId())).build();
+        return ResponseEntity.created(URI.create("/enterprise/id/" + enterpriseSave.getId())).build();
     }
 
     @PutMapping

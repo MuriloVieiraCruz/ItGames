@@ -52,10 +52,9 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Optional<Genre> optionalGenre = genreRepository.findById(id);
-		Preconditions.checkArgument(optionalGenre.isPresent(),
+		Genre genreFound = this.searchBy(id);
+		Preconditions.checkNotNull(genreFound,
 				"No gender was found to be linked to the reported parameters");
-		Genre genreFound = optionalGenre.get();
 		Preconditions.checkArgument(genreFound.getStatus() != status ,
 				"The status entered is already assigned");
 		this.genreRepository.updateStatusBy(id, status);

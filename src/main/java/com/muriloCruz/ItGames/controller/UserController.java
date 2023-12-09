@@ -69,10 +69,4 @@ public class UserController {
         Page<User> userList = service.listBy(login, pagination);
         return ResponseEntity.ok(converter.toJsonList(userList));
     }
-
-    @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> excludeBy(@PathVariable("id") Integer id) {
-        User userExclude = service.excludeBy(id);
-        return ResponseEntity.ok(converter.toJsonMap(userExclude));
-    }
 }

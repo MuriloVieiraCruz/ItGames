@@ -25,6 +25,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	@Override
 	public Enterprise insert(Enterprise enterprise) {
 		Enterprise enterpriseFound = enterpriseRepository.searchBy(enterprise.getName());
+
 		if (enterpriseFound != null) {
 				Preconditions.checkArgument(enterprise.isPersisted() && enterpriseFound.equals(enterprise),
 						"There is already have a enterprise registered with this name");
@@ -36,11 +37,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
-
-		Preconditions.checkArgument(optionalEnterprise.isPresent(),
+		Enterprise enterpriseFound = this.searchBy(id);
+		Preconditions.checkNotNull(enterpriseFound,
 				"No enterprise was found to be linked to the reported parameters");
-		Enterprise enterpriseFound = optionalEnterprise.get();
 		Preconditions.checkArgument(enterpriseFound.getStatus() != status ,
 				"The status entered is already assigned");
 		this.enterpriseRepository.updateStatusBy(id, status);
@@ -49,7 +48,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	@Override
 	public Enterprise searchBy(Integer id) {
 		Optional<Enterprise> optionalEnterprise = enterpriseRepository.findById(id);
-
 		Preconditions.checkArgument(optionalEnterprise.isPresent(),
 				"No enterprise was found to be linked to the reported parameters");
 		Enterprise enterpriseFound = optionalEnterprise.get();

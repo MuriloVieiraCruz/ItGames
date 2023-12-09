@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
 		postFound.setAvailability(postSavedDto.getAvailability());
 		postFound.setPrice(postSavedDto.getPrice());
 		postFound.setGame(game);
-		Post postUpdated = postRepository.saveAndFlush(postFound);
+		Post postUpdated = postRepository.save(postFound);
 		return postUpdated;
 	}
 
@@ -77,10 +77,9 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void updateStatusBy(Integer id, Status status) {
-		Optional<Post> optionalService = this.postRepository.findById(id);
-		Preconditions.checkArgument(optionalService.isPresent(),
+		Post postFound = this.searchBy(id);
+		Preconditions.checkNotNull(postFound,
 				"No service was found linked to the id entered");
-		Post postFound = optionalService.get();
 		Preconditions.checkArgument(postFound.getStatus() != status ,
 				"The entered status is already assigned");
 		this.postRepository.updateStatusBy(id, status);
