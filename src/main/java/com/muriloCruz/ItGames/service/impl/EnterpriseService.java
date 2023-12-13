@@ -37,7 +37,8 @@ public class EnterpriseService {
 		return null;
 	}
 
-	public void updateStatusBy(Integer id, Status status) {
+	public void updateStatusBy(
+			Integer id, Status status) {
 		Enterprise enterpriseFound = this.searchBy(id);
 		Preconditions.checkNotNull(enterpriseFound,
 				"No enterprise was found to be linked to the reported parameters");
@@ -69,7 +70,7 @@ public class EnterpriseService {
 		int numberLinkedGames = gameRepository.countGamesLinkedToThe(id);
 		Preconditions.checkArgument(!(numberLinkedGames >= 1),
 				"This enterprise is linked to '" + numberLinkedGames + "' games");
-		this.enterpriseRepository.deleteById(enterpriseFound.getId());
+		this.enterpriseRepository.deleteById(Math.toIntExact(enterpriseFound.getId()));
 		return enterpriseFound;
 	}
 

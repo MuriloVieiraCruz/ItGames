@@ -28,7 +28,7 @@ public class Game {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer id;
+    private Long id;
 
     @Size(max = 100, min = 3, message = "The name must contain between 3 and 100 characters")
     @NotBlank(message = "The name cannot be null")

@@ -27,7 +27,7 @@ public class PostRequestDto {
 
 	@Positive(message = "Game ID must be greater than 0")
 	@NotNull(message = "Game ID is required")
-	private Integer gameId;
+	private Long gameId;
 
 	@NotBlank(message = "Image URL is required")
 	private String imageUrl;

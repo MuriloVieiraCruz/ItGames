@@ -36,7 +36,7 @@ public class User {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")  
-    private Integer id;
+    private Long id;
 
     @Size(max = 250, min = 3, message = "The name must contain between 3 and 250 characters")
     @Email(message = "The e-mail is in an invalid format")

@@ -18,7 +18,7 @@ public class GameSavedDto {
 
 	@Positive(message = "The ID must be positive")
 	@NotNull(message = "The ID is required")
-	private Integer id;
+	private Long id;
 
 	@Size(max = 100, min = 3, message = "The name must contain between 3 and 100 characters")
 	@NotBlank(message = "Name is required")

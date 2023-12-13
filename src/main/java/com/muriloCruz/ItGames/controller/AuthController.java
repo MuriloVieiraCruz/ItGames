@@ -3,6 +3,7 @@ package com.muriloCruz.ItGames.controller;
 import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.entity.TokenSolicitation;
 import com.muriloCruz.ItGames.security.JwtTokenManager;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping
-    public ResponseEntity<?> logIn(@RequestBody TokenSolicitation tokenSolicitation){
+    public ResponseEntity<?> logIn(@RequestBody @Valid TokenSolicitation tokenSolicitation){
         this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(tokenSolicitation.getLogin(), tokenSolicitation.getPassword()));
 //        Preconditions.checkArgument(AuthenticatedToken.isAuthenticated(),

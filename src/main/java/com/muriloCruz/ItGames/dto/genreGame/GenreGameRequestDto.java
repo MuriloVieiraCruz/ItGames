@@ -13,7 +13,7 @@ public class GenreGameRequestDto {
 
 	@NotNull(message = "The gender id is required")
 	@Positive(message = "The gender id must be greater than 0")
-	private Integer genreId;
+	private Long genreId;
 	
 	@NotNull(message = "The type of gender association is required")
 	private TypeAssociation typeAssociation;

@@ -8,6 +8,8 @@ import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.impl.EnterpriseService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -30,13 +32,15 @@ public class EnterpriseController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> insert(@RequestBody @Valid EnterpriseRequest enterprise) {
+    @Valid
+    public ResponseEntity<?> insert(@RequestBody EnterpriseRequest enterprise) {
         Enterprise enterpriseSave = service.insert(enterprise);
         return ResponseEntity.created(URI.create("/enterprise/id/" + enterpriseSave.getId())).build();
     }
 
     @PutMapping
     @Transactional
+    @Valid
     public ResponseEntity<?> update(@RequestBody EnterpriseSaved enterprise) {
         Enterprise enterpriseUpdate = service.update(enterprise);
         return ResponseEntity.ok(converter.toJsonMap(enterpriseUpdate));
@@ -44,21 +48,29 @@ public class EnterpriseController {
 
     @PatchMapping("/id/{id}/status/{status}")
     @Transactional
-    public ResponseEntity<?> updateStatusBy(@PathVariable("id") Integer id, @PathVariable("status") Status status) {
+    @Valid
+    public ResponseEntity<?> updateStatusBy(@PathVariable("id")  Integer id, @PathVariable("status") Status status) {
         this.service.updateStatusBy(id, status);
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> searchBy(@PathVariable("id") Integer id) {
+    @Valid
+    public ResponseEntity<?> searchBy(
+            @PathVariable("id")
+            @NotNull(message = "The ID is required")
+            Integer id) {
         Enterprise enterpriseFound = service.searchBy(id);
         return ResponseEntity.ok(converter.toJsonMap(enterpriseFound));
     }
 
     @GetMapping
+    @Valid
     public ResponseEntity<?> listBy(
-            @RequestParam("name") String name,
+            @RequestParam("name")
+            @NotBlank(message = "The name is required")
+            String name,
             @RequestParam("page")Optional<Integer> page) {
         Pageable pagination = null;
         if (page.isPresent()) {
@@ -73,7 +85,11 @@ public class EnterpriseController {
 
     @DeleteMapping("id/{id}")
     @Transactional
-    public ResponseEntity<?> excludeBy(@PathVariable("id") Integer id) {
+    @Valid
+    public ResponseEntity<?> excludeBy(
+            @PathVariable("id")
+            @NotNull(message = "The ID is required")
+            Integer id) {
         Enterprise enterpriseExclude = service.excludeBy(id);
 
         return ResponseEntity.ok(converter.toJsonMap(enterpriseExclude));

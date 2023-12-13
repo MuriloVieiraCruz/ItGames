@@ -26,7 +26,7 @@ public class Post {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "The description cannot be null")
     @Column(name = "description")

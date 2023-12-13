@@ -30,7 +30,7 @@ public class Enterprise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     
     @Size(max = 100, min = 3, message = "The name must contain between 3 and 200 characters")
     @NotNull(message = "The name is required")
