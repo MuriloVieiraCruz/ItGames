@@ -2,9 +2,8 @@ package com.muriloCruz.ItGames.service.proxy;
 
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.impl.GenreService;
+import com.muriloCruz.ItGames.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

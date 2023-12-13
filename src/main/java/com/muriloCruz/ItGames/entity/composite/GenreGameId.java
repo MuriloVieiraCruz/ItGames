@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class GenreGameId {
 
 	@Column(name = "genre_id")
-	private Integer genreId;
+	private Long genreId;
 	
 	@Column(name = "game_id")
-	private Integer gameId;
+	private Long gameId;
 }

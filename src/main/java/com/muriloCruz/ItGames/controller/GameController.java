@@ -5,10 +5,12 @@ import com.muriloCruz.ItGames.dto.game.GameSavedDto;
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.GenreGame;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.impl.GameService;
+import com.muriloCruz.ItGames.service.GameService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,40 +32,63 @@ public class GameController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> insert(@RequestBody GameRequestDto gameRequestDto) {
+    @Valid
+    public ResponseEntity<?> insert(
+            @RequestBody
+            GameRequestDto gameRequestDto) {
         Game gameSave = service.insert(gameRequestDto);
         return ResponseEntity.created(URI.create("game/id/" + gameSave.getId())).build();
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<?> update(@RequestBody GameSavedDto gameSavedDto) {
+    @Valid
+    public ResponseEntity<?> update(
+            @RequestBody
+            GameSavedDto gameSavedDto) {
         Game gameUpdate = service.update(gameSavedDto);
         return ResponseEntity.ok(convert(gameUpdate));
     }
 
     @PatchMapping("/id/{id}/status/{status}")
     @Transactional
-    public ResponseEntity<?> updateStatusBy(@PathVariable("id") Integer id, @PathVariable("status") Status status) {
+    @Valid
+    public ResponseEntity<?> updateStatusBy(
+            @PathVariable("id")
+            @NotNull(message = "The ID is required")
+            Long id,
+            @PathVariable("status")
+            @NotNull(message = "The status is required")
+            Status status) {
         service.updateStatusBy(id, status);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> searchBy(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> searchBy(
+            @PathVariable("id")
+            @NotNull(message = "The ID is required")
+            Long id) {
         Game gameFound = service.searchBy(id);
         return ResponseEntity.ok(convert(gameFound));
     }
 
     @GetMapping
-    public ResponseEntity<?> listBy(@RequestParam("name") String name, @RequestParam("genreId") Integer genreId ,@RequestParam("page") Optional<Integer> page) {
+    @Valid
+    public ResponseEntity<?> listBy(
+            @RequestParam("name")
+            @NotBlank(message = "The name is required")
+            String name,
+            @RequestParam("genreId")
+            @NotNull(message = "The genre id is required")
+            Long genreId ,
+            @RequestParam("page")
+            Optional<Integer> page) {
+
         Pageable pagination = null;
 
-        if (page .isPresent()) {
-            pagination = PageRequest.of(page.get(), 20);
-        } else {
-            pagination = PageRequest.of(0, 20);
-        }
+        pagination = page.map(integer -> PageRequest.of(integer, 20))
+                .orElseGet(() -> PageRequest.of(0, 20));
 
         Page<Game> pages = service.listBy(name, genreId, pagination);
 
@@ -82,8 +107,8 @@ public class GameController {
     }
 
     @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> excludeBy(@PathVariable("id") Integer id) {
-        Game gameExclude = service.excludeBy(id);
+    public ResponseEntity<?> excludeBy(@PathVariable("id") Long id) {
+        Game gameExclude = service.deleteBy(id);
         return ResponseEntity.ok(mapConverter.toJsonMap(gameExclude));
     }
 

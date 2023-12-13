@@ -1,4 +1,4 @@
-package com.muriloCruz.ItGames.service.impl;
+package com.muriloCruz.ItGames.service;
 
 import java.math.BigDecimal;
 

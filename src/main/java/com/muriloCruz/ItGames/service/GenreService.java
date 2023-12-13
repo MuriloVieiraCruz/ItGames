@@ -1,4 +1,4 @@
-package com.muriloCruz.ItGames.service.impl;
+package com.muriloCruz.ItGames.service;
 
 import com.muriloCruz.ItGames.repository.GenreGameRepository;
 import com.muriloCruz.ItGames.repository.GenreRepository;
@@ -32,7 +32,7 @@ public class GenreService {
 		return genreSaved;
 	}
 	
-	public Genre searchBy(Integer id) {
+	public Genre searchBy(Long id) {
 		Optional<Genre> optionalGenre = genreRepository.findById(id);
 		Preconditions.checkArgument(optionalGenre.isPresent(),
 				"No genre was found linked to the parameters entered");
@@ -46,7 +46,7 @@ public class GenreService {
 		return this.genreRepository.listBy(name, pagination);
 	}
 	
-	public void updateStatusBy(Integer id, Status status) {
+	public void updateStatusBy(Long id, Status status) {
 		Genre genreFound = this.searchBy(id);
 		Preconditions.checkNotNull(genreFound,
 				"No gender was found to be linked to the reported parameters");
@@ -55,7 +55,7 @@ public class GenreService {
 		this.genreRepository.updateStatusBy(id, status);
 	}
 	
-	public Genre excludeBy(Integer id) {
+	public Genre excludeBy(Long id) {
 		Genre genreFound = searchBy(id);
 		int numberLinkedGenres = genreGameRepository.countByGenre(id);
 		Preconditions.checkArgument(!(numberLinkedGenres >= 1),

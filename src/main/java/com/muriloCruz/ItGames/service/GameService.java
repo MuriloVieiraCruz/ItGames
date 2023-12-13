@@ -1,4 +1,4 @@
-package com.muriloCruz.ItGames.service.impl;
+package com.muriloCruz.ItGames.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -78,36 +77,32 @@ public class GameService {
 		return gameSaved;
 	}
 
-	
-	public Page<Game> listBy(String name, Integer genreId, Pageable pagination) {
+	public void updateStatusBy(Long id, Status status) {
+		Game gameFound = this.searchBy(id);
+		Preconditions.checkNotNull(gameFound,
+				"No game was found linked to the reported parameters");
+		Preconditions.checkArgument(gameFound.getStatus() != status ,
+				"The status entered is already assigned");
+		this.gameRepository.updateStatusBy(id, status);
+	}
+
+	public Game searchBy(Long id) {
+		Game gameFound = gameRepository.searchBy(id);
+		Preconditions.checkNotNull(gameFound,
+				"No game was found linked to the reported parameters");
+		Preconditions.checkArgument(gameFound.isPersisted() ,
+				"The game is inactive");
+		return gameFound;
+	}
+
+	public Page<Game> listBy(String name, Long genreId, Pageable pagination) {
 		Preconditions.checkArgument(name != null || genreId != null,
 				"You must provide at least one name or gender for the list");
 		Genre genreFound = getGenreBy(genreId);
 		return this.gameRepository.listBy(name, genreFound, pagination);
 	}
 
-	
-	public Game searchBy(Integer id) {
-		Game gameFound = gameRepository.searchBy(id);
-		Preconditions.checkNotNull(gameFound,
-				"No game was found to be linked to the reported parameters");
-		Preconditions.checkArgument(gameFound.isPersisted() ,
-				"The game is inactive");
-		return gameFound;
-	}
-
-	
-	public void updateStatusBy(Integer id, Status status) {
-		Game gameFound = this.searchBy(id);
-		Preconditions.checkNotNull(gameFound,
-				"No game was found to be linked to the reported parameters");
-		Preconditions.checkArgument(gameFound.getStatus() != status ,
-				"The status entered is already assigned");
-		this.gameRepository.updateStatusBy(id, status);
-	}
-	
-	
-	public Game excludeBy(Integer id) {
+	public Game deleteBy(Long id) {
 		Game gameFound = searchBy(id);
 		int qtyOfBoundGenerations = genreGameRepository.countByGame(id);
 		Preconditions.checkArgument(!(qtyOfBoundGenerations >= 1),
@@ -128,7 +123,7 @@ public class GameService {
 		return enterpriseFound;
 	}
 	
-	private Genre getGenreBy(Integer idDoGenero) {
+	private Genre getGenreBy(Long idDoGenero) {
 		Optional<Genre> optionalGenre = genreRepository.findById(idDoGenero);
 		Preconditions.checkNotNull(optionalGenre.isPresent(),
 				"No genre was found to be linked to the reported parameters");

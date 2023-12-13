@@ -38,5 +38,5 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
 			"UPDATE Genre g "
 			+ "SET g.status = :status "
 			+ "WHERE g.id = :id")
-	public void updateStatusBy(Integer id, Status status);
+	public void updateStatusBy(Long id, Status status);
 }

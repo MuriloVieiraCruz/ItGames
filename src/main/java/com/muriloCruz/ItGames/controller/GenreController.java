@@ -3,10 +3,9 @@ package com.muriloCruz.ItGames.controller;
 import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.impl.GenreService;
+import com.muriloCruz.ItGames.service.GenreService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -73,7 +72,7 @@ public class GenreController {
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<?> excludeBy(@PathVariable("id") Integer id) {
-        Genre genreExclude = service.excludeBy(id);
+        Genre genreExclude = service.deleteBy(id);
         return ResponseEntity.ok(converter.toJsonMap(genreExclude));
     }
 }

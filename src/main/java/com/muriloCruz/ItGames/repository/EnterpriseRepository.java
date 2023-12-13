@@ -17,6 +17,12 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 			+ "FROM Enterprise e "
 			+ "WHERE Upper(e.cnpj) = Upper(:cnpj)")
 	public Enterprise searchBy(String cnpj);
+
+	@Query(value =
+			"SELECT e "
+			+ "FROM Enterprise e "
+			+ "WHERE e.id = :idEnterprise")
+	public Enterprise searchBy(Long idEnterprise);
 	
 	@Query(value = 
 			"SELECT e "
@@ -35,6 +41,10 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 			"UPDATE Enterprise e "
 			+ "SET e.status = :status "
 			+ "WHERE e.id = :id")
-	public void updateStatusBy(Integer id, Status status);
+	public void updateStatusBy(Long id, Status status);
+
+	@Query(value = "DELETE FROM Enterprise e "
+			+ "WHERE e.id = :enterpriseId")
+	public void deleteBy(Long enterpriseId);
 
 }

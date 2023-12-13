@@ -1,9 +1,8 @@
-package com.muriloCruz.ItGames.service.impl;
+package com.muriloCruz.ItGames.service;
 
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.enums.TypeAssociation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;

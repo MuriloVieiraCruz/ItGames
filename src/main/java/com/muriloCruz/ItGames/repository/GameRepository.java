@@ -23,7 +23,7 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             + "JOIN FETCH gg.genre ge "
             + "JOIN FETCH g.enterprise "
             + "WHERE g.id = :id")
-    public Game searchBy(Integer id);
+    public Game searchBy(Long id);
     
     @Query(value =
             "SELECT g "
@@ -53,11 +53,15 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             "UPDATE Game g "
             + "SET g.status = :status "
             + "WHERE g.id = :id")
-    public void updateStatusBy(Integer id, Status status);
+    public void updateStatusBy(Long id, Status status);
 
     @Query(value =
             "SELECT Count(g) "
             + "FROM Game g "
             + "WHERE g.enterprise.id = :enterpriseId")
-    public int countGamesLinkedToThe(int enterpriseId);
+    public int countGamesLinkedToThe(Long enterpriseId);
+
+    @Query(value = "DELETE FROM Game g "
+            + "WHERE g.id = :gameId")
+    public void deleteBy(Long gameId);
 }

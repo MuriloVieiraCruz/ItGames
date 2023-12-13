@@ -4,9 +4,8 @@ import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.GenreGame;
 import com.muriloCruz.ItGames.entity.enums.TypeAssociation;
-import com.muriloCruz.ItGames.service.impl.GenreGameService;
+import com.muriloCruz.ItGames.service.GenreGameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service

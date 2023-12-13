@@ -1,4 +1,4 @@
-package com.muriloCruz.ItGames.service.impl;
+package com.muriloCruz.ItGames.service;
 
 import com.muriloCruz.ItGames.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
