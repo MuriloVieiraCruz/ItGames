@@ -3,7 +3,7 @@ package com.muriloCruz.ItGames.controller;
 import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.GenreService;
+import com.muriloCruz.ItGames.service.impl.GenreService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,7 +24,6 @@ public class GenreController {
     private MapConverter converter;
 
     @Autowired
-    @Qualifier("genreServiceProxy")
     private GenreService service;
 
     @PostMapping

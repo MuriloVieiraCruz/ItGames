@@ -1,11 +1,13 @@
 package com.muriloCruz.ItGames.controller;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+import com.muriloCruz.ItGames.dto.enterprise.EnterpriseRequest;
+import com.muriloCruz.ItGames.dto.enterprise.EnterpriseSaved;
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.EnterpriseService;
+import com.muriloCruz.ItGames.service.impl.EnterpriseService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -24,24 +26,19 @@ public class EnterpriseController {
     private MapConverter converter;
 
     @Autowired
-    @Qualifier("enterpriseServiceProxy")
     private EnterpriseService service;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> insert(@RequestBody Enterprise enterprise) {
-        Preconditions.checkArgument(!enterprise.isPersisted(),
-                "The enterprise cannot have id in the insert");
+    public ResponseEntity<?> insert(@RequestBody @Valid EnterpriseRequest enterprise) {
         Enterprise enterpriseSave = service.insert(enterprise);
         return ResponseEntity.created(URI.create("/enterprise/id/" + enterpriseSave.getId())).build();
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<?> update(@RequestBody Enterprise enterprise) {
-        Preconditions.checkArgument(enterprise.isPersisted(),
-                "The enterprise must have id in the insert");
-        Enterprise enterpriseUpdate = service.insert(enterprise);
+    public ResponseEntity<?> update(@RequestBody EnterpriseSaved enterprise) {
+        Enterprise enterpriseUpdate = service.update(enterprise);
         return ResponseEntity.ok(converter.toJsonMap(enterpriseUpdate));
     }
 

@@ -1,6 +1,7 @@
 package com.muriloCruz.ItGames.entity;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,20 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @Entity(name = "Game")
-@Table(name = "games")
+@Table(name = "game")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Game {
 
@@ -54,7 +42,7 @@ public class Game {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @NotNull(message = "The release date cannot be null")
     @Column(name = "release_date")
-    private Instant releaseDate;
+    private LocalDate releaseDate;
 
     @Enumerated(value = EnumType.STRING)
     @NotNull(message = "Game status is required")
@@ -63,6 +51,7 @@ public class Game {
 
     @NotBlank(message = "Image url is required")
     @Column(name = "image_url")
+    @Lob
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

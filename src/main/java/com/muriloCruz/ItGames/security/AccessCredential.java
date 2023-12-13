@@ -20,7 +20,7 @@ public class AccessCredential implements UserDetails {
     private List<GrantedAuthority> permissions;
 
     public AccessCredential(User user) {
-        this.login = user.getLogin();
+        this.login = user.getEmail();
         this.password = user.getPassword();
         this.permissions = new ArrayList<GrantedAuthority>();
         this.permissions.add(new SimpleGrantedAuthority(user.getRole().toString()));

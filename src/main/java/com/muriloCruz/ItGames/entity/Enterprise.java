@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @Entity(name = "Enterprise")
-@Table(name = "enterprises")
+@Table(name = "enterprise")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Enterprise {
 
@@ -41,6 +42,11 @@ public class Enterprise {
     @NotNull(message = "The status is required")
     @Column(name = "status")
     private Status status;
+
+    @Size(max = 14, min = 14, message = "The cnpj must contain between 3 and 200 characters")
+    @NotBlank(message = "The status is required")
+    @Column(name = "cnpj")
+    private String cnpj;
     
     public Enterprise() {
     	this.status = Status.A; 

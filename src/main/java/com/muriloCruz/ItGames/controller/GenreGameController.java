@@ -1,11 +1,10 @@
 package com.muriloCruz.ItGames.controller;
 
-import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.GenreGame;
 import com.muriloCruz.ItGames.entity.enums.TypeAssociation;
-import com.muriloCruz.ItGames.service.GenreGameService;
+import com.muriloCruz.ItGames.service.impl.GenreGameService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +18,6 @@ import java.net.URI;
 public class GenreGameController {
 
     @Autowired
-    @Qualifier("genreGameServiceProxy")
     private GenreGameService service;
 
     @Autowired

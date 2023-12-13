@@ -1,13 +1,11 @@
 package com.muriloCruz.ItGames.controller;
 
-import com.google.common.base.Preconditions;
-import com.muriloCruz.ItGames.dto.GameRequestDto;
-import com.muriloCruz.ItGames.dto.GameSavedDto;
+import com.muriloCruz.ItGames.dto.game.GameRequestDto;
+import com.muriloCruz.ItGames.dto.game.GameSavedDto;
 import com.muriloCruz.ItGames.entity.Game;
-import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.GenreGame;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.GameService;
+import com.muriloCruz.ItGames.service.impl.GameService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,7 +23,6 @@ import java.util.*;
 public class GameController {
 
     @Autowired
-    @Qualifier("gameServiceProxy")
     private GameService service;
 
     @Autowired

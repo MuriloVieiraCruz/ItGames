@@ -1,11 +1,10 @@
 package com.muriloCruz.ItGames.controller;
 
-import com.muriloCruz.ItGames.dto.UserRequestDto;
-import com.muriloCruz.ItGames.dto.UserSavedDto;
-import com.muriloCruz.ItGames.entity.Genre;
+import com.muriloCruz.ItGames.dto.user.UserRequestDto;
+import com.muriloCruz.ItGames.dto.user.UserSavedDto;
 import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.UserService;
+import com.muriloCruz.ItGames.service.impl.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,7 +22,6 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    @Qualifier("userServiceProxy")
     private UserService service;
 
     @Autowired

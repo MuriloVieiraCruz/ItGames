@@ -1,10 +1,10 @@
 package com.muriloCruz.ItGames.controller;
 
-import com.muriloCruz.ItGames.dto.PostRequestDto;
-import com.muriloCruz.ItGames.dto.PostSavedDto;
+import com.muriloCruz.ItGames.dto.post.PostRequestDto;
+import com.muriloCruz.ItGames.dto.post.PostSavedDto;
 import com.muriloCruz.ItGames.entity.Post;
 import com.muriloCruz.ItGames.entity.enums.Status;
-import com.muriloCruz.ItGames.service.PostService;
+import com.muriloCruz.ItGames.service.impl.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,6 @@ import java.util.*;
 public class ServiceController {
 
     @Autowired
-    @Qualifier("postServiceProxy")
     private PostService service;
 
     @Autowired

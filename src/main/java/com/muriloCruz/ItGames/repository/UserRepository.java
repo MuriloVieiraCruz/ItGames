@@ -17,19 +17,19 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query(value = 
 			"SELECT u "
 			+ "FROM User u "
-			+ "WHERE u.login = :login")
-	public User searchBy(String login);
+			+ "WHERE u.email = :email")
+	public User searchBy(String email);
 	
 	@Query(value = 
 			"SELECT u "
 			+ "FROM User u "
-			+ "WHERE Upper(u.login) LIKE Upper(%:login%) "
+			+ "WHERE Upper(u.email) LIKE Upper(%:email%) "
 			+ "AND u.status = 'A'",
 			countQuery = "SELECT u "
 					+ "FROM User u "
-					+ "WHERE Upper(u.login) LIKE Upper(%:login%) "
+					+ "WHERE Upper(u.email) LIKE Upper(%:email%) "
 					+ "AND u.status = 'A'")
-	public Page<User> listBy(String login, Pageable pagination);
+	public Page<User> listBy(String email, Pageable pagination);
 
 	@Modifying
 	@Transactional

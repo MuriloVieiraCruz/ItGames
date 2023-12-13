@@ -13,11 +13,12 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @Entity(name = "Post")
-@Table(name = "services")
+@Table(name = "post")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Post {
 
@@ -60,16 +61,17 @@ public class Post {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @NotNull(message = "The post date cannot be null")
     @Column(name = "post_date")
-    private Instant postDate;
+    private LocalDate postDate;
 
     @NotBlank(message = "Image url is required")
     @Column(name = "image_url")
+    @Lob
     private String imageUrl;
     
     public Post() {
     	this.status = Status.A; 
     	this.availability = Availability.OPEN;
-        this.postDate = Instant.now();
+        this.postDate = LocalDate.now();
     }
     
     @JsonIgnore

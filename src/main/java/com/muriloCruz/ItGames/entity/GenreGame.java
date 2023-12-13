@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "GenreGame")
-@Table(name = "genres_games")
+@Table(name = "genre_game")
 public class GenreGame {
 
 	@EmbeddedId

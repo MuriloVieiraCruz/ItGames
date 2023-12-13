@@ -15,8 +15,8 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 	@Query(value = 
 			"SELECT e "
 			+ "FROM Enterprise e "
-			+ "WHERE Upper(e.name) = Upper(:name)")
-	public Enterprise searchBy(String name);
+			+ "WHERE Upper(e.cnpj) = Upper(:cnpj)")
+	public Enterprise searchBy(String cnpj);
 	
 	@Query(value = 
 			"SELECT e "

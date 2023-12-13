@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @Entity(name = "Genre")
-@Table(name = "genres")
+@Table(name = "genre")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Genre {
 
