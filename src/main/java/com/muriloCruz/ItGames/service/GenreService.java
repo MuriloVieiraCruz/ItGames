@@ -1,5 +1,8 @@
 package com.muriloCruz.ItGames.service;
 
+import com.muriloCruz.ItGames.dto.genre.GenreRequest;
+import com.muriloCruz.ItGames.dto.genre.GenreSaved;
+import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.repository.GenreGameRepository;
 import com.muriloCruz.ItGames.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +25,20 @@ public class GenreService {
 	@Autowired
 	private GenreGameRepository genreGameRepository;
 	
-	public Genre insert(Genre genre) {
-		Genre genreFound = genreRepository.searchBy(genre.getName());
-		if (genreFound != null) {
-				Preconditions.checkArgument(genre.isPersisted() && genreFound.equals(genre),
-						"There is already a registered genre with this name");
-		}
-		Genre genreSaved = genreRepository.save(genre);
-		return genreSaved;
+	public Genre insert(GenreRequest genreRequest) {
+		Genre genre = new Genre();
+		genre.setName(genreRequest.getName());
+		validateDuplication(genre);
+        return genreRepository.save(genre);
 	}
-	
-	public Genre searchBy(Long id) {
-		Optional<Genre> optionalGenre = genreRepository.findById(id);
-		Preconditions.checkArgument(optionalGenre.isPresent(),
-				"No genre was found linked to the parameters entered");
-		Genre genreFound = optionalGenre.get();
-		Preconditions.checkArgument(genreFound.isActive(),
-				"The genre informed is inactive");
-		return genreFound;
+
+	public Genre update(GenreSaved genreSaved) {
+		Genre genre = genreRepository.searchBy(genreSaved.getId());
+		genre.setName(genreSaved.getName());
+		validateDuplication(genre);
+		return genreRepository.save(genre);
 	}
-	
-	public Page<Genre> listBy(String name, Pageable pagination) {
-		return this.genreRepository.listBy(name, pagination);
-	}
-	
+
 	public void updateStatusBy(Long id, Status status) {
 		Genre genreFound = this.searchBy(id);
 		Preconditions.checkNotNull(genreFound,
@@ -55,12 +48,34 @@ public class GenreService {
 		this.genreRepository.updateStatusBy(id, status);
 	}
 	
-	public Genre excludeBy(Long id) {
+	public Genre searchBy(Long id) {
+		Genre genreFound = genreRepository.searchBy(id);
+		Preconditions.checkNotNull(genreFound,
+				"No genre was found linked to the parameters entered");
+		Preconditions.checkArgument(genreFound.isActive(),
+				"The genre informed is inactive");
+		return genreFound;
+	}
+	
+	public Page<Genre> listBy(String name, Pageable pagination) {
+		return this.genreRepository.listBy(name, pagination);
+	}
+	
+	public Genre deleteBy(Long id) {
 		Genre genreFound = searchBy(id);
 		int numberLinkedGenres = genreGameRepository.countByGenre(id);
-		Preconditions.checkArgument(!(numberLinkedGenres >= 1),
+		Preconditions.checkArgument(numberLinkedGenres <= 1,
 				"This genre is linked to '" + numberLinkedGenres + "' games");
-		this.genreRepository.deleteById(genreFound.getId());
+		this.genreRepository.deleteBy(genreFound.getId());
 		return genreFound;
+	}
+
+	private void validateDuplication(Genre genre) {
+		Genre genreFound = genreRepository.searchBy(genre.getName());
+
+		if (genreFound != null) {
+			Preconditions.checkArgument(genre.isPersisted() && genreFound.equals(genre),
+					"There is already have a genre registered with this name");
+		}
 	}
 }

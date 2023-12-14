@@ -51,7 +51,6 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
                     + "ORDER BY g.nome")
     public Page<Game> listBy(String name, Optional<Long> genreId, Pageable pagination);
 
-    @Transactional
     @Modifying
     @Query(value =
             "UPDATE Game g "
@@ -65,6 +64,8 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             + "WHERE g.enterprise.id = :enterpriseId")
     public int countGamesLinkedToThe(Long enterpriseId);
 
+
+    @Modifying
     @Query(value = "DELETE FROM Game g "
             + "WHERE g.id = :gameId")
     public void deleteBy(Long gameId);

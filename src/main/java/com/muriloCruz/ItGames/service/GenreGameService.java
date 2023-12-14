@@ -23,7 +23,7 @@ public class GenreGameService {
 	@Autowired
 	private GenreGameRepository genreGameRepository;
 
-	public GenreGame insert(Integer gameId, Integer genreId, TypeAssociation typeAssociation) {
+	public GenreGame insert(Long gameId, Long genreId, TypeAssociation typeAssociation) {
 		Genre genreFound = genreService.searchBy(genreId);
 		Game gameFound = gameService.searchBy(gameId);
 		GenreGameId id = new GenreGameId(genreFound.getId(), gameFound.getId());
@@ -36,7 +36,7 @@ public class GenreGameService {
 		return genreGameSave;
 	}
 	
-	public GenreGame update(Integer gameId, Integer genreId, TypeAssociation typeAssociation) {
+	public GenreGame update(Long gameId, Long genreId, TypeAssociation typeAssociation) {
 		Genre genreFound = genreService.searchBy(genreId);
 		Game gameFound = gameService.searchBy(gameId);
 		GenreGame genreGameFound = searchBy(genreFound, gameFound);

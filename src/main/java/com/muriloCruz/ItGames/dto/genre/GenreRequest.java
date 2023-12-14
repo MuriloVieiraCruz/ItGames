@@ -1,14 +1,11 @@
-package com.muriloCruz.ItGames.dto.enterprise;
+package com.muriloCruz.ItGames.dto.genre;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class EnterpriseSaved {
-
-    @NotNull(message = "The ID is required")
-    private Long id;
+public class GenreRequest {
 
     @NotBlank(message = "The name is required")
     private String name;

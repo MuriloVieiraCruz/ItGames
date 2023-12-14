@@ -11,8 +11,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class GenreGameRequestDto {
 
-	@NotNull(message = "The gender id is required")
-	@Positive(message = "The gender id must be greater than 0")
+	@NotNull(message = "The gender ID is required")
+	@Positive(message = "The gender ID must be greater than 0")
 	private Long genreId;
 	
 	@NotNull(message = "The type of gender association is required")

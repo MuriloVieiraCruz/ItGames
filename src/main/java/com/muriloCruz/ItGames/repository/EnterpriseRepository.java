@@ -36,13 +36,13 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 	public Page<Enterprise> listBy(String name, Pageable pagination);
 
 	@Modifying
-	@Transactional
 	@Query(value = 
 			"UPDATE Enterprise e "
 			+ "SET e.status = :status "
 			+ "WHERE e.id = :id")
 	public void updateStatusBy(Long id, Status status);
 
+	@Modifying
 	@Query(value = "DELETE FROM Enterprise e "
 			+ "WHERE e.id = :enterpriseId")
 	public void deleteBy(Long enterpriseId);

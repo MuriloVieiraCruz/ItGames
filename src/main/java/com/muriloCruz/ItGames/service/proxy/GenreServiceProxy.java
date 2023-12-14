@@ -1,5 +1,7 @@
 package com.muriloCruz.ItGames.service.proxy;
 
+import com.muriloCruz.ItGames.dto.genre.GenreRequest;
+import com.muriloCruz.ItGames.dto.genre.GenreSaved;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.GenreService;
@@ -14,11 +16,15 @@ public class GenreServiceProxy {
     @Autowired
     private GenreService service;
 
-    public Genre insert(Genre genre) {
+    public Genre insert(GenreRequest genre) {
         return service.insert(genre);
     }
 
-    public Genre searchBy(Integer id) {
+    public Genre update(GenreSaved genre) {
+        return service.update(genre);
+    }
+
+    public Genre searchBy(Long id) {
         return service.searchBy(id);
     }
 
@@ -26,11 +32,11 @@ public class GenreServiceProxy {
         return service.listBy(name, paginacao);
     }
 
-    public void updateStatusBy(Integer id, Status status) {
+    public void updateStatusBy(Long id, Status status) {
         this.service.updateStatusBy(id, status);
     }
 
-    public Genre excludeBy(Integer id) {
-        return service.excludeBy(id);
+    public Genre excludeBy(Long id) {
+        return service.deleteBy(id);
     }
 }

@@ -45,4 +45,9 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
 			+ "SET g.status = :status "
 			+ "WHERE g.id = :id")
 	public void updateStatusBy(Long id, Status status);
+
+	@Modifying
+	@Query(value = "DELETE FROM Genre g "
+			+ "WHERE g.id = :genreId")
+	public void deleteBy(Long genreId);
 }

@@ -106,6 +106,7 @@ public class GameController {
     }
 
     @DeleteMapping("/id/{id}")
+    @Transactional
     @Valid
     public ResponseEntity<?> deleteBy(
             @PathVariable("id")
