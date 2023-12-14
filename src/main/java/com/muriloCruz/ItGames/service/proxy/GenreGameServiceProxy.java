@@ -14,15 +14,15 @@ public class GenreGameServiceProxy {
     @Autowired
     private GenreGameService service;
 
-    public GenreGame insert(Integer gameId, Integer genreId, TypeAssociation typeAssociation) {
+    public GenreGame insert(Long gameId, Long genreId, TypeAssociation typeAssociation) {
         return service.insert(gameId, genreId, typeAssociation);
     }
 
-    public GenreGame update(Integer gameId, Integer genreId, TypeAssociation typeAssociation) {
+    public GenreGame update(Long gameId, Long genreId, TypeAssociation typeAssociation) {
         return service.update(gameId, genreId, typeAssociation);
     }
 
-    public GenreGame searchBy(Genre genre, Game game) {
+    public GenreGame searchBy(Long genre, Long game) {
         return service.searchBy(genre, game);
     }
 }

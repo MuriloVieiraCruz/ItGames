@@ -12,23 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostRequestDto {
 
-	@NotNull(message = "The description cannot be null")
+	@NotNull(message = "The description is required")
 	private String description;
 
 	@DecimalMin(value = "0.0", inclusive = true, message = "The price must be positive")
-	@Digits(integer = 10, fraction = 2, message = "The price must have the format 'NNNNNNNNNNN.NN'")
-	@NotNull(message = "Price cannot be null")
+	@Digits(integer = 5, fraction = 2, message = "The price must have the format 'NNNNN.NN'")
+	@NotNull(message = "The price is required")
 	private BigDecimal price;
 
 	@Size(max = 250, min = 3, message = "The name must contain between 3 and 250 characters")
-	@Email(message = "The e-mail is in an invalid format")
-	@NotBlank(message = "User is required")
+	@Email(message = "The e-mail is an invalid format")
+	@NotBlank(message = "The user is required")
 	private String userLogin;
 
 	@Positive(message = "Game ID must be greater than 0")
-	@NotNull(message = "Game ID is required")
+	@NotNull(message = "The game ID is required")
 	private Long gameId;
 
-	@NotBlank(message = "Image URL is required")
+	@NotBlank(message = "The image URL is required")
 	private String imageUrl;
 }

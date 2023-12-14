@@ -3,8 +3,12 @@ package com.muriloCruz.ItGames.controller;
 import com.muriloCruz.ItGames.dto.post.PostRequestDto;
 import com.muriloCruz.ItGames.dto.post.PostSavedDto;
 import com.muriloCruz.ItGames.entity.Post;
+import com.muriloCruz.ItGames.entity.enums.Availability;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.PostService;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,11 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
 @RequestMapping("/service")
-public class ServiceController {
+public class PostController {
 
     @Autowired
     private PostService service;
@@ -27,40 +32,71 @@ public class ServiceController {
     private MapConverter mapConverter;
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody PostRequestDto postRequestDto) {
+    @Transactional
+    @Valid
+    public ResponseEntity<?> insert(
+            @RequestBody
+            @NotNull(message = "The post is required")
+            PostRequestDto postRequestDto) {
         Post postSave = service.insert(postRequestDto);
         return ResponseEntity.created(URI.create("/service/id/" + postSave.getId())).build();
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody PostSavedDto postSavedDto) {
+    @Transactional
+    @Valid
+    public ResponseEntity<?> update(
+            @RequestBody
+            @NotNull(message = "The post is required")
+            PostSavedDto postSavedDto) {
         Post postUpdate = service.update(postSavedDto);
         return ResponseEntity.ok(convert(postUpdate));
     }
 
     @PatchMapping("/id/{id}/status/{status}")
-    public ResponseEntity<?> updateStatusBy(@PathVariable("id") Integer id, @PathVariable("status")Status status) {
+    @Valid
+    public ResponseEntity<?> updateStatusBy(
+            @PathVariable("id")
+            @NotNull(message = "The ID is required")
+            Long id,
+            @PathVariable("status")
+            @NotNull(message = "The status is required")
+            Status status) {
         service.updateStatusBy(id, status);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> searchBy(@PathVariable("id") Integer id) {
+    @Valid
+    public ResponseEntity<?> searchBy(
+            @PathVariable("id")
+            @NotNull(message = "The ID is required")
+            Long id) {
         Post postFound = service.searchBy(id);
         return ResponseEntity.ok(convert(postFound));
     }
 
     @GetMapping
-    public ResponseEntity<?> listBy(@RequestParam("name") BigDecimal price, @RequestParam("gameId") Integer gameId , @RequestParam("page") Optional<Integer> page) {
+    @Valid
+    public ResponseEntity<?> listBy(
+            @RequestParam("price")
+            Optional<BigDecimal> price,
+            @RequestParam("availability")
+            Optional<Availability> availability,
+            @RequestParam("postDate")
+            Optional<LocalDate> postDate,
+            @RequestParam("gameId")
+            Optional<Long> gameId ,
+            @RequestParam("userId")
+            Optional<Long> userId,
+            @RequestParam("page")
+            Optional<Integer> page) {
         Pageable pagination = null;
 
-        if (page .isPresent()) {
-            pagination = PageRequest.of(page.get(), 20);
-        } else {
-            pagination = PageRequest.of(0, 20);
-        }
+        pagination = page.map(integer -> PageRequest.of(integer, 20))
+                .orElseGet(() -> PageRequest.of(0, 20));
 
-        Page<Post> pages = service.listBy(price, gameId, pagination);
+        Page<Post> pages = service.listBy(price, availability, postDate, gameId, userId, pagination);
 
         Map<String, Object> pageMap = new HashMap<String, Object>();
         pageMap.put("currentPage", pages.getNumber());
@@ -77,8 +113,8 @@ public class ServiceController {
     }
 
     @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> excludeBy(@PathVariable("id") Integer id) {
-        Post postExclude = service.excludeBy(id);
+    public ResponseEntity<?> deleteBy(@PathVariable("id") Long id) {
+        Post postExclude = service.deleteBy(id);
         return ResponseEntity.ok(mapConverter.toJsonMap(postExclude));
     }
 

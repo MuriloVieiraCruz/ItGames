@@ -42,13 +42,12 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             + "WHERE UPPER(g.name) LIKE UPPER(%:name%) "
             + "AND (:genreId IS NULL OR g.id = :genreId) "
             + "AND g.status = 'A' "
-            + "ORDER BY g.nome",
+            + "ORDER BY g.name",
             countQuery = "SELECT g "
                     + "FROM Game g "
                     + "WHERE UPPER(g.name) LIKE UPPER(:name) "
                     + "AND (:genreId IS NULL OR g.id = :genreId) "
-                    + "AND g.status = 'A' "
-                    + "ORDER BY g.nome")
+                    + "AND g.status = 'A' ")
     public Page<Game> listBy(String name, Optional<Long> genreId, Pageable pagination);
 
     @Modifying

@@ -28,28 +28,28 @@ public class Post {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotNull(message = "The description cannot be null")
+    @NotBlank(message = "The description is required")
     @Column(name = "description")
     private String description;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "The price must be positive")
-    @Digits(integer = 10, fraction = 2, message = "The price must have the format 'NNNNNNNNNNN.NN'")
-    @NotNull(message = "The price cannot be null")
+    @Digits(integer = 5, fraction = 2, message = "The price must have the format 'NNNNN.NN'")
+    @NotNull(message = "The price is required")
     @Column(name = "price")
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "The availability cannot be null")
+    @NotNull(message = "The availability is required")
     @Column(name = "availability")
     private Availability  availability;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Status cannot be null")
+    @NotNull(message = "The status is required")
     @Column(name = "status")
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull(message = "The service game is mandatory")
+    @NotNull(message = "The service game is required")
     @JoinColumn(name = "game_id")
     private Game game;
 
@@ -59,11 +59,11 @@ public class Post {
     private User user;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-    @NotNull(message = "The post date cannot be null")
+    @NotNull(message = "The post date is required")
     @Column(name = "post_date")
     private LocalDate postDate;
 
-    @NotBlank(message = "Image url is required")
+    @NotBlank(message = "The image url is required")
     @Column(name = "image_url")
     @Lob
     private String imageUrl;

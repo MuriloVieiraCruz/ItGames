@@ -16,23 +16,23 @@ public class PostSavedDto {
 
 	@Positive(message = "The ID must be positive")
 	@NotNull(message = "The ID is required")
-	private Integer id;
+	private Long id;
 
-	@NotNull(message = "The description cannot be null")
+	@NotNull(message = "The description is required")
 	private String description;
 
 	@DecimalMin(value = "0.0", inclusive = true, message = "The price must be positive")
-	@Digits(integer = 10, fraction = 2, message = "The price must have the format 'NNNNNNNNNNN.NN'")
-	@NotNull(message = "Price cannot be null")
+	@Digits(integer = 5, fraction = 2, message = "The price must have the format 'NNNNN.NN'")
+	@NotNull(message = "The price is required")
 	private BigDecimal price;
 
 	@NotNull(message = "Availability is required")
 	private Availability availability;
 
-	@Positive(message = "Game ID must be greater than 0")
+	@Positive(message = "Game ID must be positive")
 	@NotNull(message = "Game ID is required")
 	private Long gameId;
 
-	@NotBlank(message = "Image URL is required")
+	@NotBlank(message = "The image URL is required")
 	private String imageUrl;
 }
