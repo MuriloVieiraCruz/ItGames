@@ -32,27 +32,25 @@ public class GenreGameService {
 		genreGame.setTypeAssociation(typeAssociation);
 		genreGame.setGenre(genreFound);
 		genreGame.setGame(gameFound);
-		GenreGame genreGameSave = genreGameRepository.saveAndFlush(genreGame);
-		return genreGameSave;
+        return genreGameRepository.saveAndFlush(genreGame);
 	}
 	
 	public GenreGame update(Long gameId, Long genreId, TypeAssociation typeAssociation) {
 		Genre genreFound = genreService.searchBy(genreId);
 		Game gameFound = gameService.searchBy(gameId);
-		GenreGame genreGameFound = searchBy(genreFound, gameFound);
+		GenreGame genreGameFound = searchBy(genreFound.getId(), gameFound.getId());
 		genreGameFound.setGenre(genreFound);
 		genreGameFound.setGame(gameFound);
 		genreGameFound.setTypeAssociation(typeAssociation);
-		GenreGame genreGameUpdated = this.genreGameRepository.saveAndFlush(genreGameFound);
-		return genreGameUpdated;
+        return genreGameRepository.saveAndFlush(genreGameFound);
 	}
 	
-	public GenreGame searchBy(Genre genre, Game game) {
-		Genre genreFound = genreService.searchBy(genre.getId());
-		Game gameFound = gameService.searchBy(game.getId());
-		GenreGame genreGameFound = genreGameRepository.searchBy(genreFound, gameFound);
+	public GenreGame searchBy(Long genreId, Long gameId) {
+		Genre genreFound = genreService.searchBy(genreId);
+		Game gameFound = gameService.searchBy(gameId);
+		GenreGame genreGameFound = genreGameRepository.searchBy(genreFound.getId(), gameFound.getId());
 		Preconditions.checkNotNull(genreGameFound,
-				"No game genre was found linked to the ID '" + genre.getId() + "' informed");
+				"No game genre was found linked to the ID '" + genreGameFound.getId() + "' informed");
 		return genreGameFound;
 	}
 }

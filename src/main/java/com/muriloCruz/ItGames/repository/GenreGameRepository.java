@@ -24,7 +24,7 @@ public interface GenreGameRepository extends JpaRepository<GenreGame, GenreGameI
 	
 	@Query(value = "SELECT gj "
 			+ "FROM GenreGame gj "
-			+ "WHERE gj.genre = :genre "
-			+ "AND gj.game = :game")
-	public GenreGame searchBy(Genre genre, Game game);
+			+ "WHERE gj.genre.id = :genreId "
+			+ "AND gj.game.id = :gameId")
+	public GenreGame searchBy(Long genreId, Long gameId);
 }
