@@ -31,31 +31,31 @@ public class Game {
     private Long id;
 
     @Size(max = 100, min = 3, message = "The name must contain between 3 and 100 characters")
-    @NotBlank(message = "The name cannot be null")
+    @NotBlank(message = "The name is required")
     @Column(name = "name")
     private String name;
 
-    @NotBlank(message = "Name cannot be null")
+    @NotBlank(message = "The description is required")
     @Column(name = "description")
     private String description;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-    @NotNull(message = "The release date cannot be null")
+    @NotNull(message = "The release date is required")
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
     @Enumerated(value = EnumType.STRING)
-    @NotNull(message = "Game status is required")
+    @NotNull(message = "The game status is required")
     @Column(name = "status")
     private Status status;
 
-    @NotBlank(message = "Image url is required")
+    @NotBlank(message = "The image url is required")
     @Column(name = "image_url")
     @Lob
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull(message = "The enterprise cannot be null")
+    @NotNull(message = "The enterprise is required")
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 

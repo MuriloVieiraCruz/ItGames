@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GameServiceProxy {
 
@@ -24,19 +26,18 @@ public class GameServiceProxy {
         return service.update(gameSavedDto);
     }
 
-    public Page<Game> listBy(String name, Integer genreId, Pageable pagination) {
-        return service.listBy(name, genreId, pagination);
-    }
-
-    public Game searchBy(Integer id) {
-        return service.searchBy(id);
-    }
-
-    public void updateStatusBy(Integer id, Status status) {
+    public void updateStatusBy(Long id, Status status) {
         this.service.updateStatusBy(id, status);
     }
 
-    public Game excludeBy(Integer id) {
-        return service.excludeBy(id);
+    public Game searchBy(Long id) {
+        return service.searchBy(id);
+    }
+    public Page<Game> listBy(String name, Optional<Long> genreId, Pageable pagination) {
+        return service.listBy(name, genreId, pagination);
+    }
+
+    public Game deleteBy(Long id) {
+        return service.deleteBy(id);
     }
 }

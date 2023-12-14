@@ -20,6 +20,12 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
 			+ "FROM Genre g "
 			+ "WHERE Upper(g.name) = Upper(:name)")
 	public Genre searchBy(String name);
+
+	@Query(value =
+			"SELECT g "
+			+ "FROM Genre g "
+			+ "WHERE g.id = :genreId")
+	public Genre searchBy(Long genreId);
 	
 	@Query(value = 
 			"SELECT g "

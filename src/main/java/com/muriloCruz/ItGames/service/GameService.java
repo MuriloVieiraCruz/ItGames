@@ -73,8 +73,7 @@ public class GameService {
 		gameFound.setStatus(gameSavedDto.getStatus());
 		gameFound.setImageUrl(gameSavedDto.getImageUrl());
 		gameFound.setEnterprise(enterpriseFound);
-		Game gameSaved = gameRepository.saveAndFlush(gameFound);
-		return gameSaved;
+        return gameRepository.saveAndFlush(gameFound);
 	}
 
 	public void updateStatusBy(Long id, Status status) {
@@ -95,21 +94,19 @@ public class GameService {
 		return gameFound;
 	}
 
-	public Page<Game> listBy(String name, Long genreId, Pageable pagination) {
-		Preconditions.checkArgument(name != null || genreId != null,
-				"You must provide at least one name or gender for the list");
-		Genre genreFound = getGenreBy(genreId);
-		return this.gameRepository.listBy(name, genreFound, pagination);
+	public Page<Game> listBy(String name, Optional<Long> genreId, Pageable pagination) {
+		return this.gameRepository.listBy(name, genreId, pagination);
 	}
 
 	public Game deleteBy(Long id) {
 		Game gameFound = searchBy(id);
 		int qtyOfBoundGenerations = genreGameRepository.countByGame(id);
-		Preconditions.checkArgument(!(qtyOfBoundGenerations >= 1),
-				"There are genres linked to informed play");
+		Preconditions.checkArgument(qtyOfBoundGenerations <= 0,
+				"There are genres linked to the game");
 		int numberLinkedServices = postRepository.countBy(id);
-		Preconditions.checkArgument(!(numberLinkedServices >= 1),
-				"There are services linked to informed play");
+		Preconditions.checkArgument(numberLinkedServices <= 0,
+				"There are services linked to the game");
+		gameRepository.deleteBy(gameFound.getId());
 		return gameFound;
 	}	
 	
@@ -117,17 +114,16 @@ public class GameService {
 		Enterprise enterpriseFound = enterpriseService
 				.searchBy(gameRequestDto.getEnterprise().getId());
 		Preconditions.checkNotNull(enterpriseFound,
-				"No enterprise was found to be linked to the reported parameters");
+				"No enterprise was found linked to the reported parameters");
 		Preconditions.checkArgument(enterpriseFound.isActive(),
 				"The enterprise is inactive");
 		return enterpriseFound;
 	}
 	
-	private Genre getGenreBy(Long idDoGenero) {
-		Optional<Genre> optionalGenre = genreRepository.findById(idDoGenero);
-		Preconditions.checkNotNull(optionalGenre.isPresent(),
+	private Genre getGenreBy(Long genreId) {
+		Genre genreFound = genreRepository.searchBy(genreId);
+		Preconditions.checkNotNull(genreFound,
 				"No genre was found to be linked to the reported parameters");
-		Genre genreFound = optionalGenre.get();
 		Preconditions.checkArgument(genreFound.isActive(),
 				"The genre is inactive");
 		return genreFound;
@@ -135,7 +131,7 @@ public class GameService {
 	
 	private void validateDuplication(List<GenreGameRequestDto> generoDoJogoDtoList) {
 
-		generoDoJogoDtoList.stream()
+		generoDoJogoDtoList
 				.forEach(genreGame -> {
 					long amountDuplicated = generoDoJogoDtoList.stream()
 							.filter(otherGenreGame -> genreGame.getGenreId().equals(otherGenreGame.getGenreId()))

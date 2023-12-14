@@ -13,6 +13,8 @@ import com.muriloCruz.ItGames.entity.enums.Status;
 
 import jakarta.transaction.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer> {
 
@@ -38,14 +40,16 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             + "JOIN FETCH gg.genre ge "
             + "JOIN FETCH g.enterprise "
             + "WHERE UPPER(g.name) LIKE UPPER(%:name%) "
-            + "AND (:genre IS NULL OR g = :genre) "
-            + "AND g.status = 'A'",
+            + "AND (:genreId IS NULL OR g.id = :genreId) "
+            + "AND g.status = 'A' "
+            + "ORDER BY g.nome",
             countQuery = "SELECT g "
                     + "FROM Game g "
                     + "WHERE UPPER(g.name) LIKE UPPER(:name) "
-                    + "AND (:genre IS NULL OR g = :genre) "
-                    + "AND g.status = 'A'")
-    public Page<Game> listBy(String name, Genre genre, Pageable pagination);
+                    + "AND (:genreId IS NULL OR g.id = :genreId) "
+                    + "AND g.status = 'A' "
+                    + "ORDER BY g.nome")
+    public Page<Game> listBy(String name, Optional<Long> genreId, Pageable pagination);
 
     @Transactional
     @Modifying

@@ -56,5 +56,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value = "SELECT Count(s) "
             + "FROM Post s "
             + "WHERE s.game.id = :gameId")
-    public int countBy(int gameId);
+    public int countBy(Long gameId);
 }

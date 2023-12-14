@@ -80,8 +80,7 @@ public class GameController {
             @NotBlank(message = "The name is required")
             String name,
             @RequestParam("genreId")
-            @NotNull(message = "The genre id is required")
-            Long genreId ,
+            Optional<Long> genreId ,
             @RequestParam("page")
             Optional<Integer> page) {
 
@@ -107,7 +106,11 @@ public class GameController {
     }
 
     @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> excludeBy(@PathVariable("id") Long id) {
+    @Valid
+    public ResponseEntity<?> deleteBy(
+            @PathVariable("id")
+            @NotNull(message = "The ID is required")
+            Long id) {
         Game gameExclude = service.deleteBy(id);
         return ResponseEntity.ok(mapConverter.toJsonMap(gameExclude));
     }
@@ -129,7 +132,7 @@ public class GameController {
         for (GenreGame genreGame : game.getGenres()) {
             Map<String, Object> genreMap = new HashMap<String, Object>();
             genreMap.put("id", genreGame.getGenre().getId());
-            genreMap.put("id", genreGame.getGenre().getName());
+            genreMap.put("name", genreGame.getGenre().getName());
 
             genresMap.add(genreMap);
         }
