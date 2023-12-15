@@ -43,8 +43,8 @@ public class Enterprise {
     @Column(name = "status")
     private Status status;
 
-    @Size(max = 14, min = 14, message = "The cnpj must contain between 3 and 200 characters")
-    @NotBlank(message = "The status is required")
+    @Size(max = 14, min = 14, message = "The cnpj must contain 14 characters")
+    @NotBlank(message = "The cnpj is required")
     @Column(name = "cnpj")
     private String cnpj;
     

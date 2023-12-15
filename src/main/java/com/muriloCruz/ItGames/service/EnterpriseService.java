@@ -26,14 +26,16 @@ public class EnterpriseService {
 	public Enterprise insert(EnterpriseRequest enterpriseRequest) {
 		Enterprise enterprise = new Enterprise();
 		enterprise.setName(enterpriseRequest.getName());
+		enterprise.setCnpj(enterpriseRequest.getCnpj());
 		this.validateDuplication(enterprise);
 
         return enterpriseRepository.save(enterprise);
 	}
 	
-	public Enterprise update(EnterpriseSaved enterprise) {
-		Enterprise enterpriseFound = searchBy(enterprise.getId());
-		enterpriseFound.setName(enterprise.getName());
+	public Enterprise update(EnterpriseSaved enterpriseSaved) {
+		Enterprise enterpriseFound = searchBy(enterpriseSaved.getId());
+		enterpriseFound.setName(enterpriseSaved.getName());
+		enterpriseFound.setCnpj(enterpriseSaved.getCnpj());
 		validateDuplication(enterpriseFound);
 		return enterpriseRepository.save(enterpriseFound);
 	}

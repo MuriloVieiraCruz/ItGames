@@ -28,11 +28,11 @@ public class UserServiceProxy {
         return service.listBy(login, pagination);
     }
     
-    public User searchBy(Integer id) {
+    public User searchBy(Long id) {
         return service.searchBy(id);
     }
 
-    public void updateStatusBy(Integer id, Status status) {
+    public void updateStatusBy(Long id, Status status) {
         this.service.updateStatusBy(id, status);
     }
 }

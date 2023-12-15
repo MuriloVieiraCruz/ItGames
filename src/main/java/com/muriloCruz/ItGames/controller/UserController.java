@@ -42,13 +42,13 @@ public class UserController {
 
     @PatchMapping("/id/{id}/status/{status}")
     @Transactional
-    public ResponseEntity<?> updateStatusBy(@PathVariable("id") Integer id, @PathVariable("status") Status status) {
+    public ResponseEntity<?> updateStatusBy(@PathVariable("id") Long id, @PathVariable("status") Status status) {
         service.updateStatusBy(id, status);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> searchBy(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> searchBy(@PathVariable("id") Long id) {
         User userFound = service.searchBy(id);
         return ResponseEntity.ok(converter.toJsonMap(userFound));
     }
@@ -57,11 +57,8 @@ public class UserController {
     public ResponseEntity<?> listBy(@RequestParam("login") String login, @RequestParam("page") Optional<Integer> page) {
         Pageable pagination = null;
 
-        if (page .isPresent()) {
-            pagination = PageRequest.of(page.get(), 20);
-        } else {
-            pagination = PageRequest.of(0, 20);
-        }
+        pagination = page.map(integer -> PageRequest.of(integer, 20))
+                .orElseGet(() -> PageRequest.of(0, 20));
 
         Page<User> userList = service.listBy(login, pagination);
         return ResponseEntity.ok(converter.toJsonList(userList));

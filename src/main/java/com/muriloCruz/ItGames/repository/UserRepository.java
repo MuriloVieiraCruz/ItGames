@@ -19,6 +19,12 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 			+ "FROM User u "
 			+ "WHERE u.email = :email")
 	public User searchBy(String email);
+
+	@Query(value =
+			"SELECT u "
+			+ "FROM User u "
+			+ "WHERE u.id = :userId")
+	public User searchBy(Long userId);
 	
 	@Query(value = 
 			"SELECT u "
@@ -37,5 +43,5 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 			"UPDATE User u "
 			+ "SET u.status = :status "
 			+ "WHERE u.id = :id")
-	public void updateStatusBy(Integer id, Status status);
+	public void updateStatusBy(Long id, Status status);
 }

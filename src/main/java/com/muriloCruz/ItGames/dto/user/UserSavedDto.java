@@ -23,7 +23,7 @@ public class UserSavedDto {
 
 	@Positive(message = "The ID must ")
 	@NotNull(message = "The ID is required")
-	private Integer id;
+	private Long id;
 
 	@Size(max = 250, min = 3, message = "The login must contain between 3 and 250 characters")
 	@Email(message = "The login is in an invalid format")

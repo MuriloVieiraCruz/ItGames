@@ -34,8 +34,7 @@ public class UserService {
 		user.setName(userRequestDto.getName());
 		user.setCpf(userRequestDto.getCpf());
 		user.setBirthDate(userRequestDto.getBirthDate());
-		User userSalvo = userRepository.save(user);
-		return userSalvo;
+        return userRepository.save(user);
 	}
 	
 	public User update(UserSavedDto userSavedDto) {
@@ -45,28 +44,26 @@ public class UserService {
 		userFound.setName(userSavedDto.getName());
 		userFound.setCpf(userSavedDto.getCpf());
 		userFound.setBirthDate(userSavedDto.getBirthDate());
-		User userUpdated = userRepository.saveAndFlush(userFound);
-		return userUpdated;
+        return userRepository.saveAndFlush(userFound);
 	}
 	
 	public Page<User> listBy(String login, Pageable paginacao) {
 		return userRepository.listBy(login, paginacao);
 	}
 
-	public User searchBy(Integer id) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		Preconditions.checkArgument(optionalUser.isPresent(),
+	public User searchBy(Long id) {
+		User userFound = userRepository.searchBy(id);
+		Preconditions.checkNotNull(userFound,
 				"No user was found to be linked to the reported parameters");
-		User userFound = optionalUser.get();
 		Preconditions.checkArgument(userFound.isActive(),
 				"The user informed is inactive");
 		return userFound;
 	}
 
-	public void updateStatusBy(Integer id, Status status) {
+	public void updateStatusBy(Long id, Status status) {
 		User userFound = this.searchBy(id);
 		Preconditions.checkNotNull(userFound,
-				"No user was found to be linked to the reported parameters");
+				"No user was found linked to the reported parameters");
 		Preconditions.checkArgument(userFound.getStatus() != status ,
 				"The status entered is already assigned");
 		this.userRepository.updateStatusBy(id, status);
