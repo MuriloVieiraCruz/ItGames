@@ -63,10 +63,10 @@ public class Post {
     @Column(name = "post_date")
     private LocalDate postDate;
 
-    @NotBlank(message = "The image url is required")
-    @Column(name = "image_url")
-    @Lob
-    private String imageUrl;
+//    @NotBlank(message = "The image url is required")
+//    @Column(name = "image_url")
+//    @Lob
+//    private String imageUrl;
     
     public Post() {
     	this.status = Status.A; 

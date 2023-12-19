@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.muriloCruz.ItGames.dto.genreGame.GenreGameRequestDto;
 import com.muriloCruz.ItGames.entity.Enterprise;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -25,11 +27,12 @@ public class GameRequestDto {
 	@NotBlank(message = "The name is required")
 	private String description;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	@NotNull(message = "The release date is required")
 	private LocalDate releaseDate;
 
-	@NotBlank(message = "Image URL is required")
-	private String imageUrl;
+//	@Lob
+//	private String imageUrl;
 
 	@NotNull(message = "The game's enterprise is required")
 	private Enterprise enterprise;

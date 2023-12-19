@@ -49,10 +49,9 @@ public class Game {
     @Column(name = "status")
     private Status status;
 
-    @NotBlank(message = "The image url is required")
-    @Column(name = "image_url")
-    @Lob
-    private String imageUrl;
+//    @Column(name = "image_url")
+//    @Lob
+//    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "The enterprise is required")

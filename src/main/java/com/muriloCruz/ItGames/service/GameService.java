@@ -45,10 +45,10 @@ public class GameService {
 		game.setName(gameRequestDto.getName());
 		game.setDescription(gameRequestDto.getDescription());
 		game.setReleaseDate(gameRequestDto.getReleaseDate());
-		game.setImageUrl(gameRequestDto.getImageUrl());
+		//game.setImageUrl(gameRequestDto.getImageUrl());
 		game.setEnterprise(validEnterprise);
 		Game gameSaved = gameRepository.save(game);
-		validateDuplication(gameRequestDto.getGenres());
+		this.validateDuplication(gameRequestDto.getGenres());
 		for (GenreGameRequestDto genreDto: gameRequestDto.getGenres()) {
 			Genre genre = getGenreBy(genreDto.getGenreId());
 			GenreGameId id = new GenreGameId(genre.getId(), gameSaved.getId());
@@ -70,8 +70,7 @@ public class GameService {
 		gameFound.setName(gameSavedDto.getName());
 		gameFound.setDescription(gameSavedDto.getDescription());
 		gameFound.setReleaseDate(gameSavedDto.getReleaseDate());
-		gameFound.setStatus(gameSavedDto.getStatus());
-		gameFound.setImageUrl(gameSavedDto.getImageUrl());
+		//gameFound.setImageUrl(gameSavedDto.getImageUrl());
 		gameFound.setEnterprise(enterpriseFound);
         return gameRepository.saveAndFlush(gameFound);
 	}

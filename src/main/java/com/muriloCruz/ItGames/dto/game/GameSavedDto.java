@@ -27,15 +27,12 @@ public class GameSavedDto {
 	@NotBlank(message = "The description is required")
 	private String description;
 
-	@NotNull(message = "Status is required")
-	private Status status;
-
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	@NotNull(message = "The launch date is required")
 	private LocalDate releaseDate;
 
-	@NotBlank(message = "Image URL is required")
-	private String imageUrl;
+//	@NotBlank(message = "Image URL is required")
+//	private String imageUrl;
 
 	@NotNull(message = "Enterprise is required")
 	private Enterprise enterprise;

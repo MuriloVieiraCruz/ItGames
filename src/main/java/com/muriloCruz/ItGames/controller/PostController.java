@@ -122,13 +122,13 @@ public class PostController {
         serviceMap.put("description", post.getDescription());
         serviceMap.put("price", post.getPrice());
         serviceMap.put("postDate", post.getPostDate());
-        serviceMap.put("imageUrl", post.getImageUrl());
+        //serviceMap.put("imageUrl", post.getImageUrl());
         serviceMap.put("availability", post.getAvailability());
 
         Map<String, Object> gameMap = new HashMap<String, Object>();
         gameMap.put("id", post.getGame().getId());
         gameMap.put("name", post.getGame().getName());
-        gameMap.put("imageUrl", post.getGame().getImageUrl());
+        //gameMap.put("imageUrl", post.getGame().getImageUrl());
         gameMap.put("releaseDate", post.getGame().getReleaseDate());
 
         serviceMap.put("game", gameMap);

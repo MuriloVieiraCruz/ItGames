@@ -117,7 +117,7 @@ public class GameController {
         Map<String, Object> gameMap = new HashMap<String, Object>();
         gameMap.put("id", game.getId());
         gameMap.put("name", game.getName());
-        gameMap.put("imageUrl", game.getImageUrl());
+        //gameMap.put("imageUrl", game.getImageUrl());
         gameMap.put("releaseDate", game.getReleaseDate());
 
         Map<String, Object> enterpriseMap = new HashMap<String, Object>();

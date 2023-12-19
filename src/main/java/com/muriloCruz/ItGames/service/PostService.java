@@ -38,7 +38,7 @@ public class PostService {
 		Post post = new Post();
 		post.setDescription(postRequestDto.getDescription());
 		post.setPrice(postRequestDto.getPrice());
-		post.setImageUrl(postRequestDto.getImageUrl());
+		//post.setImageUrl(postRequestDto.getImageUrl());
 		post.setUser(userFound);
 		post.setGame(gameFound);
         return postRepository.save(post);
