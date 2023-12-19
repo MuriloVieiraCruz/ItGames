@@ -1,6 +1,5 @@
 package com.muriloCruz.ItGames.repository;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +14,7 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 	@Query(value = 
 			"SELECT e "
 			+ "FROM Enterprise e "
-			+ "WHERE Upper(e.cnpj) = Upper(:cnpj)")
+			+ "WHERE e.cnpj = :cnpj")
 	public Enterprise searchBy(String cnpj);
 
 	@Query(value =
@@ -32,7 +31,7 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer>
 			countQuery = "SELECT e "
 					+ "FROM Enterprise e "
 					+ "WHERE Upper(e.name) LIKE Upper(%:name%) "
-					+ "AND e.status = 'A'")
+					+ "AND e.status = 'A' ")
 	public Page<Enterprise> listBy(String name, Pageable pagination);
 
 	@Modifying

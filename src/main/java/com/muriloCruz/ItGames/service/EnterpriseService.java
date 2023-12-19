@@ -42,7 +42,7 @@ public class EnterpriseService {
 
 	public void updateStatusBy(
 			Long id, Status status) {
-		Enterprise enterpriseFound = this.searchBy(id);
+		Enterprise enterpriseFound = enterpriseRepository.searchBy(id);
 		Preconditions.checkNotNull(enterpriseFound,
 				"No enterprise was found linked to the reported parameters");
 		Preconditions.checkArgument(enterpriseFound.getStatus() != status ,

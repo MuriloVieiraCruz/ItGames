@@ -31,9 +31,9 @@ public class EnterpriseController {
 
     @PostMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> insert(
             @RequestBody
+            @Valid
             EnterpriseRequest enterprise) {
         Enterprise enterpriseSave = service.insert(enterprise);
         return ResponseEntity.created(URI.create("/enterprise/id/" + enterpriseSave.getId())).build();
@@ -41,9 +41,9 @@ public class EnterpriseController {
 
     @PutMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> update(
             @RequestBody
+            @Valid
             EnterpriseSaved enterprise) {
         Enterprise enterpriseUpdate = service.update(enterprise);
         return ResponseEntity.ok(converter.toJsonMap(enterpriseUpdate));
@@ -51,7 +51,6 @@ public class EnterpriseController {
 
     @PatchMapping("/id/{id}/status/{status}")
     @Transactional
-    @Valid
     public ResponseEntity<?> updateStatusBy(
             @PathVariable("id")
             @NotNull(message = "The ID is required")
@@ -65,7 +64,6 @@ public class EnterpriseController {
     }
 
     @GetMapping("/id/{id}")
-    @Valid
     public ResponseEntity<?> searchBy(
             @PathVariable("id")
             @NotNull(message = "The ID is required")
@@ -75,7 +73,6 @@ public class EnterpriseController {
     }
 
     @GetMapping
-    @Valid
     public ResponseEntity<?> listBy(
             @RequestParam("name")
             @NotBlank(message = "The name is required")
@@ -94,7 +91,6 @@ public class EnterpriseController {
 
     @DeleteMapping("id/{id}")
     @Transactional
-    @Valid
     public ResponseEntity<?> deleteBy(
             @PathVariable("id")
             @NotNull(message = "The ID is required")

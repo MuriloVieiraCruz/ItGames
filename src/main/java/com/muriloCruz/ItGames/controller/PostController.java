@@ -33,10 +33,10 @@ public class PostController {
 
     @PostMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> insert(
             @RequestBody
             @NotNull(message = "The post is required")
+            @Valid
             PostRequestDto postRequestDto) {
         Post postSave = service.insert(postRequestDto);
         return ResponseEntity.created(URI.create("/service/id/" + postSave.getId())).build();
@@ -44,17 +44,16 @@ public class PostController {
 
     @PutMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> update(
             @RequestBody
             @NotNull(message = "The post is required")
+            @Valid
             PostSavedDto postSavedDto) {
         Post postUpdate = service.update(postSavedDto);
         return ResponseEntity.ok(convert(postUpdate));
     }
 
     @PatchMapping("/id/{id}/status/{status}")
-    @Valid
     public ResponseEntity<?> updateStatusBy(
             @PathVariable("id")
             @NotNull(message = "The ID is required")
@@ -67,7 +66,6 @@ public class PostController {
     }
 
     @GetMapping("/id/{id}")
-    @Valid
     public ResponseEntity<?> searchBy(
             @PathVariable("id")
             @NotNull(message = "The ID is required")
@@ -77,7 +75,6 @@ public class PostController {
     }
 
     @GetMapping
-    @Valid
     public ResponseEntity<?> listBy(
             @RequestParam("price")
             Optional<BigDecimal> price,
@@ -113,6 +110,7 @@ public class PostController {
     }
 
     @DeleteMapping("/id/{id}")
+    @Transactional
     public ResponseEntity<?> deleteBy(@PathVariable("id") Long id) {
         Post postExclude = service.deleteBy(id);
         return ResponseEntity.ok(mapConverter.toJsonMap(postExclude));

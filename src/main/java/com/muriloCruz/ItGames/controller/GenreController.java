@@ -32,9 +32,9 @@ public class GenreController {
 
     @PostMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> insert(
             @RequestBody
+            @Valid
             GenreRequest genreRequest) {
         Genre genreSave = service.insert(genreRequest);
         return ResponseEntity.created(URI.create("genre/id/" + genreSave.getId())).build();
@@ -42,9 +42,9 @@ public class GenreController {
 
     @PutMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> update(
             @RequestBody
+            @Valid
             GenreSaved genreSaved) {
         Genre genreUpdate = service.update(genreSaved);
         return ResponseEntity.ok(converter.toJsonMap(genreUpdate));

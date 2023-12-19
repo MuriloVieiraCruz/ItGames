@@ -26,7 +26,6 @@ public class GenreGameController {
 
     @PostMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> insert(
             @RequestBody
             @NotNull(message = "The ID is required")
@@ -43,7 +42,6 @@ public class GenreGameController {
 
     @PutMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> update(
             @RequestBody
             @NotNull(message = "The ID is required")
@@ -59,7 +57,6 @@ public class GenreGameController {
     }
 
     @GetMapping("/id/{id}")
-    @Valid
     public ResponseEntity<?> searchBy(
             @RequestParam("genre")
             @NotNull(message = "The genre is required")

@@ -10,6 +10,7 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -144,6 +145,20 @@ public class HandlerErrorDefault {
 			DataIntegrityViolationException dve){
 	    return criarMapDeErro(ErroDaApi.PARAMETRO_INVALIDO, 
 	    		"Ocorreu um erro de integridade referencial na base de dados");
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, Object> handle(MethodArgumentNotValidException manve){
+		var erros = manve.getFieldErrors();
+		JSONObject body = new JSONObject();
+		JSONObject details = new JSONObject();
+		erros.forEach((erro) -> {
+			details.put("codigo", ErroDaApi.CAMPO_INVALIDO.getCodigo());
+			details.put("mensagem", erro.getDefaultMessage());
+		});
+		body.put("errors", details);
+		return body.toMap();
 	}
 	
 	private Map<String, Object> criarMapDeErro(ErroDaApi erroDaApi, String msgDeErro){			

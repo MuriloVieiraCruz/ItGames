@@ -32,9 +32,9 @@ public class GameController {
 
     @PostMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> insert(
             @RequestBody
+            @Valid
             GameRequestDto gameRequestDto) {
         Game gameSave = service.insert(gameRequestDto);
         return ResponseEntity.created(URI.create("game/id/" + gameSave.getId())).build();
@@ -42,9 +42,9 @@ public class GameController {
 
     @PutMapping
     @Transactional
-    @Valid
     public ResponseEntity<?> update(
             @RequestBody
+            @Valid
             GameSavedDto gameSavedDto) {
         Game gameUpdate = service.update(gameSavedDto);
         return ResponseEntity.ok(convert(gameUpdate));
@@ -52,7 +52,6 @@ public class GameController {
 
     @PatchMapping("/id/{id}/status/{status}")
     @Transactional
-    @Valid
     public ResponseEntity<?> updateStatusBy(
             @PathVariable("id")
             @NotNull(message = "The ID is required")
@@ -74,7 +73,6 @@ public class GameController {
     }
 
     @GetMapping
-    @Valid
     public ResponseEntity<?> listBy(
             @RequestParam("name")
             @NotBlank(message = "The name is required")
@@ -107,7 +105,6 @@ public class GameController {
 
     @DeleteMapping("/id/{id}")
     @Transactional
-    @Valid
     public ResponseEntity<?> deleteBy(
             @PathVariable("id")
             @NotNull(message = "The ID is required")

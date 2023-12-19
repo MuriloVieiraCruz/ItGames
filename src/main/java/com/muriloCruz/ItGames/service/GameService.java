@@ -40,15 +40,15 @@ public class GameService {
 
 	
 	public Game insert(GameRequestDto gameRequestDto) {
-		Enterprise validEnterprise = getEnterpriseBy(gameRequestDto);
+		Enterprise validEnterprise = getEnterpriseBy(gameRequestDto.getEnterprise().getId());
 		Game game = new Game();
 		game.setName(gameRequestDto.getName());
 		game.setDescription(gameRequestDto.getDescription());
 		game.setReleaseDate(gameRequestDto.getReleaseDate());
 		game.setImageUrl(gameRequestDto.getImageUrl());
 		game.setEnterprise(validEnterprise);
-		validateDuplication(gameRequestDto.getGenres());
 		Game gameSaved = gameRepository.save(game);
+		validateDuplication(gameRequestDto.getGenres());
 		for (GenreGameRequestDto genreDto: gameRequestDto.getGenres()) {
 			Genre genre = getGenreBy(genreDto.getGenreId());
 			GenreGameId id = new GenreGameId(genre.getId(), gameSaved.getId());
@@ -110,9 +110,9 @@ public class GameService {
 		return gameFound;
 	}	
 	
-	private Enterprise getEnterpriseBy(GameRequestDto gameRequestDto) {
+	private Enterprise getEnterpriseBy(Long enterpriseId) {
 		Enterprise enterpriseFound = enterpriseService
-				.searchBy(gameRequestDto.getEnterprise().getId());
+				.searchBy(enterpriseId);
 		Preconditions.checkNotNull(enterpriseFound,
 				"No enterprise was found linked to the reported parameters");
 		Preconditions.checkArgument(enterpriseFound.isActive(),

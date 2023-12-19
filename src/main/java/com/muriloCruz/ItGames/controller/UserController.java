@@ -6,6 +6,7 @@ import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.UserService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,21 +29,31 @@ public class UserController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> insert(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<?> insert(
+            @RequestBody
+            @Valid
+            UserRequestDto userRequestDto) {
         User userSave = service.insert(userRequestDto);
         return ResponseEntity.created(URI.create("/user/id/" + userSave.getId())).build();
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<?> update(@RequestBody UserSavedDto userSavedDto) {
+    public ResponseEntity<?> update(
+            @RequestBody
+            @Valid
+            UserSavedDto userSavedDto) {
         User userUpdate = service.update(userSavedDto);
         return ResponseEntity.ok(converter.toJsonMap(userUpdate));
     }
 
     @PatchMapping("/id/{id}/status/{status}")
     @Transactional
-    public ResponseEntity<?> updateStatusBy(@PathVariable("id") Long id, @PathVariable("status") Status status) {
+    public ResponseEntity<?> updateStatusBy(
+            @PathVariable("id")
+            Long id,
+            @PathVariable("status")
+            Status status) {
         service.updateStatusBy(id, status);
         return ResponseEntity.ok().build();
     }
@@ -54,7 +65,11 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> listBy(@RequestParam("login") String login, @RequestParam("page") Optional<Integer> page) {
+    public ResponseEntity<?> listBy(
+            @RequestParam("login")
+            String login,
+            @RequestParam("page")
+            Optional<Integer> page) {
         Pageable pagination = null;
 
         pagination = page.map(integer -> PageRequest.of(integer, 20))

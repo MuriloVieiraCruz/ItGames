@@ -40,7 +40,7 @@ public class GenreService {
 	}
 
 	public void updateStatusBy(Long id, Status status) {
-		Genre genreFound = this.searchBy(id);
+		Genre genreFound = genreRepository.searchBy(id);
 		Preconditions.checkNotNull(genreFound,
 				"No gender was found to be linked to the reported parameters");
 		Preconditions.checkArgument(genreFound.getStatus() != status ,
