@@ -39,7 +39,7 @@ public class Game {
     @Column(name = "description")
     private String description;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
     @NotNull(message = "The release date is required")
     @Column(name = "release_date")
     private LocalDate releaseDate;

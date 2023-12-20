@@ -32,12 +32,11 @@ public class UserRequestDto {
 	@NotBlank(message = "Name cannot be null")
 	private String name;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	@NotBlank(message = "The cpf is required")
 	@CPF(message = "The cpf is incorrect")
 	private String cpf;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	@NotNull(message = "The registration date cannot be null")
 	private LocalDate birthDate;
 }

@@ -64,12 +64,12 @@ public class User {
     @Column(name = "status")
     private Status status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
     @NotNull(message = "The date of birth cannot be null")
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
     @NotNull(message = "The registration date cannot be null")
     @Column(name = "registration_date")
     @CreationTimestamp
@@ -93,6 +93,7 @@ public class User {
         this.status = Status.A;
         this.rating = null;
         this.registrationDate = LocalDate.now();
+        this.role = Role.USER;
     }
 
     @JsonIgnore

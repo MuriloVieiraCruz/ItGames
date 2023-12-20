@@ -26,7 +26,7 @@ public class UserService {
 
 	public User insert(UserRequestDto userRequestDto) {
 		User userFound = userRepository.searchBy(userRequestDto.getEmail());
-		Preconditions.checkNotNull(userFound,
+		Preconditions.checkArgument(userFound == null,
 				"There is already a user registered with this login");
 		User user = new User();
 		user.setEmail(userRequestDto.getEmail());
@@ -47,8 +47,8 @@ public class UserService {
         return userRepository.saveAndFlush(userFound);
 	}
 	
-	public Page<User> listBy(String login, Pageable paginacao) {
-		return userRepository.listBy(login, paginacao);
+	public Page<User> listBy(String name, Pageable paginacao) {
+		return userRepository.listBy(name, paginacao);
 	}
 
 	public User searchBy(Long id) {
@@ -61,7 +61,7 @@ public class UserService {
 	}
 
 	public void updateStatusBy(Long id, Status status) {
-		User userFound = this.searchBy(id);
+		User userFound = userRepository.searchBy(id);
 		Preconditions.checkNotNull(userFound,
 				"No user was found linked to the reported parameters");
 		Preconditions.checkArgument(userFound.getStatus() != status ,

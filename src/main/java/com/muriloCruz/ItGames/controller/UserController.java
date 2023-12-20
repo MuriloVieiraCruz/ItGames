@@ -66,8 +66,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<?> listBy(
-            @RequestParam("login")
-            String login,
+            @RequestParam("name")
+            String name,
             @RequestParam("page")
             Optional<Integer> page) {
         Pageable pagination = null;
@@ -75,7 +75,7 @@ public class UserController {
         pagination = page.map(integer -> PageRequest.of(integer, 20))
                 .orElseGet(() -> PageRequest.of(0, 20));
 
-        Page<User> userList = service.listBy(login, pagination);
+        Page<User> userList = service.listBy(name, pagination);
         return ResponseEntity.ok(converter.toJsonList(userList));
     }
 }

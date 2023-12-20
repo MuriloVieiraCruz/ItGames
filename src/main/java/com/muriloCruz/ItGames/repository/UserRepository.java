@@ -29,13 +29,13 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query(value = 
 			"SELECT u "
 			+ "FROM User u "
-			+ "WHERE Upper(u.email) LIKE Upper(%:email%) "
+			+ "WHERE Upper(u.name) LIKE Upper(%:name%) "
 			+ "AND u.status = 'A'",
 			countQuery = "SELECT u "
 					+ "FROM User u "
-					+ "WHERE Upper(u.email) LIKE Upper(%:email%) "
+					+ "WHERE Upper(u.name) LIKE Upper(%:name%) "
 					+ "AND u.status = 'A'")
-	public Page<User> listBy(String email, Pageable pagination);
+	public Page<User> listBy(String name, Pageable pagination);
 
 	@Modifying
 	@Transactional

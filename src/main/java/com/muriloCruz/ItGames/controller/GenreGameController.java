@@ -81,7 +81,6 @@ public class GenreGameController {
             @NotNull(message = "The game is required")
             Long gameId) {
         service.deleteBy(genreId, gameId);
-
         return ResponseEntity.ok().build();
     }
 
