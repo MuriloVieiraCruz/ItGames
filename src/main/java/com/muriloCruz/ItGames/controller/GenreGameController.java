@@ -1,5 +1,6 @@
 package com.muriloCruz.ItGames.controller;
 
+import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.GenreGame;
@@ -24,47 +25,65 @@ public class GenreGameController {
     @Autowired
     private MapConverter converter;
 
-    @PostMapping
+    @PostMapping("/gameId/{gameId}/genreId/{genreId}/type/{type}")
     @Transactional
     public ResponseEntity<?> insert(
-            @RequestBody
-            @NotNull(message = "The ID is required")
+            @PathVariable("gameId")
+            @NotNull(message = "The gameId is required")
             Long gameId,
-            @RequestBody
-            @NotNull(message = "The ID is required")
+            @PathVariable("genreId")
+            @NotNull(message = "The genreId is required")
             Long genreId,
-            @RequestBody
+            @PathVariable("type")
             @NotNull(message = "The type association is required")
             TypeAssociation typeAssociation) {
         GenreGame genreGameSave = service.insert(gameId, genreId, typeAssociation);
-        return ResponseEntity.created(URI.create("genre_game/id/" + genreGameSave.getId())).build();
+        return ResponseEntity.created(URI.create("genre_game/gameId/" + genreGameSave.getId().getGameId()
+                + "/genreId/" + genreGameSave.getId().getGenreId())).build()
+                ;
     }
 
-    @PutMapping
+    @PutMapping("/gameId/{gameId}/genreId/{genreId}/type/{type}")
     @Transactional
     public ResponseEntity<?> update(
-            @RequestBody
+            @PathVariable("gameId")
             @NotNull(message = "The ID is required")
             Long gameId,
-            @RequestBody
+            @PathVariable("genreId")
             @NotNull(message = "The ID is required")
             Long genreId,
-            @RequestBody
+            @PathVariable("type")
             @NotNull(message = "The type association is required")
             TypeAssociation typeAssociation) {
         GenreGame genreGameUpdate = service.update(gameId, genreId, typeAssociation);
         return ResponseEntity.ok(converter.toJsonMap(genreGameUpdate));
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/gameId/{gameId}/genreId/{genreId}/type/{type}")
     public ResponseEntity<?> searchBy(
-            @RequestParam("genre")
+            @PathVariable("genreId")
             @NotNull(message = "The genre is required")
             Long genreId,
-            @RequestParam("game")
+            @PathVariable("gameId")
             @NotNull(message = "The game is required")
             Long gameId) {
         GenreGame genreGameFound = service.searchBy(genreId, gameId);
         return ResponseEntity.ok(converter.toJsonMap(genreGameFound));
     }
+
+    @DeleteMapping("/gameId/{gameId}/genreId/{genreId}")
+    @Transactional
+    public ResponseEntity<?> deleteBy(
+            @PathVariable("genreId")
+            @NotNull(message = "The genre is required")
+            Long genreId,
+            @PathVariable("gameId")
+            @NotNull(message = "The game is required")
+            Long gameId) {
+        service.deleteBy(genreId, gameId);
+
+        return ResponseEntity.ok().build();
+    }
+
+
 }
