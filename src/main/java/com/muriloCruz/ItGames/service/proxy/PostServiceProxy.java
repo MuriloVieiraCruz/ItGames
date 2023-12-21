@@ -46,7 +46,7 @@ public class PostServiceProxy {
         this.service.updateStatusBy(id, status);
     }
     
-    public Post deleteBy(Long id) {
-        return service.deleteBy(id);
+    public void deleteBy(Long id) {
+        service.deleteBy(id);
     }
 }

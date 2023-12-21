@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @RestController
-@RequestMapping("/service")
+@RequestMapping("/post")
 public class PostController {
 
     @Autowired
@@ -112,8 +112,8 @@ public class PostController {
     @DeleteMapping("/id/{id}")
     @Transactional
     public ResponseEntity<?> deleteBy(@PathVariable("id") Long id) {
-        Post postExclude = service.deleteBy(id);
-        return ResponseEntity.ok(mapConverter.toJsonMap(postExclude));
+        service.deleteBy(id);
+        return ResponseEntity.ok().build();
     }
 
     private Map<String, Object> convert(Post post) {

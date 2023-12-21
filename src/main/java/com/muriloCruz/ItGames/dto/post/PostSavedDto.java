@@ -22,7 +22,7 @@ public class PostSavedDto {
 	private String description;
 
 	@DecimalMin(value = "0.0", inclusive = true, message = "The price must be positive")
-	@Digits(integer = 5, fraction = 2, message = "The price must have the format 'NNNNN.NN'")
+	@Digits(integer = 4, fraction = 2, message = "The price must have the format 'NNNN.NN'")
 	@NotNull(message = "The price is required")
 	private BigDecimal price;
 
@@ -33,6 +33,6 @@ public class PostSavedDto {
 	@NotNull(message = "Game ID is required")
 	private Long gameId;
 
-	@NotBlank(message = "The image URL is required")
-	private String imageUrl;
+//	@NotBlank(message = "The image URL is required")
+//	private String imageUrl;
 }

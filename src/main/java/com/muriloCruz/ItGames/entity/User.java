@@ -1,7 +1,6 @@
 package com.muriloCruz.ItGames.entity;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +79,7 @@ public class User {
     @Column(name = "rating")
     private BigDecimal rating;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
 

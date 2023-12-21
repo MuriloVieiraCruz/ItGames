@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceProxy {
 
@@ -24,8 +26,8 @@ public class UserServiceProxy {
         return service.update(userSavedDto);
     }
     
-    public Page<User> listBy(String login, Pageable pagination) {
-        return service.listBy(login, pagination);
+    public Page<User> listBy(String name, Pageable pagination) {
+        return service.listBy(name, pagination);
     }
     
     public User searchBy(Long id) {

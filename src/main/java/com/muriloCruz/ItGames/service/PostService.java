@@ -19,8 +19,9 @@ import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.repository.GameRepository;
 import com.muriloCruz.ItGames.repository.PostRepository;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
+@Service
 public class PostService {
 	
 	@Autowired
@@ -33,7 +34,7 @@ public class PostService {
 	private UserRepository userRepository;
 
 	public Post insert(PostRequestDto postRequestDto) {
-		User userFound = getUserBy(postRequestDto.getUserLogin());
+		User userFound = getUserBy(postRequestDto.getUserEmail());
 		Game gameFound = getGameBy(postRequestDto.getGameId());
 		Post post = new Post();
 		post.setDescription(postRequestDto.getDescription());
@@ -51,11 +52,11 @@ public class PostService {
 		postFound.setAvailability(postSavedDto.getAvailability());
 		postFound.setPrice(postSavedDto.getPrice());
 		postFound.setGame(game);
-        return postRepository.save(postFound);
+        return postRepository.saveAndFlush(postFound);
 	}
 
 	public void updateStatusBy(Long id, Status status) {
-		Post postFound = this.searchBy(id);
+		Post postFound = postRepository.searchBy(id);
 		Preconditions.checkNotNull(postFound,
 				"No service was found linked to the id reported");
 		Preconditions.checkArgument(postFound.getStatus() != status ,
@@ -82,10 +83,9 @@ public class PostService {
 		return postRepository.listBy(price, availability, postDate, gameId, userId, pagination);
 	}
 
-	public Post deleteBy(Long id) {
+	public void deleteBy(Long id) {
 		Post postFound = searchBy(id);
 		this.postRepository.deleteBy(postFound.getId());
-		return postFound;
 	}
 
 	private Game getGameBy(Long gameId) {
@@ -97,8 +97,8 @@ public class PostService {
 		return gameFound;
 	}
 
-	private User getUserBy(String userLogin) {
-		User userFound = userRepository.searchBy(userLogin);
+	private User getUserBy(String userEmail) {
+		User userFound = userRepository.searchBy(userEmail);
 		Preconditions.checkNotNull(userFound,
 				"No user was found linked to the reported parameters");
 		Preconditions.checkArgument(userFound.isActive(),

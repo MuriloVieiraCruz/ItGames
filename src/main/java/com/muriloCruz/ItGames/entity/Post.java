@@ -10,6 +10,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -33,7 +34,7 @@ public class Post {
     private String description;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "The price must be positive")
-    @Digits(integer = 5, fraction = 2, message = "The price must have the format 'NNNNN.NN'")
+    @Digits(integer = 4, fraction = 2, message = "The price must have the format 'NNNN.NN'")
     @NotNull(message = "The price is required")
     @Column(name = "price")
     private BigDecimal price;
@@ -53,12 +54,13 @@ public class Post {
     @JoinColumn(name = "game_id")
     private Game game;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "The user of the service is required")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
     @NotNull(message = "The post date is required")
     @Column(name = "post_date")
     private LocalDate postDate;
