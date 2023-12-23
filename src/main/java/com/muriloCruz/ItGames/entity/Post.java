@@ -60,6 +60,12 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "The user of the service is required")
+    @JoinColumn(name = "freelancer_id")
+    private User freelancer;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
     @NotNull(message = "The post date is required")
     @Column(name = "post_date")
