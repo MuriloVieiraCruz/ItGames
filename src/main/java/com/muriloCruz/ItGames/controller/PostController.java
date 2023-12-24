@@ -53,6 +53,19 @@ public class PostController {
         return ResponseEntity.ok(convert(postUpdate));
     }
 
+    @PatchMapping("/freelancer/{freelancerId}/link/{postId}")
+    @Transactional
+    public ResponseEntity<?> linkFreelancer(
+            @PathVariable("freelancerId")
+            @NotNull(message = "The freelancer ID is required")
+            Long freelancerId,
+            @PathVariable("postId")
+            @NotNull(message = "The post ID is required")
+            Long postId) {
+        service.linkFreelancer(freelancerId, postId);
+        return ResponseEntity.ok().build();
+    }
+
     @PatchMapping("/id/{id}/status/{status}")
     public ResponseEntity<?> updateStatusBy(
             @PathVariable("id")

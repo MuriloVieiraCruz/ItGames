@@ -23,6 +23,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             "SELECT p "
             + "FROM Post p "
             + "JOIN FETCH p.user u "
+            + "JOIN FETCH p.freelancer e "
             + "JOIN FETCH p.game g "
             + "WHERE p.id = :id") 
     public Post searchBy(Long id);

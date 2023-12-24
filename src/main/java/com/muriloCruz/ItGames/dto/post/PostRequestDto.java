@@ -20,10 +20,9 @@ public class PostRequestDto {
 	@NotNull(message = "The price is required")
 	private BigDecimal price;
 
-	@Size(max = 250, min = 3, message = "The name must contain between 3 and 250 characters")
-	@Email(message = "The e-mail is an invalid format")
-	@NotBlank(message = "The user is required")
-	private String userEmail;
+	@Positive(message = "The user ID must be greater than 0")
+	@NotNull(message = "The user is required")
+	private Long userId;
 
 	@Positive(message = "Game ID must be greater than 0")
 	@NotNull(message = "The game ID is required")

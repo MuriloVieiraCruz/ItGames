@@ -34,7 +34,7 @@ public class PostService {
 	private UserRepository userRepository;
 
 	public Post insert(PostRequestDto postRequestDto) {
-		User userFound = getUserBy(postRequestDto.getUserEmail());
+		User userFound = getUserBy(postRequestDto.getUserId());
 		Game gameFound = getGameBy(postRequestDto.getGameId());
 		Post post = new Post();
 		post.setDescription(postRequestDto.getDescription());
@@ -45,8 +45,20 @@ public class PostService {
         return postRepository.save(post);
 	}
 
+	public void linkFreelancer(Long freelancerId, Long postId) {
+		User freelancerFound = getUserBy(freelancerId);
+		Optional<Post> postFound = postRepository.findById(Math.toIntExact(postId));
+		Preconditions.checkArgument(postFound.isPresent(),
+				"There is no post to the ");
+		Post post = postFound.get();
+		post.setFreelancer(freelancerFound);
+		postRepository.save(post);
+	}
+
 	public Post update(PostSavedDto postSavedDto) {
 		Post postFound = searchBy(postSavedDto.getId());
+		Preconditions.checkNotNull(postFound,
+				"No post was found linked to the id reported");
 		Game game = getGameBy(postSavedDto.getGameId());
 		postFound.setDescription(postSavedDto.getDescription());
 		postFound.setAvailability(postSavedDto.getAvailability());
@@ -58,7 +70,7 @@ public class PostService {
 	public void updateStatusBy(Long id, Status status) {
 		Post postFound = postRepository.searchBy(id);
 		Preconditions.checkNotNull(postFound,
-				"No service was found linked to the id reported");
+				"No post was found linked to the id reported");
 		Preconditions.checkArgument(postFound.getStatus() != status ,
 				"The entered status is already assigned");
 		this.postRepository.updateStatusBy(id, status);
@@ -97,8 +109,8 @@ public class PostService {
 		return gameFound;
 	}
 
-	private User getUserBy(String userEmail) {
-		User userFound = userRepository.searchBy(userEmail);
+	private User getUserBy(Long userId) {
+		User userFound = userRepository.searchBy(userId);
 		Preconditions.checkNotNull(userFound,
 				"No user was found linked to the reported parameters");
 		Preconditions.checkArgument(userFound.isActive(),
