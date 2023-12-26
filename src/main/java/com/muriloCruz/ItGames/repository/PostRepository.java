@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Integer> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value =
             "SELECT p "

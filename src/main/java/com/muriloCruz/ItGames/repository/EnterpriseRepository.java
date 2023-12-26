@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
-public interface EnterpriseRepository extends JpaRepository<Enterprise, Integer> {
+public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
 	@Query(value = 
 			"SELECT e "

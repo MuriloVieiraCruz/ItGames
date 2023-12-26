@@ -4,6 +4,7 @@ import com.muriloCruz.ItGames.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
@@ -17,7 +18,10 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-	
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -30,7 +34,8 @@ public class UserService {
 				"There is already a user registered with this login");
 		User user = new User();
 		user.setEmail(userRequestDto.getEmail());
-		user.setPassword(userRequestDto.getPassword());
+		String hashPsswrd = passwordEncoder.encode(userRequestDto.getPassword());
+		user.setPassword(hashPsswrd);
 		user.setName(userRequestDto.getName());
 		user.setCpf(userRequestDto.getCpf());
 		user.setBirthDate(userRequestDto.getBirthDate());

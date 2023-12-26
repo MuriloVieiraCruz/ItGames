@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
-public interface GameRepository extends JpaRepository<Game, Integer> {
+public interface GameRepository extends JpaRepository<Game, Long> {
 
     @Query(value =
             "SELECT g "

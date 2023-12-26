@@ -13,7 +13,7 @@ import com.muriloCruz.ItGames.entity.enums.Status;
 
 
 @Repository
-public interface GenreRepository extends JpaRepository<Genre, Integer> {
+public interface GenreRepository extends JpaRepository<Genre, Long> {
 	
 	@Query(value = 
 			"SELECT g "

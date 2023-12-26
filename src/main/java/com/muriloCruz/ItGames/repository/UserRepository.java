@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.muriloCruz.ItGames.entity.enums.Status;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>{
+public interface UserRepository extends JpaRepository<User, Long>{
 	
 	@Query(value = 
 			"SELECT u "

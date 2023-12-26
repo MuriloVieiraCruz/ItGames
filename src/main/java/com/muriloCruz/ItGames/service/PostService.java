@@ -47,7 +47,7 @@ public class PostService {
 
 	public void linkFreelancer(Long freelancerId, Long postId) {
 		User freelancerFound = getUserBy(freelancerId);
-		Optional<Post> postFound = postRepository.findById(Math.toIntExact(postId));
+		Optional<Post> postFound = postRepository.findById(postId);
 		Preconditions.checkArgument(postFound.isPresent(),
 				"There is no post to the ");
 		Post post = postFound.get();
