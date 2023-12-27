@@ -65,6 +65,15 @@ public class UserService {
 		return userFound;
 	}
 
+	public User searchBy(String email) {
+		User userFound = userRepository.searchBy(email);
+		Preconditions.checkNotNull(userFound,
+				"No user was found to be linked to the reported parameters");
+		Preconditions.checkArgument(userFound.isActive(),
+				"The user informed is inactive");
+		return userFound;
+	}
+
 	public void updateStatusBy(Long id, Status status) {
 		User userFound = userRepository.searchBy(id);
 		Preconditions.checkNotNull(userFound,

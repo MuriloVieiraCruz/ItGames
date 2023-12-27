@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,11 @@ public class LoginController {
             UserRequestDto userRequestDto) {
         User userSave = service.insert(userRequestDto);
         return ResponseEntity.created(URI.create("/user/id/" + userSave.getId())).build();
+    }
+
+    @RequestMapping("/user")
+    public User getUserDetailsAfterLogin(Authentication authentication) {
+        return service.searchBy(authentication.getName());
     }
 
     @PutMapping
