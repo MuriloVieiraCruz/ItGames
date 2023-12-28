@@ -5,18 +5,16 @@ import com.muriloCruz.ItGames.service.AccessCredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
@@ -24,7 +22,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -79,13 +76,31 @@ public class ApiSecurityConfig {
                 c.csrfTokenRequestHandler(requestHandler)
                         .ignoringRequestMatchers("/login/register", "/auth", "/contact")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-            }).addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+            })
+            .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .authorizeHttpRequests(request ->
-                    request.
-                            requestMatchers("/**")
+                    request
+                            .requestMatchers("/**")
                             .permitAll()
-                            .requestMatchers("/user")
-                            .authenticated());
+                            .requestMatchers(HttpMethod.PATCH, "/post/freelancer")
+                            .hasAuthority("USER")
+                            .requestMatchers(HttpMethod.POST, "/post")
+                            .hasAnyAuthority("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/post")
+                            .hasAnyAuthority("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.PATCH, "/post")
+                            .hasAnyAuthority("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/post")
+                            .hasAnyAuthority("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.POST, "/enterprise", "/game", "/genre", "/genre_game")
+                            .hasAuthority("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/enterprise", "/game", "/genre", "/genre_game")
+                            .hasAuthority("ADMIN")
+                            .requestMatchers(HttpMethod.PATCH, "/enterprise", "/game", "/genre", "/genre_game")
+                            .hasAuthority("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/enterprise", "/game", "/genre", "/genre_game")
+                            .hasAuthority("ADMIN")
+                            .anyRequest().authenticated());
         return http.build();
     }
 }
