@@ -1,9 +1,12 @@
 package com.muriloCruz.ItGames.controller;
 
+import com.google.common.base.Preconditions;
+import com.muriloCruz.ItGames.dto.login.LoginCredentials;
 import com.muriloCruz.ItGames.dto.user.UserRequestDto;
 import com.muriloCruz.ItGames.dto.user.UserSavedDto;
 import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Status;
+import com.muriloCruz.ItGames.security.JWTTokenManager;
 import com.muriloCruz.ItGames.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -13,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +33,12 @@ public class LoginController {
     private UserService service;
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTTokenManager tokenManager;
+
+    @Autowired
     private MapConverter converter;
 
     @PostMapping("/register")
@@ -40,9 +51,16 @@ public class LoginController {
         return ResponseEntity.created(URI.create("/user/id/" + userSave.getId())).build();
     }
 
-    @RequestMapping("/user")
-    public User getUserDetailsAfterLogin(Authentication authentication) {
-        return service.searchBy(authentication.getName());
+    @PostMapping("/authentication")
+    public ResponseEntity<?> authentication(@RequestBody LoginCredentials credentials) {
+        Authentication authenticatedToken = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword()));
+        Preconditions.checkArgument(authenticatedToken.isAuthenticated(),
+                "Login or password is invalid");
+        String generatedToken = tokenManager.generateTokenBy(credentials.getEmail());
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("token", generatedToken);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping

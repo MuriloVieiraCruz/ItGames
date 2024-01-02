@@ -1,6 +1,7 @@
 package com.muriloCruz.ItGames.security;
 
 import com.muriloCruz.ItGames.security.filter.CsrfCookieFilter;
+import com.muriloCruz.ItGames.security.filter.RequestValidationJwtFilter;
 import com.muriloCruz.ItGames.service.AccessCredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
@@ -26,6 +28,9 @@ import java.util.List;
 
 @Configuration
 public class ApiSecurityConfig {
+
+    @Autowired
+    private RequestValidationJwtFilter requestValidationJwtFilter;
 
     @Autowired
     private AccessCredentialsService service;
@@ -57,7 +62,7 @@ public class ApiSecurityConfig {
         corsConfiguration.setAllowedMethods(List.of("*"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-        corsConfiguration.setExposedHeaders(List.of("*"));
+        corsConfiguration.setExposedHeaders(List.of("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
@@ -69,18 +74,19 @@ public class ApiSecurityConfig {
         requestHandler.setCsrfRequestAttributeName("_csrf");
 
         http
-            .securityContext(s -> s.requireExplicitSave(false))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(authenticationProvider())
             .cors((cors) -> corsFilter())
             .csrf(c -> {
                 c.csrfTokenRequestHandler(requestHandler)
-                        .ignoringRequestMatchers("/login/register", "/auth", "/contact")
+                        .ignoringRequestMatchers("/login/register", "/login/authentication", "/contact")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
             })
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+            .addFilterBefore(requestValidationJwtFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(request ->
                     request
-                            .requestMatchers("/**")
+                            .requestMatchers("/login/register", "/login/authentication")
                             .permitAll()
                             .requestMatchers(HttpMethod.PATCH, "/post/freelancer")
                             .hasAuthority("USER")
