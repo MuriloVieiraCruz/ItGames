@@ -78,7 +78,7 @@ public class GameController {
             @NotBlank(message = "The name is required")
             String name,
             @RequestParam("genreId")
-            Optional<Long> genreId ,
+            Optional<Long> genreId,
             @RequestParam("page")
             Optional<Integer> page) {
 

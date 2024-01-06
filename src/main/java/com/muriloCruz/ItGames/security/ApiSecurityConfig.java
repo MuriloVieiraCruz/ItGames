@@ -4,17 +4,24 @@ import com.muriloCruz.ItGames.security.filter.CsrfCookieFilter;
 import com.muriloCruz.ItGames.security.filter.RequestValidationJwtFilter;
 import com.muriloCruz.ItGames.service.AccessCredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -34,6 +41,12 @@ public class ApiSecurityConfig {
 
     @Autowired
     private AccessCredentialsService service;
+
+    @Value("${spring.client.id}")
+    private String clientId;
+
+    @Value("${spring.client.secret}")
+    private String clientSecret;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,6 +79,12 @@ public class ApiSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
+    }
+
+    @Bean
+    public ClientRegistrationRepository clientRepository() {
+        ClientRegistration clientReg = clientRegistration();
+        return new InMemoryClientRegistrationRepository(clientReg);
     }
 
     @Bean
@@ -106,7 +125,14 @@ public class ApiSecurityConfig {
                             .hasAuthority("ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/enterprise", "/game", "/genre", "/genre_game")
                             .hasAuthority("ADMIN")
-                            .anyRequest().authenticated());
+                            .anyRequest().authenticated())
+                .oauth2Login(Customizer.withDefaults())
+        ;
         return http.build();
+    }
+
+    private ClientRegistration clientRegistration() {
+        return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId(clientId)
+                .clientSecret(clientSecret).build();
     }
 }

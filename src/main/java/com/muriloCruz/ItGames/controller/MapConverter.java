@@ -19,8 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class MapConverter implements Serializable{
 
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private ObjectMapper conversor;
 	
