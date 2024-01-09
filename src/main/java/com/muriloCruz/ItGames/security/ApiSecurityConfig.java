@@ -14,14 +14,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -82,12 +78,6 @@ public class ApiSecurityConfig {
     }
 
     @Bean
-    public ClientRegistrationRepository clientRepository() {
-        ClientRegistration clientReg = clientRegistration();
-        return new InMemoryClientRegistrationRepository(clientReg);
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
@@ -129,10 +119,5 @@ public class ApiSecurityConfig {
                 .oauth2Login(Customizer.withDefaults())
         ;
         return http.build();
-    }
-
-    private ClientRegistration clientRegistration() {
-        return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId(clientId)
-                .clientSecret(clientSecret).build();
     }
 }
