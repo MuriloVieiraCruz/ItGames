@@ -38,12 +38,6 @@ public class ApiSecurityConfig {
     @Autowired
     private AccessCredentialsService service;
 
-    @Value("${spring.client.id}")
-    private String clientId;
-
-    @Value("${spring.client.secret}")
-    private String clientSecret;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
