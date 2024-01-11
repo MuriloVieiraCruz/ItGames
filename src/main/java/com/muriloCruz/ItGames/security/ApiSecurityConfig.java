@@ -110,7 +110,6 @@ public class ApiSecurityConfig {
                             .requestMatchers(HttpMethod.DELETE, "/enterprise", "/game", "/genre", "/genre_game")
                             .hasAuthority("ADMIN")
                             .anyRequest().authenticated())
-                .oauth2Login(Customizer.withDefaults())
         ;
         return http.build();
     }
