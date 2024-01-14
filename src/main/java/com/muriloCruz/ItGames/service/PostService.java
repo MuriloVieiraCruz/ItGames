@@ -8,7 +8,6 @@ import com.muriloCruz.ItGames.dto.post.PostRequestDto;
 import com.muriloCruz.ItGames.entity.Post;
 import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Availability;
-import com.muriloCruz.ItGames.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,28 +29,25 @@ public class PostService {
 	@Autowired
 	private GameRepository gameRepository;
 
-	@Autowired
-	private UserRepository userRepository;
-
 	public Post insert(PostRequestDto postRequestDto) {
-		User userFound = getUserBy(postRequestDto.getUserId());
+		//User userFound = getUserBy(postRequestDto.getUserId());
 		Game gameFound = getGameBy(postRequestDto.getGameId());
 		Post post = new Post();
 		post.setDescription(postRequestDto.getDescription());
 		post.setPrice(postRequestDto.getPrice());
 		//post.setImageUrl(postRequestDto.getImageUrl());
-		post.setUser(userFound);
+		//post.setUser(userFound);
 		post.setGame(gameFound);
         return postRepository.save(post);
 	}
 
 	public void linkFreelancer(Long freelancerId, Long postId) {
-		User freelancerFound = getUserBy(freelancerId);
+		//User freelancerFound = getUserBy(freelancerId);
 		Optional<Post> postFound = postRepository.findById(postId);
 		Preconditions.checkArgument(postFound.isPresent(),
 				"There is no post to the ");
 		Post post = postFound.get();
-		post.setFreelancer(freelancerFound);
+		//post.setFreelancer(freelancerFound);
 		postRepository.save(post);
 	}
 
@@ -109,13 +105,13 @@ public class PostService {
 		return gameFound;
 	}
 
-	private User getUserBy(Long userId) {
-		User userFound = userRepository.searchBy(userId);
-		Preconditions.checkNotNull(userFound,
-				"No user was found linked to the reported parameters");
-		Preconditions.checkArgument(userFound.isActive(),
-				"The entered user is inactive");
-		return userFound;
-	}
+//	private User getUserBy(Long userId) {
+//		User userFound = userRepository.searchBy(userId);
+//		Preconditions.checkNotNull(userFound,
+//				"No user was found linked to the reported parameters");
+//		Preconditions.checkArgument(userFound.isActive(),
+//				"The entered user is inactive");
+//		return userFound;
+//	}
 
 }
