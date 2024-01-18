@@ -7,20 +7,19 @@ import com.muriloCruz.ItGames.dto.user.UserSavedDto;
 import com.muriloCruz.ItGames.entity.User;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.security.JWTTokenManager;
-import com.muriloCruz.ItGames.service.UserService;
+import com.muriloCruz.ItGames.service.impl.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -31,7 +30,8 @@ import java.util.*;
 public class LoginController {
 
     @Autowired
-    private UserService service;
+    @Qualifier("userServiceProxy")
+    private UserServiceImpl service;
 
     @Autowired
     private AuthenticationManager authenticationManager;

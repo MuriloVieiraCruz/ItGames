@@ -1,4 +1,4 @@
-package com.muriloCruz.ItGames.service;
+package com.muriloCruz.ItGames.service.impl;
 
 import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.entity.User;

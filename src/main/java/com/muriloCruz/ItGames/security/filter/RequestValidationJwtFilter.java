@@ -1,7 +1,7 @@
 package com.muriloCruz.ItGames.security.filter;
 
 import com.muriloCruz.ItGames.security.JWTTokenManager;
-import com.muriloCruz.ItGames.service.AccessCredentialsService;
+import com.muriloCruz.ItGames.service.impl.AccessCredentialsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

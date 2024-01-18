@@ -6,10 +6,12 @@ import com.muriloCruz.ItGames.entity.Post;
 import com.muriloCruz.ItGames.entity.enums.Availability;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.PostService;
+import com.muriloCruz.ItGames.service.impl.PostServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,7 @@ import java.util.*;
 public class PostController {
 
     @Autowired
+    @Qualifier("postServiceProxy")
     private PostService service;
 
     @Autowired

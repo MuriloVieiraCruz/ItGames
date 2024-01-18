@@ -5,7 +5,9 @@ import com.muriloCruz.ItGames.dto.game.GameSavedDto;
 import com.muriloCruz.ItGames.entity.Game;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.GameService;
+import com.muriloCruz.ItGames.service.impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,30 +15,38 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class GameServiceProxy {
+public class GameServiceProxy implements GameService {
 
     @Autowired
+    @Qualifier("gameServiceImpl")
     private GameService service;
 
+    @Override
     public Game insert(GameRequestDto gameRequestDto) {
         return service.insert(gameRequestDto);
     }
 
+    @Override
     public Game update(GameSavedDto gameSavedDto) {
         return service.update(gameSavedDto);
     }
 
+    @Override
     public void updateStatusBy(Long id, Status status) {
         this.service.updateStatusBy(id, status);
     }
 
+    @Override
     public Game searchBy(Long id) {
         return service.searchBy(id);
     }
+
+    @Override
     public Page<Game> listBy(String name, Optional<Long> genreId, Pageable pagination) {
         return service.listBy(name, genreId, pagination);
     }
 
+    @Override
     public Game deleteBy(Long id) {
         return service.deleteBy(id);
     }

@@ -1,15 +1,13 @@
 package com.muriloCruz.ItGames.controller;
 
-import com.muriloCruz.ItGames.entity.Enterprise;
-import com.muriloCruz.ItGames.entity.Game;
-import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.GenreGame;
 import com.muriloCruz.ItGames.entity.enums.TypeAssociation;
 import com.muriloCruz.ItGames.service.GenreGameService;
+import com.muriloCruz.ItGames.service.impl.GenreGameServiceImpl;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +18,7 @@ import java.net.URI;
 public class GenreGameController {
 
     @Autowired
+    @Qualifier("genreGameServiceProxy")
     private GenreGameService service;
 
     @Autowired

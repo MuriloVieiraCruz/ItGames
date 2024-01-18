@@ -1,16 +1,17 @@
 package com.muriloCruz.ItGames.controller;
 
-import com.google.common.base.Preconditions;
 import com.muriloCruz.ItGames.dto.genre.GenreRequest;
 import com.muriloCruz.ItGames.dto.genre.GenreSaved;
 import com.muriloCruz.ItGames.entity.Genre;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.GenreService;
+import com.muriloCruz.ItGames.service.impl.GenreServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class GenreController {
     private MapConverter converter;
 
     @Autowired
+    @Qualifier("genreServiceProxy")
     private GenreService service;
 
     @PostMapping
@@ -98,7 +100,7 @@ public class GenreController {
             @PathVariable("id")
             @NotNull(message = "The ID is required")
             Long id) {
-        Genre genreExclude = service.deleteBy(id);
-        return ResponseEntity.ok(converter.toJsonMap(genreExclude));
+        service.deleteBy(id);
+        return ResponseEntity.ok().build();
     }
 }

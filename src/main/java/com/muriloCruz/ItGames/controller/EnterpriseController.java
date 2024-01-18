@@ -5,11 +5,13 @@ import com.muriloCruz.ItGames.dto.enterprise.EnterpriseSaved;
 import com.muriloCruz.ItGames.entity.Enterprise;
 import com.muriloCruz.ItGames.entity.enums.Status;
 import com.muriloCruz.ItGames.service.EnterpriseService;
+import com.muriloCruz.ItGames.service.impl.EnterpriseServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,7 @@ public class EnterpriseController {
     private MapConverter converter;
 
     @Autowired
+    @Qualifier("enterpriseServiceProxy")
     private EnterpriseService service;
 
     @PostMapping
